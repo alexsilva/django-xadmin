@@ -143,7 +143,7 @@ class BaseAdminObject:
         return view
 
     def get_model_view(self, view_class, model, *args, **kwargs):
-        return self.get_view(view_class, self.admin_site._registry.get(model), *args, **kwargs)
+        return self.get_view(view_class, self.admin_site.get_registry(model, None), *args, **kwargs)
 
     def get_admin_url(self, name, *args, **kwargs):
         return reverse('%s:%s' % (self.admin_site.app_name, name), args=args, kwargs=kwargs)
