@@ -106,12 +106,17 @@ class AdminSite:
     def register_settings(self, name, admin_class):
         self._registry_settings[name.lower()] = admin_class
 
-    def get_registry(self, model_or_view):
+    def get_registry(self, model_or_view, *args):
         """Returns the options class registered for the model/view"""
-        if isinstance(model_or_view, ModelBase):
-            return self._registry[model_or_view]
-        else:
-            return self._registry_avs[model_or_view]
+        try:
+            if isinstance(model_or_view, ModelBase):
+                return self._registry[model_or_view]
+            else:
+                return self._registry_avs[model_or_view]
+        except KeyError:
+            if not args:
+                raise
+            return args[0]
 
     def register(self, model_or_iterable, admin_class=object, **options):
         from xadmin.views.base import BaseAdminView
