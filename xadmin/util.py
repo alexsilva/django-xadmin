@@ -196,20 +196,20 @@ def get_deleted_objects(objs, admin_view):
     collector.collect(objs)
     perms_needed = set()
 
+    from xadmin.views.edit import ModelFormAdminView
+
     def format_callback(obj):
         opts = obj._meta
-
-        no_edit_link = '%s: %s' % (capfirst(opts.verbose_name), obj)
-
-        if not admin_view.has_delete_permission(obj):
+        # view for the object model.
+        model_view = admin_view.get_model_view(ModelFormAdminView,
+                                               opts.model, obj.pk,
+                                               opts={'model': opts.model})
+        if not model_view.has_delete_permission(obj):
             perms_needed.add(opts.verbose_name)
         try:
-            admin_url = reverse('%s:%s_%s_change'
-                                % (admin_view.admin_site.name,
-                                   opts.app_label,
-                                   opts.model_name),
-                                None, (quote(obj.pk),))
+            admin_url = model_view.get_model_url(opts.model, "change", quote(obj.pk))
         except NoReverseMatch:
+            no_edit_link = '%s: %s' % (capfirst(opts.verbose_name), obj)
             # Change url doesn't exist -- don't display link to edit
             return no_edit_link
 
