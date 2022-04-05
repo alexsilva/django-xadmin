@@ -115,7 +115,7 @@ class AdminSite:
                 return self._registry_avs[model_or_view]
         except KeyError:
             if not args:
-                raise
+                raise NotRegistered('The model/view %s is not registered' % model_or_view.__name__)
             return args[0]
 
     def register(self, model_or_iterable, admin_class=object, **options):
