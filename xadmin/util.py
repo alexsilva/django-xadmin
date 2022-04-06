@@ -192,22 +192,26 @@ def get_deleted_objects(objs, admin_view):
         return [], {}, set(), []
     else:
         using = router.db_for_write(obj._meta.model)
+    collect_related = getattr(admin_view, "collect_related_nested_objects", True)
     collector = NestedObjects(using=using)
-    collector.collect(objs)
+    collector.collect(objs, collect_related=collect_related)
     perms_needed = set()
 
-    from xadmin.views.edit import ModelFormAdminView
+    from xadmin.views.edit import ModelAdminView
 
     def format_callback(obj):
         opts = obj._meta
         # view for the object model.
-        model_view = admin_view.get_model_view(ModelFormAdminView,
-                                               opts.model, obj.pk,
-                                               opts={'model': opts.model})
-        if not model_view.has_delete_permission(obj):
+        if isinstance(obj, admin_view.model):
+            admin_model_view = admin_view
+        else:
+            model_view = type(f"Model{opts.app_label}{opts.model_name}AdminView", (),
+                              {'model': opts.model, 'auto_created': True})
+            admin_model_view = admin_view.get_view(ModelAdminView, model_view)
+        if not admin_model_view.has_delete_permission(obj):
             perms_needed.add(opts.verbose_name)
         try:
-            admin_url = model_view.get_model_url(opts.model, "change", quote(obj.pk))
+            admin_url = admin_model_view.get_model_url(opts.model, "change", quote(obj.pk))
         except NoReverseMatch:
             no_edit_link = '%s: %s' % (capfirst(opts.verbose_name), obj)
             # Change url doesn't exist -- don't display link to edit

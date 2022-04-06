@@ -61,7 +61,7 @@ class DeleteSelectedAction(BaseActionView):
 
     delete_confirmation_template = None
     delete_selected_confirmation_template = None
-
+    # collect_related_nested_objects = False
     delete_models_batch = True
 
     model_perm = 'delete'
