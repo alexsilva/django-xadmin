@@ -1,12 +1,12 @@
 (function($) {
 
     $.fn.actions = function(opts) {
+        var self = this
         var options = $.extend({}, $.fn.actions.defaults, opts);
         var actionCheckboxes = $(this);
 
         updateCounter = function() {
             var sel = $(actionCheckboxes).filter(":checked").length;
-
             $(options.counterContainer).html(interpolate(
             ngettext('%(sel)s of %(cnt)s selected', '%(sel)s of %(cnt)s selected', sel), {
                 sel: sel,
@@ -72,7 +72,7 @@
 
         // receiver live inputs
         var $allToggle = $(options.allToggle);
-        $allToggle.on("actions.checkbox", function (evt, checkbox){
+        $allToggle.on("actions_checkbox_add", function (evt, checkbox){
             var $checkbox = $(checkbox);
             if (!$checkbox.data('action.checkbox')) {
                 actionCheckboxes = actionCheckboxes.add(checkbox);
@@ -80,9 +80,12 @@
                 $checkbox.bind('checker', checker)
                     .click(actionLastChecked);
             }
-        });
+        // remove old references
+        }).on("actions_checkbox_clear", function (evt){
+            actionCheckboxes = $(self);
+
         // receiver action update
-        $allToggle.on("actions.updateCounter", updateCounter);
+        }).on("actions_update_counter", updateCounter);
 
         // Show counter by default
         $(options.counterContainer).show();
