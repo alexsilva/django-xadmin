@@ -71,7 +71,8 @@
         }
 
         // receiver live inputs
-        $(options.allToggle).on("action.checkbox", function (evt, checkbox){
+        var $allToggle = $(options.allToggle);
+        $allToggle.on("actions.checkbox", function (evt, checkbox){
             var $checkbox = $(checkbox);
             if (!$checkbox.data('action.checkbox')) {
                 actionCheckboxes.add(checkbox);
@@ -80,9 +81,8 @@
                     .click(actionLastChecked);
             }
         });
-
         // receiver action update
-        actionCheckboxes.on("actions.updateCounter", updateCounter);
+        $allToggle.on("actions.updateCounter", updateCounter);
 
         // Show counter by default
         $(options.counterContainer).show();
