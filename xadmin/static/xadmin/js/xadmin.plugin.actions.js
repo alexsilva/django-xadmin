@@ -75,7 +75,7 @@
         $allToggle.on("actions.checkbox", function (evt, checkbox){
             var $checkbox = $(checkbox);
             if (!$checkbox.data('action.checkbox')) {
-                actionCheckboxes.add(checkbox);
+                actionCheckboxes = actionCheckboxes.add(checkbox);
                 $checkbox.data('action.checkbox', true);
                 $checkbox.bind('checker', checker)
                     .click(actionLastChecked);
