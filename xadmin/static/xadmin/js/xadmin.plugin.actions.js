@@ -71,10 +71,14 @@
         }
 
         // receiver live inputs
-        actionCheckboxes.on("actions.live", function (evt, action){
-            $(action).bind('checker', checker)
-                     .click(actionLastChecked);
-            actionCheckboxes = actionCheckboxes.add(action);
+        $(options.allToggle).on("action.checkbox", function (evt, checkbox){
+            var $checkbox = $(checkbox);
+            if (!$checkbox.data('action.checkbox')) {
+                actionCheckboxes.add(checkbox);
+                $checkbox.data('action.checkbox', true);
+                $checkbox.bind('checker', checker)
+                    .click(actionLastChecked);
+            }
         });
 
         // receiver action update
