@@ -13,7 +13,8 @@
       <form method="get" action="">
         {{ form_params|safe }}
         <div class="input-group">
-          <input name="{{search_name}}" class="input-char form-control {% if search_val %}rounded mw-100{% endif %}" type="text" value="{{search_val}}" placeholder="{% trans "Enter" %} {{title}}…"/>
+          <input name="{{search_name}}" class="input-char form-control {% if search_val %}rounded mw-100{% endif %}"
+                 type="text" value="{{search_val}}" placeholder="{% trans 'Enter' %} {{title|striptags}}...">
           <div class="{% if search_val %}mt-2{% else %}input-group-append{% endif %}">
           {% if search_val %}
             <a class="btn btn-danger" href="{{remove_url}}"><i class="fa fa-times"></i></a>
