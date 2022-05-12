@@ -1,15 +1,35 @@
 ;(function($){
     $(function() {
-      var action_bar = $('.form-actions');
-      if(action_bar.length && !action_bar.data("action_scroll_top")){
-            var height=action_bar[0].offsetTop + action_bar.outerHeight();
-            var onchange = function(){
-                var s=(document.body.scrollTop||document.documentElement.scrollTop) + window.innerHeight;
-                if(s<height){action_bar.addClass('fixed');}
-                else{action_bar.removeClass('fixed');}
+        var action_bar = $('.form-actions');
+        if (action_bar.length && !action_bar.data("action_scroll_top")) {
+            var action_bar_height = action_bar.outerHeight();
+            var $html = $('html');
+
+            var onchange = function () {
+                var html_scroll_top = $html.scrollTop();
+                var html_scroll_height = $html.prop('scrollHeight');
+
+                var html_height = $html.innerHeight();
+                var action_bar_offset_top = action_bar.offset().top;
+
+                var has_scroll_end = html_height + html_scroll_top >= html_scroll_height;
+                var action_bar_coordenate = action_bar_offset_top + action_bar_height;
+                var avaliable_action_bar_fixed = (html_scroll_top + html_height) < action_bar_coordenate;
+
+                if (!action_bar.hasClass("fixed") && avaliable_action_bar_fixed) {
+                    action_bar.addClass('fixed')
+
+                } else if (has_scroll_end || avaliable_action_bar_fixed) {
+                    action_bar.removeClass('fixed');
+                }
             }
             action_bar.data("action_scroll_top", true);
-            window.onscroll=onchange;
+            $(window).scroll(onchange);
+            $(window).resize(onchange);
+            $('a[data-toggle=tab]').on('shown.bs.tab', function (){
+                action_bar.removeClass('fixed');
+                onchange();
+            });
             onchange();
         }
         if(window.__admin_ismobile__){
