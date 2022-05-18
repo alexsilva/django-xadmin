@@ -4,6 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.utils.decorators import classproperty
 from django.utils.translation import ugettext_lazy as _, ugettext
 from django.urls.base import reverse
 from django.core.serializers.json import DjangoJSONEncoder
@@ -168,6 +169,11 @@ class Log(models.Model):
         verbose_name = _('log entry')
         verbose_name_plural = _('log entries')
         ordering = ('-action_time',)
+
+    @classproperty
+    def object_repr_length(cls):
+        """The maximum number of characters supported by the field"""
+        return cls._meta.get_field("object_repr").max_length
 
     def __repr__(self):
         return smart_text(self.action_time)

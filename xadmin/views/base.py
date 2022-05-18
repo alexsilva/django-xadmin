@@ -23,7 +23,7 @@ from django.utils.functional import Promise
 from django.utils.http import urlencode
 from django.utils.itercompat import is_iterable
 from django.utils.safestring import mark_safe
-from django.utils.text import capfirst
+from django.utils.text import capfirst, Truncator
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import View
@@ -235,7 +235,8 @@ class BaseAdminObject:
         if obj:
             log.content_type = get_content_type_for_model(obj)
             log.object_id = obj.pk
-            log.object_repr = force_text(obj)
+            # Limits the representation to the maximum size of the field.
+            log.object_repr = Truncator(force_text(obj)).chars(log.object_repr_length)
         log.save()
 
 
