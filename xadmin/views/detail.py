@@ -5,7 +5,7 @@ from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
 from django.db import models
-from django.forms.models import modelform_factory
+from django.forms.models import modelform_factory, modelform_defines_fields
 from django.http import Http404
 from django.template import loader
 from django.template.response import TemplateResponse
@@ -211,28 +211,43 @@ class DetailAdminView(ModelAdminView):
         return layout
 
     @filter_hook
+    def get_form_class(self):
+        return self.form
+
+    @filter_hook
+    def get_form_exclude(self):
+        return self.exclude
+
+    @filter_hook
+    def get_form_fields(self):
+        return self.fields
+
+    @filter_hook
     def get_model_form(self, **kwargs):
         """
         Returns a Form class for use in the admin add view. This is used by
         add_view and change_view.
         """
-        if self.exclude is None:
-            exclude = []
-        else:
-            exclude = list(self.exclude)
-        if self.exclude is None and hasattr(self.form, '_meta') and self.form._meta.exclude:
+        form = self.get_form_class()
+        fields = self.get_form_fields()
+        fields_exclude = self.get_form_exclude()
+        exclude = [] if fields_exclude is None else list(fields_exclude)
+        if fields_exclude is None and hasattr(form, '_meta') and form._meta.exclude:
             # Take the custom ModelForm's Meta.exclude into account only if the
             # ModelAdmin doesn't define its own.
-            exclude.extend(self.form._meta.exclude)
-        # if exclude is an empty list we pass None to be consistant with the
-        # default on modelform_factory
-        exclude = exclude or None
+            exclude.extend(form._meta.exclude)
         defaults = {
-            "form": self.form,
-            "fields": self.fields and list(self.fields) or '__all__',
-            "exclude": exclude,
+            "form": form,
+            "fields": fields and list(fields) or None,
+            # if exclude is an empty list we pass None to be consistent with the
+            # default on modelform_factory
+            "exclude": exclude or None,
         }
         defaults.update(kwargs)
+
+        if (defaults['fields'] is None and defaults['exclude'] is None and
+                not modelform_defines_fields(defaults['form'])):
+            defaults['fields'] = forms.ALL_FIELDS
         return modelform_factory(self.model, **defaults)
 
     @filter_hook
