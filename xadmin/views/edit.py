@@ -160,23 +160,19 @@ class ModelFormAdminView(ModelAdminView):
         """
         form = self.get_form_class()
         fields = self.get_form_fields()
-        form_exclude = self.get_form_exclude()
-        if form_exclude is None:
-            exclude = []
-        else:
-            exclude = list(form_exclude)
+        fields_exclude = self.get_form_exclude()
+        exclude = [] if fields_exclude is None else list(fields_exclude)
         exclude.extend(self.get_readonly_fields())
-        if form_exclude is None and hasattr(form, '_meta') and form._meta.exclude:
+        if fields_exclude is None and hasattr(form, '_meta') and form._meta.exclude:
             # Take the custom ModelForm's Meta.exclude into account only if the
             # ModelAdmin doesn't define its own.
             exclude.extend(form._meta.exclude)
-        # if exclude is an empty list we pass None to be consistant with the
-        # default on modelform_factory
-        exclude = exclude or None
         defaults = {
             "form": form,
             "fields": fields and list(fields) or None,
-            "exclude": exclude,
+            # if exclude is an empty list we pass None to be consistent with the
+            # default on modelform_factory
+            "exclude": exclude or None,
             "formfield_callback": self.formfield_for_dbfield,
         }
         defaults.update(kwargs)
