@@ -14,12 +14,9 @@ from xadmin.views import BaseAdminPlugin, ModelFormAdminView
 
 
 class SelectMultipleTransfer(forms.SelectMultiple):
+    template_name = 'xadmin/forms/transfer.html'
 
-    @property
-    def media(self):
-        return vendor('xadmin.widget.select-transfer.js', 'xadmin.widget.select-transfer.css')
-
-    def __init__(self, verbose_name, is_stacked, attrs=None, choices=()):
+    def __init__(self, attrs=None, choices=(), verbose_name=None, is_stacked=False):
         self.verbose_name = verbose_name
         self.is_stacked = is_stacked
         super(SelectMultipleTransfer, self).__init__(attrs, choices)
@@ -29,7 +26,8 @@ class SelectMultipleTransfer(forms.SelectMultiple):
         return u'<option value="%s">%s</option>' % (
             escape(option_value), conditional_escape(force_text(option_label))), bool(option_value in selected_choices)
 
-    def render(self, name, value, attrs=None, choices=(), **kwargs):
+    def get_context(self, name, value, attrs):
+        ctx = super(SelectMultipleTransfer, self).get_context(name, value, attrs)
         if attrs is None:
             attrs = {}
         attrs['class'] = ''
@@ -43,7 +41,7 @@ class SelectMultipleTransfer(forms.SelectMultiple):
         available_output = []
         chosen_output = []
 
-        for option_value, option_label in chain(self.choices, choices):
+        for option_value, option_label in self.choices:
             if isinstance(option_label, (list, tuple)):
                 available_output.append(u'<optgroup label="%s">' %
                                         escape(force_text(option_value)))
@@ -71,7 +69,13 @@ class SelectMultipleTransfer(forms.SelectMultiple):
             'available_options': u'\n'.join(available_output),
             'chosen_options': u'\n'.join(chosen_output),
         }
-        return mark_safe(loader.render_to_string('xadmin/forms/transfer.html', context))
+
+        ctx.update(context)
+        return ctx
+
+    @property
+    def media(self):
+        return vendor('xadmin.widget.select-transfer.js', 'xadmin.widget.select-transfer.css')
 
 
 class SelectMultipleDropdown(forms.SelectMultiple):
@@ -98,7 +102,8 @@ class M2MSelectPlugin(BaseAdminPlugin):
 
     def get_field_style(self, attrs, db_field, style, **kwargs):
         if style == 'm2m_transfer' and isinstance(db_field, ManyToManyField):
-            return {'widget': SelectMultipleTransfer(db_field.verbose_name, False), 'help_text': ''}
+            return {'widget': SelectMultipleTransfer(verbose_name=db_field.verbose_name,
+                                                     is_stacked=False), 'help_text': ''}
         if style == 'm2m_dropdown' and isinstance(db_field, ManyToManyField):
             return {'widget': SelectMultipleDropdown, 'help_text': ''}
         return attrs
