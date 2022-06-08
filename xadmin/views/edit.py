@@ -458,9 +458,12 @@ class CreateAdminView(ModelFormAdminView):
         }
 
         if "_continue" in request.POST:
-            self.message_user(msg + ' ' + _("You may edit it again below."), 'success')
-            return self.model_admin_url('change', self.new_obj._get_pk_val())
-
+            if self.has_change_permission(self.new_obj):
+                self.message_user(msg + ' ' + _("You may edit it again below."), 'success')
+                return self.model_admin_url('change', self.new_obj._get_pk_val())
+            else:
+                # when the user cannot continue editing, they will only see the details screen.
+                return self.model_admin_url("detail", self.new_obj.pk)
         if "_addanother" in request.POST:
             self.message_user(msg + ' ' + (_("You may add another %s below.") % force_text(self.opts.verbose_name)), 'success')
             return request.path
@@ -556,12 +559,17 @@ class UpdateAdminView(ModelFormAdminView):
 
         pk_value = obj._get_pk_val()
 
-        msg = _('The %(name)s "%(obj)s" was changed successfully.') % {'name':
-                                                                       force_text(verbose_name), 'obj': force_text(obj)}
+        msg = _('The %(name)s "%(obj)s" was changed successfully.') % {
+            'name': force_text(verbose_name),
+            'obj': force_text(obj)
+        }
         if "_continue" in request.POST:
-            self.message_user(
-                msg + ' ' + _("You may edit it again below."), 'success')
-            return request.path
+            if self.has_change_permission(obj):
+                self.message_user(msg + ' ' + _("You may edit it again below."), 'success')
+                return request.path
+            else:
+                # when the user cannot continue editing, they will only see the details screen.
+                return self.model_admin_url("detail", obj.pk)
         elif "_addanother" in request.POST:
             self.message_user(msg + ' ' + (_("You may add another %s below.")
                                            % force_text(verbose_name)), 'success')
@@ -575,8 +583,7 @@ class UpdateAdminView(ModelFormAdminView):
                 return request.POST["_redirect"]
             elif self.has_view_permission():
                 change_list_url = self.model_admin_url('changelist')
-                if 'LIST_QUERY' in self.request.session \
-                        and self.request.session['LIST_QUERY'][0] == self.model_info:
+                if 'LIST_QUERY' in self.request.session and self.request.session['LIST_QUERY'][0] == self.model_info:
                     change_list_url += '?' + self.request.session['LIST_QUERY'][1]
                 return change_list_url
             else:
