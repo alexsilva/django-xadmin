@@ -77,7 +77,7 @@ class SaveOrderView(ModelAdminView):
 
         if is_order_changed(obj):
             setattr(obj, order_field, order_value)
-            obj.save()
+            obj.save(update_fields=[order_field])
 
 
 site.register_plugin(SortableListPlugin, ListAdminView)
