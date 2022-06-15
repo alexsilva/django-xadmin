@@ -1009,7 +1009,7 @@ msgstr "A cada %(t)s segundos"
 
 #: xadmin/templates/xadmin/blocks/model_list.top_toolbar.saveorder.html:4
 msgid "Save Order"
-msgstr "Salvar ordenação"
+msgstr "Gravar ordenação"
 
 #: xadmin/templates/xadmin/edit_inline/blank.html:5 xadmin/views/detail.py:23
 #: xadmin/views/edit.py:104 xadmin/views/list.py:31
@@ -1181,7 +1181,7 @@ msgstr "Mostrar Tudo"
 #: xadmin/templates/xadmin/views/form.html:30
 #: xadmin/templates/xadmin/views/form.html:33
 msgid "Saving.."
-msgstr "Salvando..."
+msgstr "Gravando.."
 
 #: xadmin/templates/xadmin/includes/submit_line.html:28
 msgid "Save as new"
