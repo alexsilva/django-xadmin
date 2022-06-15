@@ -133,5 +133,11 @@
 
     $(document).ready(function($) {
         $(".results input.action-select").actions();
+        $("a.list-action-menu").click(function (evt){
+            evt.preventDefault();
+            var name = $(this).data('action-name');
+            $('#action').val(name);
+            $('#changelist-form').submit();
+        })
     });
 })(jQuery);

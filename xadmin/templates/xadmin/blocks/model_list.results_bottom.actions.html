@@ -10,7 +10,7 @@
     </a>
     <div class="dropdown-menu" role="menu" aria-labelledby="dLabel">
       {% for name, descr, icon in action_choices %}
-        <a class="dropdown-item" onclick="$.do_action('{{name}}');">
+        <a href="#" class="dropdown-item list-action-menu" data-action-name="{{name}}">
             <i class="{{icon}}"></i>
             {{descr}}
         </a>
