@@ -2,7 +2,7 @@
 {% load xadmin_tags %}
 <div class="form-actions d-block bg-light border rounded p-2 my-2">
   {% if show_save %}
-  <button type="submit" class="btn btn-success d-none d-md-inline-block default mr-md-2" name="_save" data-loading-text="{% trans "Saving.." %}" {{ onclick_attrib }}>
+  <button type="submit" class="btn btn-success d-none d-md-inline-block default mr-md-2" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
       <i class="fa fa-save"></i> {% trans 'Save' %}
   </button>
   {% endif %}
@@ -10,7 +10,7 @@
   <div class="d-flex d-md-none">
     {% if show_save %}
     <div class="btn-group flex-fill px-0">
-      <button type="submit" class="btn btn-block btn-success default" name="_save" data-loading-text="{% trans "Saving.." %}" {{ onclick_attrib }}>
+      <button type="submit" class="btn btn-block btn-success default" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
           <i class="fa fa-save"></i> {% trans 'Save' %}
       </button>
       <button type="button" class="btn btn-success more" data-toggle="collapse" data-target=".nav-collapse.more-btns">
