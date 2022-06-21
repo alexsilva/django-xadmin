@@ -62,7 +62,7 @@
           this.$form.find('.alert-success').hide();
 
           // reset
-          $("div.quick-form.invalid-feedback").remove();
+          $("span.quick-form.invalid-feedback").remove();
           $("input.quick-form.is-invalid").removeClass('is-invalid');
 
           if(data['result'] !== 'success' && data['errors']){
@@ -81,7 +81,7 @@
                   errdiv.find("#"+err_id).remove();
 
                   err_html.push($.fn.nunjucks_env.renderString(
-                      '<div class="quick-form invalid-feedback" id="{{id}}">{{message}}</div>',
+                      '<span class="quick-form invalid-feedback" id="{{id}}"><strong>{{message}}</strong></span>',
                       {message: error['errors'][j], id: err_id}
                   ))
                 }
