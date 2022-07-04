@@ -29,6 +29,15 @@
   {% block formset_content %}
     {% for fs in formset.formset %}
       {% block formset_form %}{% endblock formset_form %}
+    {% empty %}
+        <div class="alert alert-light alert-dismissible fade show" role="alert">
+            {% blocktrans with formset.opts.verbose_name_plural|lower as name %}
+            Add <strong>{{name}}</strong> to be listed here.
+            {% endblocktrans %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
     {% endfor %}
   {% endblock formset_content %}
 {% endblock box_content %}
