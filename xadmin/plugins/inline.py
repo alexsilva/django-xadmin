@@ -567,7 +567,7 @@ class InlineFormsetPlugin(BaseAdminPlugin):
 
 class DetailAdminUtil(DetailAdminView):
 
-    def init_request(self, obj):
+    def init_request(self, obj, *args, **kwargs):
         self.obj = obj
         self.org_obj = obj
 
