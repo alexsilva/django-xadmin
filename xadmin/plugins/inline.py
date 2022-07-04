@@ -265,32 +265,33 @@ class InlineModelAdmin(ModelFormAdminView):
         # inline forms, see template 'bootstrap/whole_uni_form.html'
         helper.form_method = 'get'
 
-        style = style_manager.get_style(
-            'one' if self.max_num == 1 else self.style)(self, instance)
+        style = style_manager.get_style('one' if self.max_num == 1 else self.style)(self, instance)
         style.name = self.style
 
-        if len(instance):
-            layout = copy.deepcopy(self.form_layout)
+        layout = copy.deepcopy(self.form_layout)
 
-            def layout_hidden_fields(layout):
-                rendered_fields = [i[1] for i in layout.get_field_names()]
-                layout.extend([f for f in instance[0].fields.keys() if f not in rendered_fields])
+        # uses empty_form as a base to extract the fields and configure the layout
+        # (even with extra==0 the layout has to work).
+        empty_form = instance.empty_form
 
-            if layout is None:
-                layout = Layout(*instance[0].fields.keys())
-            elif isinstance(layout, LayoutObject):
-                layout = Layout(layout)
-                layout_hidden_fields(layout)
+        def layout_hidden_fields(layout):
+            rendered_fields = [i[1] for i in layout.get_field_names()]
+            layout.extend([f for f in empty_form.fields.keys() if f not in rendered_fields])
 
-            elif isinstance(layout, (list, tuple)) and len(layout) > 0:
-                layout = Layout(*layout)
-                layout_hidden_fields(layout)
+        if layout is None:
+            layout = Layout(*empty_form.fields.keys())
+        elif isinstance(layout, LayoutObject):
+            layout = Layout(layout)
+            layout_hidden_fields(layout)
+        elif isinstance(layout, (list, tuple)) and len(layout) > 0:
+            layout = Layout(*layout)
+            layout_hidden_fields(layout)
 
-            helper.add_layout(layout)
-            style.update_layout(helper)
+        helper.add_layout(layout)
+        style.update_layout(helper)
 
-            # replace delete field with Dynamic field, for hidden delete field when instance is NEW.
-            helper[DELETION_FIELD_NAME].wrap(DeleteField)
+        # replace delete field with Dynamic field, for hidden delete field when instance is NEW.
+        helper[DELETION_FIELD_NAME].wrap(DeleteField)
 
         instance.helper = helper
         instance.style = style
