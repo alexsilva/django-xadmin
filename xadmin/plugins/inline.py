@@ -336,7 +336,7 @@ class InlineModelAdmin(ModelFormAdminView):
             queryset = queryset.none()
         return queryset
 
-    def has_add_permission(self):
+    def has_add_permission(self, **kwargs):
         if self.opts.auto_created:
             return self.has_change_permission()
 
