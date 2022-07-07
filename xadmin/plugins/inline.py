@@ -88,6 +88,11 @@ class InlineStyle:
         self.view = view
         self.formset = formset
 
+    def get_formset_form(self, index):
+        """Returns form from index or empty form when extra == 0"""
+        return (self.formset[index] if len(self.formset) else
+                self.formset.empty_form)
+
     def update_layout(self, helper):
         pass
 
@@ -115,15 +120,16 @@ class TableInlineStyle(InlineStyle):
     template = 'xadmin/edit_inline/tabular.html'
 
     def update_layout(self, helper):
-        helper.add_layout(
-            Layout(*[TDField(f) for f in self.formset[0].fields.keys()]))
+        form = self.get_formset_form(0)
+        helper.add_layout(Layout(*[TDField(f) for f in form.fields.keys()]))
 
     def get_attrs(self):
         fields = []
         readonly_fields = []
         if len(self.formset):
-            fields = [f for k, f in self.formset[0].fields.items() if k != DELETION_FIELD_NAME]
-            readonly_fields = [f for f in getattr(self.formset[0], 'readonly_fields', [])]
+            form = self.get_formset_form(0)
+            fields = [f for k, f in form.fields.items() if k != DELETION_FIELD_NAME]
+            readonly_fields = [f for f in getattr(form, 'readonly_fields', [])]
         return {
             'fields': fields,
             'readonly_fields': readonly_fields
