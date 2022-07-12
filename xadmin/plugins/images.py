@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
-
+from django.forms.renderers import get_default_renderer
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ModelFormAdminView, DetailAdminView, ListAdminView
 
@@ -40,26 +40,25 @@ class AdminImageWidget(forms.FileInput):
     """
     A ImageField Widget that shows its current value if it has one.
     """
+    base_template_name = "xadmin/forms/widgets/image.html"
 
     def __init__(self, attrs={}):
         super(AdminImageWidget, self).__init__(attrs)
 
     def render(self, name, value, attrs=None, renderer=None):
-        output = []
         label = self.attrs.get('label', name)
         css_class = self.attrs.get("class", "")
         css_class += " custom-file-input"
         attrs["class"] = css_class
-        if value and hasattr(value, "url"):
-            output.append('<a href="%s" target="_blank" title="%s" data-gallery="gallery">'
-                          '<img src="%s" class="field_img img-thumbnail mb-2"/></a>'
-                          '<span class="text-muted d-block mb-1">%s</span>' %
-                          (value.url, label, value.url, _('Change')))
-
-        output.append('<div class="custom-file w-auto">%s<label class="custom-file-label" '
-                      'for="inputGroupFile01">%s <span class="text-lowercase">%s</span></label></div>'
-                      % (super(AdminImageWidget, self).render(name, value, attrs, renderer), _('Choose'), label))
-        return mark_safe(u''.join(output))
+        if renderer is None:
+            renderer = get_default_renderer()
+        context = dict(
+            widget=super(AdminImageWidget, self).render(name, value, attrs, renderer),
+            label=label,
+            value=value,
+            attrs=attrs
+        )
+        return mark_safe(renderer.render(self.base_template_name, context))
 
 
 class ModelDetailPlugin(BaseAdminPlugin):

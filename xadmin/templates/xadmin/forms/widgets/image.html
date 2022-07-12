@@ -1,0 +1,14 @@
+{% load i18n %}
+{% if value and value.url %}
+<a href="{{ value.url }}" target="_blank" title="{{ label }}" data-gallery="gallery">
+    <img src="{{ value.url }}" class="field_img img-thumbnail mb-2"/>
+</a>
+{% endif %}
+
+<span class="text-muted d-block mb-1">{% trans 'Change' %}</span>
+<div class="custom-file w-auto">{{ widget }}
+    <label class="custom-file-label" for="{{ attrs.id }}">
+        {% trans 'Choose' %}
+        <span class="text-lowercase">{{ label }}</span>
+    </label>
+</div>
