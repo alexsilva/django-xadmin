@@ -176,6 +176,7 @@
     var that = this;
 
     this.$btn = $(element);
+    this.action = this.$btn.data('quick-action');
     this.editable_url = this.$btn.attr('href');
     this.$for_input = $('#' + this.$btn.data('for-id'));
     this.$for_wrap = $('#' + this.$btn.data('for-id') + '_wrap_container');
@@ -190,7 +191,27 @@
      constructor: QuickAddBtn
 
     , binit: function(element, options){
-      this.$btn.click($.proxy(this.click, this))
+      this.$btn.click($.proxy(this.click, this));
+      if (this.action === "change") {
+        var self = this,
+            for_id = "#" + this.$btn.data('for-id'),
+            $rel = $(for_id);
+        this.$btn.data("pre-val", $rel.val());
+        $('form').on("change", for_id, function () {
+          var $el = $(this),
+              pre_val = self.$btn.data("pre-val"),
+              sel_val = $el.val(),
+              editable_url = self.$btn.attr('href'),
+              regex = new RegExp(pre_val);
+          self.editable_url = editable_url.replace(regex, sel_val);
+          // update the url with the new pk.
+          self.$btn.attr("href", self.editable_url);
+          self.$btn.data("pre-val", sel_val);
+          if (self.modal) {
+            self.modal.removeData("form");
+          }
+        });
+      }
     }
     , load_form: function (modal){
       var self = this;
