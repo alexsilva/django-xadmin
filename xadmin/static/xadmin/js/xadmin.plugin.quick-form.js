@@ -176,7 +176,7 @@
     var that = this;
 
     this.$btn = $(element);
-    this.add_url = this.$btn.attr('href');
+    this.editable_url = this.$btn.attr('href');
     this.$for_input = $('#' + this.$btn.data('for-id'));
     this.$for_wrap = $('#' + this.$btn.data('for-id') + '_wrap_container');
     this.refresh_url = this.$btn.data('refresh-url');
@@ -195,7 +195,7 @@
     , load_form: function (modal){
       var self = this;
       modal.find('.modal-body').html('<h2 style="text-align:center;"><i class="fa-spinner fa-spin fa fa-large"></i></h2>')
-      modal.find('.modal-body').load(this.add_url, function(form_html, status, xhr){
+      modal.find('.modal-body').load(this.editable_url, function(form_html, status, xhr){
         var form = $(this).find('form');
         form.addClass('quick-form');
         form.on('post-success', $.proxy(self.post, self));
@@ -211,13 +211,16 @@
       e.preventDefault();
 
       if(!this.modal) {
+        var action = this.$btn.data('quick-action'),
+            text = action === 'add' ? gettext('Add'): gettext('Change'),
+            icon = this.$btn.data('icon');
         this.modal = $("#nunjucks-modal-main").template_render$({
           header: {title: this.$btn.attr('title')},
           modal: {size: 'modal-xl'},
           confirm_button: {
-            text: gettext('Add'),
+            text: text,
             class: "btn-submit",
-            icon: 'fa fa-plus',
+            icon: icon,
             tag: 'a'
           },
         }).appendTo('body');
