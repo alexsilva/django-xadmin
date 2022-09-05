@@ -500,8 +500,7 @@ class UpdateAdminView(ModelFormAdminView):
     def get_form_datas(self):
         params = {'instance': self.org_obj}
         if self.request_method == 'post':
-            params.update(
-                {'data': self.request.POST, 'files': self.request.FILES})
+            params.update({'data': self.request.POST, 'files': self.request.FILES})
         return params
 
     @filter_hook
