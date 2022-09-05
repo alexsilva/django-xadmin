@@ -99,6 +99,27 @@ class QuickFormPlugin(BaseAdminPlugin):
         context['form_url'] = self.request.path
         return context
 
+    def get_form_datas(self, datas):
+        if self.admin_view.request_method == 'get' and '_field' in self.request_params:
+            initial = datas.setdefault('initial', {})
+            fields = self.request_params["_field"].split(',')
+            initial_new = {}
+            for key in fields:
+                key_prefix = key
+                if self.admin_view.model_form.prefix:
+                    key = re.sub('^' + re.escape(self.admin_view.model_form.prefix + '-'), '', key)
+                try:
+                    field = self.opts.get_field(key)
+                except models.FieldDoesNotExist:
+                    continue
+                if isinstance(field, models.ManyToManyField):
+                    initial_new[key] = self.request_params[key_prefix].split(",")
+                else:
+                    # field value without a prefix
+                    initial_new[key] = self.request_params[key_prefix]
+            initial.update(initial_new)
+        return datas
+
 
 class QuickFormFormSetPlugin(BaseAdminPlugin):
     inlineformset_prefix = 'quickformset'
