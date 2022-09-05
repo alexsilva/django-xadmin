@@ -1,14 +1,14 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
+# 
 # Translators:
 # korndorfer <codigo.aberto@dorfer.com.br>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: xadmin-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-26 16:19-0300\n"
+"POT-Creation-Date: 2022-09-05 18:27-0300\n"
 "PO-Revision-Date: 2013-11-20 12:41+0000\n"
 "Last-Translator: korndorfer <codigo.aberto@dorfer.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -33,9 +33,13 @@ msgstr[1] "%(sel)s de %(cnt)s selecionados"
 msgid "Edit"
 msgstr "Editar"
 
-#: xadmin/static/xadmin/js/xadmin.plugin.quick-form.js:204
+#: xadmin/static/xadmin/js/xadmin.plugin.quick-form.js:236
 msgid "Add"
 msgstr "Adicionar"
+
+#: xadmin/static/xadmin/js/xadmin.plugin.quick-form.js:236
+msgid "Change"
+msgstr "Alterar"
 
 #: xadmin/static/xadmin/js/xadmin.plugin.revision.js:25
 msgid "New Item"

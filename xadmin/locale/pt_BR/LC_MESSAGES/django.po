@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xadmin-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-07-04 13:09-0300\n"
+"POT-Creation-Date: 2022-09-05 18:26-0300\n"
 "PO-Revision-Date: 2013-11-20 10:21+0000\n"
 "Last-Translator: gladson <gladson@immensa.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -472,14 +472,6 @@ msgstr "Slideshow"
 msgid "Download"
 msgstr "Baixar"
 
-#: xadmin/plugins/images.py:57
-msgid "Change"
-msgstr "Alterar"
-
-#: xadmin/plugins/images.py:61 xadmin/templates/xadmin/forms/transfer.html:18
-msgid "Choose"
-msgstr "Escolher"
-
 #: xadmin/plugins/importexport.py:185 xadmin/plugins/importexport.py:257
 #: xadmin/templates/xadmin/blocks/model_list.top_toolbar.importexport.import.html:4
 #: xadmin/templates/xadmin/import_export/import.html:6
@@ -530,7 +522,12 @@ msgstr "Miniaturas"
 msgid "Forgotten your password or username?"
 msgstr "Esqueceu seu nome de usuário ou senha?"
 
-#: xadmin/plugins/quickform.py:180
+#: xadmin/plugins/quickform.py:204 xadmin/views/edit.py:509
+#, python-format
+msgid "Change %s"
+msgstr "Alterar %s"
+
+#: xadmin/plugins/quickform.py:214
 #, python-format
 msgid "Create New %s"
 msgstr "Criar novo %s"
@@ -1019,7 +1016,8 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"            Adicione <strong>%(name)s</strong> para serem listados neste local.\n"
+"            Adicione <strong>%(name)s</strong> para serem listados neste "
+"local.\n"
 "            "
 
 #: xadmin/templates/xadmin/edit_inline/blank.html:5 xadmin/views/detail.py:23
@@ -1118,6 +1116,11 @@ msgstr "Clique para selecionar tudo de uma só vez."
 msgid "Choose all"
 msgstr "Escolher tudo"
 
+#: xadmin/templates/xadmin/forms/transfer.html:18
+#: xadmin/templates/xadmin/forms/widgets/image.html:11
+msgid "Choose"
+msgstr "Escolher"
+
 #: xadmin/templates/xadmin/forms/transfer.html:21
 #: xadmin/templates/xadmin/widgets/base.html:49
 msgid "Remove"
@@ -1134,6 +1137,10 @@ msgstr "Clique para remover todos os escolhidos de uma vez."
 #: xadmin/templates/xadmin/forms/transfer.html:29
 msgid "Remove all"
 msgstr "Remover tudo"
+
+#: xadmin/templates/xadmin/forms/widgets/image.html:8
+msgid "Change"
+msgstr "Alterar"
 
 #: xadmin/templates/xadmin/import_export/export_action.html:45
 #: xadmin/templates/xadmin/import_export/import.html:61
@@ -1591,21 +1598,16 @@ msgstr "Nenhum campo alterado."
 msgid "The %(name)s \"%(obj)s\" was added successfully."
 msgstr "%(name)s \"%(obj)s\" adicionado(a) com sucesso."
 
-#: xadmin/views/edit.py:462 xadmin/views/edit.py:568
+#: xadmin/views/edit.py:462 xadmin/views/edit.py:567
 msgid "You may edit it again below."
 msgstr "Você pode editar novamente abaixo."
 
-#: xadmin/views/edit.py:468 xadmin/views/edit.py:574
+#: xadmin/views/edit.py:468 xadmin/views/edit.py:573
 #, python-format
 msgid "You may add another %s below."
 msgstr "Você pode adicionar outro(a) %s abaixo."
 
-#: xadmin/views/edit.py:510
-#, python-format
-msgid "Change %s"
-msgstr "Alterar %s"
-
-#: xadmin/views/edit.py:562
+#: xadmin/views/edit.py:561
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was changed successfully."
 msgstr "%(name)s \"%(obj)s\" alterado(a) com sucesso."
