@@ -1,8 +1,9 @@
+# coding=utf-8
 import copy
 import time
 
 import re
-
+import urllib.parse
 from django import forms
 from django.db import models
 from django.forms.models import modelform_factory
@@ -10,7 +11,7 @@ from django.utils.encoding import force_bytes
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
-
+from django.template.loader import render_to_string
 from xadmin.filters import SEARCH_VAR
 from xadmin.layout import Layout
 from xadmin.sites import site
@@ -134,7 +135,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
     This class is a wrapper to a given widget to add the add icon for the
     admin interface.
     """
-    def __init__(self, widget, rel, add_url, rel_add_url, **kwargs):
+    def __init__(self, widget, rel, add_url, rel_add_url, change_url=None, rel_change_url=None, **kwargs):
         self.needs_multipart_form = widget.needs_multipart_form
         self.attrs = widget.attrs
         self.choices = widget.choices
@@ -144,6 +145,8 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 
         self.add_url = add_url
         self.rel_add_url = rel_add_url
+        self.change_url = change_url
+        self.rel_change_url = rel_change_url
 
         if hasattr(self, 'input_type'):
             self.input_type = widget.input_type
@@ -174,13 +177,28 @@ class RelatedFieldWidgetWrapper(forms.Widget):
         output.extend(['<div class="d-flex align-items-start input-group quick-form-field">'])
         output.extend(['<div class="flex-grow-1 mr-2" id="id_%s_wrap_container">' % name,
                        self.widget.render(name, value, attrs=attrs, **kwargs), '</div>'])
+        if self.change_url:
+            html = render_to_string("xadmin/plugins/quickform_btn.html", context={
+                'title': _('Change %s') % self.rel.model._meta.verbose_name,
+                'editable_url': self.change_url,
+                'refresh_url': self.rel_change_url + "?" + urllib.parse.urlencode({'_field': name, name: ''}),
+                'for_id': name,
+                'icon': 'fa fa-edit',
+                'action': 'change'
+            })
+            output.append(html)
         if self.add_url:
-            output.append('<a href="%s" title="%s" class="btn btn-primary btn-sm btn-ajax mx-2 mt-1" data-for-id="id_%s" data-refresh-url="%s"><i class="fa fa-plus"></i></a>'
-                          % (
-                              self.add_url, (_('Create New %s') % self.rel.model._meta.verbose_name), name,
-                              "%s?_field=%s&%s=" % (self.rel_add_url, name, name)))
+            html = render_to_string("xadmin/plugins/quickform_btn.html", context={
+                'title': _('Create New %s') % self.rel.model._meta.verbose_name,
+                'editable_url': self.add_url,
+                'refresh_url': self.rel_add_url + "?" + urllib.parse.urlencode({'_field': name, name: ''}),
+                'for_id': name,
+                'icon': 'fa fa-plus',
+                'action': 'add'
+            })
+            output.append(html)
         output.extend(['</div>'])
-        return mark_safe(u''.join(output))
+        return mark_safe(''.join(output))
 
     def build_attrs(self, extra_attrs=None, **kwargs):
         "Helper function for building an attribute dictionary."
@@ -199,6 +217,8 @@ class QuickAddBtnPlugin(BaseAdminPlugin):
     quick_addbtn_fields_exclude = ()
     # Allows exclude db field like (modes.CharField)
     quick_addbtn_db_fields_exclude = ()
+    # Fields that can be edited after being added.
+    quick_changebtn_db_fields = ()
     # Always enable
     quick_addbtn_enabled = True
 
@@ -213,11 +233,26 @@ class QuickAddBtnPlugin(BaseAdminPlugin):
                 isinstance(db_field, (models.ForeignKey, models.ManyToManyField)) and \
                 hasattr(formfield.widget, "choices"):
             rel_model = get_model_from_relation(db_field)
-            if rel_model in self.admin_site._registry and self.has_model_perm(rel_model, 'add'):
-                add_url = self.get_model_url(rel_model, 'add')
-                formfield.widget = RelatedFieldWidgetWrapper(
-                    formfield.widget, db_field.remote_field, add_url, self.get_model_url(self.model, 'add'),
-                    **self.request.GET)
+            if rel_model in self.admin_site._registry:
+                add_url = rel_add_url = change_url = rel_change_url = None
+                if self.has_model_perm(rel_model, 'add'):
+                    add_url = self.get_model_url(rel_model, 'add')
+                    rel_add_url = self.get_model_url(self.model, 'add')
+                # Configure the editing of foreign key data
+                if (self.has_model_perm(rel_model, 'change') and
+                        isinstance(db_field, models.ForeignKey) and
+                        db_field.name in self.quick_changebtn_db_fields):
+                    instance = getattr(self.admin_view, "org_obj", None)
+                    if instance:
+                        change_url = self.get_model_url(rel_model, 'change', getattr(instance, db_field.name).pk)
+                        rel_change_url = self.get_model_url(self.model, 'change', instance.pk)
+                if add_url or change_url:
+                    formfield.widget = RelatedFieldWidgetWrapper(
+                        formfield.widget,
+                        db_field.remote_field,
+                        add_url, rel_add_url,
+                        change_url, rel_change_url,
+                        **self.request.GET)
         return formfield
 
 
