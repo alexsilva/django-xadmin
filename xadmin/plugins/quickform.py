@@ -75,23 +75,23 @@ class QuickFormPlugin(BaseAdminPlugin):
         self.prefix = QuickFormPrefix(f'quickform-{self.opts.app_label}-{self.opts.model_name}')
 
     def get_model_form(self, __, **kwargs):
-        if '_field' in self.request.GET:
-            fields = self.request.GET['_field'].split(',')
+        if '_field' in self.request_params:
+            fields = self.request_params['_field'].split(',')
             defaults = {
                 "form": self.admin_view.form,
                 "fields": self.prefix.clean(fields),
                 "formfield_callback": self.admin_view.formfield_for_dbfield,
             }
             form = modelform_factory(self.model, **defaults)
-            form.prefix = self.prefix.resolve(self.request.GET)
+            form.prefix = self.prefix.resolve(self.request_params)
         else:
             form = __()
             form.prefix = str(self.prefix)
         return form
 
     def get_form_layout(self, __):
-        if '_field' in self.request.GET:
-            fields = self.request.GET['_field'].split(',')
+        if '_field' in self.request_params:
+            fields = self.request_params['_field'].split(',')
             return Layout(*self.prefix.clean(fields))
         return __()
 
