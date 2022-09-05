@@ -173,6 +173,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
             self.input_type = widget.input_type
 
         self.kwargs = kwargs
+        self.request_params = kwargs.pop('request_params', {})
 
     def __deepcopy__(self, memo):
         obj = copy.copy(self)
@@ -188,7 +189,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 
     def resolve_field_name_if_inline(self, name):
         """When the original field is an inline the name should be changed to the original."""
-        new_name = self.kwargs.get('_field_inline_' + name)
+        new_name = self.request_params.get('_field_inline_' + name)
         return (new_name and new_name[0]) or name
 
     def render(self, name, value, attrs=None, **kwargs):
@@ -273,7 +274,7 @@ class QuickAddBtnPlugin(BaseAdminPlugin):
                         db_field.remote_field,
                         add_url, rel_add_url,
                         change_url, rel_change_url,
-                        **self.request.GET)
+                        request_params=self.request.GET)
         return formfield
 
 
