@@ -265,8 +265,9 @@ class QuickAddBtnPlugin(BaseAdminPlugin):
                         isinstance(db_field, models.ForeignKey) and
                         db_field.name in self.quick_changebtn_db_fields):
                     instance = getattr(self.admin_view, "org_obj", None)
-                    if instance:
-                        change_url = self.get_model_url(rel_model, 'change', getattr(instance, db_field.name).pk)
+                    rel_instance = instance and getattr(instance, db_field.name)
+                    if instance and rel_instance:
+                        change_url = self.get_model_url(rel_model, 'change', rel_instance.pk)
                         rel_change_url = self.get_model_url(self.model, 'change', instance.pk)
                 if add_url or change_url:
                     formfield.widget = RelatedFieldWidgetWrapper(
