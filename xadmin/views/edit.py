@@ -64,6 +64,7 @@ class ReadOnlyField(Field):
 class ModelFormAdminView(ModelAdminView):
     form = forms.ModelForm
     formfield_overrides = {}
+    formfield_widgets = {}
     readonly_fields = ()
     style_fields = {}
     exclude = None
@@ -113,8 +114,7 @@ class ModelFormAdminView(ModelAdminView):
     def get_field_attrs(self, db_field, **kwargs):
 
         if db_field.name in self.style_fields:
-            attrs = self.get_field_style(
-                db_field, self.style_fields[db_field.name], **kwargs)
+            attrs = self.get_field_style(db_field, self.style_fields[db_field.name], **kwargs)
             if attrs:
                 return attrs
 
@@ -174,6 +174,7 @@ class ModelFormAdminView(ModelAdminView):
             # default on modelform_factory
             "exclude": exclude or None,
             "formfield_callback": self.formfield_for_dbfield,
+            "widgets": self.formfield_widgets
         }
         defaults.update(kwargs)
 
