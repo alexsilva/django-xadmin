@@ -23,13 +23,13 @@
                 {% else %}
                     {% set button = cancel_button.tag|default('button') %}
                     <{{button}} {% if button == 'button' %}type="button"{% endif %} class="btn btn-secondary {{ cancel_button.class }}" data-dismiss="modal">
-                        {{ cancel_button.text|default('Close'|gettext) }}
+                        {{ cancel_button.text|default('Close'|gettext)|safe }}
                     </{{button}}>
                     {% if confirm_button %}
                     {% set button = confirm_button.tag|default('button') %}
                     <{{button}} {% if button == 'button' %}type="button"{% endif %} class="btn btn-primary {{ confirm_button.class }}">
                         {% if confirm_button.icon %}<i class="{{ confirm_button.icon }}"></i>{% endif %}
-                        {{ confirm_button.text }}
+                        {{ confirm_button.text|safe }}
                     </{{button}}>
                     {% endif %}
                 {% endif %}
