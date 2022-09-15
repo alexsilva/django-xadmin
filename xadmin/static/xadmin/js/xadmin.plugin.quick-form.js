@@ -195,9 +195,10 @@
       if (this.action === "change") {
         var self = this,
             for_id = "#" + this.$btn.data('for-id'),
-            $rel = $(for_id);
+            $rel = $(for_id),
+            $form = this.$btn.parents("form.exform");
         this.$btn.data("pre-val", $rel.val());
-        $('form').on("change", for_id, function () {
+        $form.on("change", for_id, function () {
           var $el = $(this),
               pre_val = self.$btn.data("pre-val"),
               sel_val = $el.val(),
