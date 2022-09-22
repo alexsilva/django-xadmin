@@ -36,7 +36,8 @@ class AjaxListPlugin(BaseAjaxPlugin):
 		           for r in av.results()]
 
 		return self.render_response(
-			{'headers': headers, 'objects': objects, 'total_count': av.result_count, 'has_more': av.has_more})
+			{'headers': headers, 'objects': objects, 'total_count': av.result_count,
+			 'has_more': av.has_more, 'page_num': av.page_num})
 
 
 class JsonErrorDict(ErrorDict):
