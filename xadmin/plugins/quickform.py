@@ -275,7 +275,7 @@ class QuickAddBtnPlugin(BaseAdminPlugin):
                         db_field.remote_field,
                         add_url, rel_add_url,
                         change_url, rel_change_url,
-                        request_params=self.request.GET)
+                        request_params=self.request.GET.copy())
         return formfield
 
 
