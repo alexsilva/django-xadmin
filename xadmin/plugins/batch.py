@@ -19,10 +19,11 @@ BATCH_CHECKBOX_NAME = '_batch_change_fields'
 
 class ChangeFieldWidgetWrapper(forms.Widget):
 
-    def __init__(self, widget):
+    def __init__(self, widget, is_checked=False):
         super(ChangeFieldWidgetWrapper, self).__init__(attrs=widget.attrs)
         self.needs_multipart_form = widget.needs_multipart_form
         self.choices = getattr(widget, 'choices', None)
+        self.is_checked = is_checked
         self.widget = widget
 
     def __deepcopy__(self, memo):
@@ -41,17 +42,18 @@ class ChangeFieldWidgetWrapper(forms.Widget):
         output = []
         self.widget.choices = self.choices
         is_required = self.widget.is_required
-        output.append(u'<div class="custom-control custom-switch">'
+        is_checked = is_required or self.is_checked
+        output.append('<div class="custom-control custom-switch">'
                       '<input type="checkbox" name="%s" id="id_%s_batch_field" '
                       'class="custom-control-input batch-field-checkbox" value="%s"%s/>'
                       '<label for="id_%s_batch_field" class="custom-control-label font-weight-normal">%s</label>'
                       '</div>' %
-                      (BATCH_CHECKBOX_NAME, name, name, (is_required and ' checked="checked"' or ''), name,
+                      (BATCH_CHECKBOX_NAME, name, name, (is_checked and ' checked="checked"' or ''), name,
                        _('Change this field')))
         output.extend([('<div class="control-wrap batch-field-wrap mt-2" style="%s" id="id_%s_wrap_container">' %
-                        ((not is_required and 'display: none;' or ''), name)),
+                        ((not is_checked and 'display: none;' or ''), name)),
                        self.widget.render(name, value, attrs), '</div>'])
-        return mark_safe(u''.join(output))
+        return mark_safe(''.join(output))
 
     def build_attrs(self, extra_attrs=None, **kwargs):
         "Helper function for building an attribute dictionary."
@@ -73,6 +75,8 @@ class BatchChangeAction(BaseActionView):
     model_perm = 'change'
 
     batch_fields = []
+    # List of marked and required fields after the post.
+    batch_fields_required = []
     batch_fields_exclude = []
 
     def init_action(self, list_view):
@@ -113,9 +117,11 @@ class BatchChangeAction(BaseActionView):
             }, 'success')
 
     def formfield_for_dbfield(self, db_field, **kwargs):
-        kwargs.setdefault('required', self.save_form_post)
+        kwargs.setdefault('required', self.save_form_post and
+                          db_field.name in self.batch_fields_required)
         formfield = self.edit_view.formfield_for_dbfield(db_field, **kwargs)
-        formfield.widget = ChangeFieldWidgetWrapper(formfield.widget)
+        formfield.widget = ChangeFieldWidgetWrapper(formfield.widget,
+                                                    is_checked=self.save_form_post)
         return formfield
 
     def get_change_form(self, fields):
