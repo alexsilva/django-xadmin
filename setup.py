@@ -1,21 +1,20 @@
 #!/usr/bin/env python
+# coding=utf-8
 from io import open
 
 from setuptools import setup
 
-# version_tuple = __import__('xadmin').VERSION
-# version = ".".join([str(v) for v in version_tuple])
-
 setup(
 	name='xadmin',
 	version='3.0.0',
-	description='Drop-in replacement of Django admin comes with lots of goodies, fully extensible with plugin support, pretty UI based on Twitter Bootstrap.',
+	description='Drop-in replacement of Django admin comes with lots of goodies, '
+	            'fully extensible with plugin support, pretty UI based on Twitter Bootstrap.',
 	long_description=open('README.rst', encoding='utf-8').read(),
 	author='sshwsfc',
 	author_email='sshwsfc@gmail.com',
 	license=open('LICENSE', encoding='utf-8').read(),
-	url='http://www.xadmin.io',
-	download_url='http://github.com/sshwsfc/django-xadmin/archive/master.zip',
+	url='https://github.com/alexsilva/django-xadmin',
+	download_url='https://github.com/alexsilva/django-xadmin/archive/python3-dj32.zip',
 	packages=['xadmin', 'xadmin.migrations', 'xadmin.plugins', 'xadmin.templatetags', 'xadmin.views'],
 	include_package_data=True,
 	install_requires=[
@@ -42,7 +41,7 @@ setup(
 		"Programming Language :: JavaScript",
 		'Programming Language :: Python',
 		"Programming Language :: Python :: 3",
-		"Programming Language :: Python :: 3.7",
+		"Programming Language :: Python :: 3.9",
 		"Topic :: Internet :: WWW/HTTP",
 		"Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 		"Topic :: Software Development :: Libraries :: Python Modules",
