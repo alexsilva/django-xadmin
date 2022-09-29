@@ -12,7 +12,7 @@ from django.db.models.signals import post_migrate
 from django.urls.base import reverse
 from django.utils import timezone
 from django.utils.decorators import classproperty
-from django.utils.encoding import python_2_unicode_compatible, smart_text
+from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _, ugettext
 
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
@@ -34,14 +34,13 @@ def add_view_permissions(sender, **kwargs):
 			Permission.objects.create(content_type=content_type,
 			                          codename=codename,
 			                          name="Can view %s" % content_type.name)
-			# print "Added view permission for %s" % content_type.name
+		# print "Added view permission for %s" % content_type.name
 
 
 # check for all our view permissions after a syncdb
 post_migrate.connect(add_view_permissions)
 
 
-@python_2_unicode_compatible
 class Bookmark(models.Model):
 	title = models.CharField(_(u'Title'), max_length=128)
 	user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("user"), blank=True, null=True)
@@ -83,7 +82,6 @@ class JSONEncoder(DjangoJSONEncoder):
 				return smart_text(o)
 
 
-@python_2_unicode_compatible
 class UserSettings(models.Model):
 	user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("user"))
 	key = models.CharField(_('Settings Key'), max_length=256)
@@ -103,7 +101,6 @@ class UserSettings(models.Model):
 		verbose_name_plural = _('User Settings')
 
 
-@python_2_unicode_compatible
 class UserWidget(models.Model):
 	user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("user"))
 	page_id = models.CharField(_("Page"), max_length=256)
@@ -139,7 +136,6 @@ class UserWidget(models.Model):
 		verbose_name_plural = _('User Widgets')
 
 
-@python_2_unicode_compatible
 class Log(models.Model):
 	action_time = models.DateTimeField(
 		_('action time'),
