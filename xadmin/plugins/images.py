@@ -1,14 +1,15 @@
 from django import forms
 from django.db import models
+from django.forms.renderers import get_default_renderer
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
-from django.forms.renderers import get_default_renderer
+
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ModelFormAdminView, DetailAdminView, ListAdminView
 
 
 def get_gallery_modal():
-    return """
+	return """
         <!-- modal-gallery is the modal dialog used for the image gallery -->
         <div id="modal-gallery" class="modal modal-gallery fade" tabindex="-1">
           <div class="modal-dialog">
@@ -32,96 +33,96 @@ def get_gallery_modal():
 
 class AdminImageField(forms.ImageField):
 
-    def widget_attrs(self, widget):
-        return {'label': self.label}
+	def widget_attrs(self, widget):
+		return {'label': self.label}
 
 
 class AdminImageWidget(forms.FileInput):
-    """
-    A ImageField Widget that shows its current value if it has one.
-    """
-    base_template_name = "xadmin/forms/widgets/image.html"
+	"""
+	A ImageField Widget that shows its current value if it has one.
+	"""
+	base_template_name = "xadmin/forms/widgets/image.html"
 
-    def __init__(self, attrs={}):
-        super(AdminImageWidget, self).__init__(attrs)
+	def __init__(self, attrs={}):
+		super(AdminImageWidget, self).__init__(attrs)
 
-    def render(self, name, value, attrs=None, renderer=None):
-        label = self.attrs.get('label', name)
-        css_class = self.attrs.get("class", "")
-        css_class += " custom-file-input"
-        attrs["class"] = css_class
-        if renderer is None:
-            renderer = get_default_renderer()
-        context = dict(
-            widget=super(AdminImageWidget, self).render(name, value, attrs, renderer),
-            label=label,
-            value=value,
-            attrs=attrs
-        )
-        return mark_safe(renderer.render(self.base_template_name, context))
+	def render(self, name, value, attrs=None, renderer=None):
+		label = self.attrs.get('label', name)
+		css_class = self.attrs.get("class", "")
+		css_class += " custom-file-input"
+		attrs["class"] = css_class
+		if renderer is None:
+			renderer = get_default_renderer()
+		context = dict(
+			widget=super(AdminImageWidget, self).render(name, value, attrs, renderer),
+			label=label,
+			value=value,
+			attrs=attrs
+		)
+		return mark_safe(renderer.render(self.base_template_name, context))
 
 
 class ModelDetailPlugin(BaseAdminPlugin):
 
-    def __init__(self, admin_view):
-        super(ModelDetailPlugin, self).__init__(admin_view)
-        self.include_image = False
+	def __init__(self, admin_view):
+		super(ModelDetailPlugin, self).__init__(admin_view)
+		self.include_image = False
 
-    def get_field_attrs(self, attrs, db_field, **kwargs):
-        if isinstance(db_field, models.ImageField):
-            attrs['widget'] = AdminImageWidget
-            attrs['form_class'] = AdminImageField
-            self.include_image = True
-        return attrs
+	def get_field_attrs(self, attrs, db_field, **kwargs):
+		if isinstance(db_field, models.ImageField):
+			attrs['widget'] = AdminImageWidget
+			attrs['form_class'] = AdminImageField
+			self.include_image = True
+		return attrs
 
-    def get_field_result(self, result, field_name):
-        if isinstance(result.field, models.ImageField):
-            if result.value:
-                img = getattr(result.obj, field_name)
-                result.text = mark_safe(
-                    '<a href="%s" target="_blank" title="%s" data-gallery="gallery"><img src="%s" class="field_img '
-                    'img-thumbnail"/></a>' % (img.url, result.label, img.url))
-                self.include_image = True
-        return result
+	def get_field_result(self, result, field_name):
+		if isinstance(result.field, models.ImageField):
+			if result.value:
+				img = getattr(result.obj, field_name)
+				result.text = mark_safe(
+					'<a href="%s" target="_blank" title="%s" data-gallery="gallery"><img src="%s" class="field_img '
+					'img-thumbnail"/></a>' % (img.url, result.label, img.url))
+				self.include_image = True
+		return result
 
-    # Media
-    def get_media(self, media):
-        if self.include_image:
-            media = media + self.vendor('image-gallery.js',
-                                        'image-gallery.css')
-        return media
+	# Media
+	def get_media(self, media):
+		if self.include_image:
+			media = media + self.vendor('image-gallery.js',
+			                            'image-gallery.css')
+		return media
 
-    def block_before_fieldsets(self, context, node):
-        if self.include_image:
-            return '<div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">'
+	def block_before_fieldsets(self, context, node):
+		if self.include_image:
+			return '<div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">'
 
-    def block_after_fieldsets(self, context, node):
-        if self.include_image:
-            return "</div>"
+	def block_after_fieldsets(self, context, node):
+		if self.include_image:
+			return "</div>"
 
-    def block_extrabody(self, context, node):
-        if self.include_image:
-            return get_gallery_modal()
+	def block_extrabody(self, context, node):
+		if self.include_image:
+			return get_gallery_modal()
 
 
 class ModelListPlugin(BaseAdminPlugin):
-    list_gallery = False
+	list_gallery = False
 
-    def init_request(self, *args, **kwargs):
-        return bool(self.list_gallery)
+	def init_request(self, *args, **kwargs):
+		return bool(self.list_gallery)
 
-    # Media
-    def get_media(self, media):
-        return media + self.vendor('image-gallery.js', 'image-gallery.css')
+	# Media
+	def get_media(self, media):
+		return media + self.vendor('image-gallery.js', 'image-gallery.css')
 
-    def block_results_top(self, context, node):
-        return '<div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">'
+	def block_results_top(self, context, node):
+		return '<div id="gallery" data-toggle="modal-gallery" data-target="#modal-gallery">'
 
-    def block_results_bottom(self, context, node):
-        return "</div>"
+	def block_results_bottom(self, context, node):
+		return "</div>"
 
-    def block_extrabody(self, context, node):
-        return get_gallery_modal()
+	def block_extrabody(self, context, node):
+		return get_gallery_modal()
 
 
 site.register_plugin(ModelDetailPlugin, DetailAdminView)

@@ -6,15 +6,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		('xadmin', '0002_log'),
+	]
 
-    dependencies = [
-        ('xadmin', '0002_log'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='log',
-            name='action_flag',
-            field=models.CharField(max_length=32, verbose_name='action flag'),
-        ),
-    ]
+	operations = [
+		migrations.AlterField(
+			model_name='log',
+			name='action_flag',
+			field=models.CharField(max_length=32, verbose_name='action flag'),
+		),
+	]

@@ -8,24 +8,24 @@ site = AdminSite('views_base')
 
 
 class ModelAAdmin:
-    test_model_attr = 'test_model'
-    model_icon = 'flag'
+	test_model_attr = 'test_model'
+	model_icon = 'flag'
 
 
 class TestBaseView(BaseAdminView):
-    pass
+	pass
 
 
 class TestCommView(CommAdminView):
-    global_models_icon = {ModelB: 'test'}
+	global_models_icon = {ModelB: 'test'}
 
 
 class TestAView(BaseAdminView):
-    pass
+	pass
 
 
 class OptionA:
-    option_attr = 'option_test'
+	option_attr = 'option_test'
 
 
 site.register_modelview(r'^list$', ListAdminView, name='%s_%s_list')
