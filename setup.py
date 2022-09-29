@@ -19,14 +19,12 @@ setup(
 	packages=['xadmin', 'xadmin.migrations', 'xadmin.plugins', 'xadmin.templatetags', 'xadmin.views'],
 	include_package_data=True,
 	install_requires=[
-		'setuptools',
-		'django>=2,<3',
-		'django-crispy-forms>=1.6.0',
-		'django-import-export>=0.5.1',
-		'django-reversion>=2.0.0',
-		'django-formtools>=2.1',
-		'httplib2==0.18.1',
-		'six'
+		'django>=3,<4',
+		'django-crispy-forms==1.14.0',
+		'django-import-export==2.8.0',
+		'django-reversion==5.0.2',
+		'django-formtools==2.4',
+		'httplib2==0.20.4'
 	],
 	extras_require={
 		'Excel': ['xlwt', 'xlsxwriter'],
