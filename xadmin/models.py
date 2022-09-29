@@ -11,7 +11,7 @@ from django.db.models.base import ModelBase
 from django.db.models.signals import post_migrate
 from django.urls.base import reverse
 from django.utils import timezone
-from django.utils.decorators import classproperty
+from django.utils.functional import classproperty
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext_lazy as _, ugettext
 
