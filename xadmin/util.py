@@ -1,9 +1,8 @@
-from django.contrib.admin.widgets import url_params_from_lookup_dict
+# coding=utf-8
 import datetime
 import decimal
-
+from django.contrib.admin import utils as admin_utils
 from django.conf import settings
-from django.contrib.admin.utils import NestedObjects
 from django.contrib.admin.widgets import url_params_from_lookup_dict
 from django.db import models, router
 from django.db.models.fields.related import ForeignObjectRel
@@ -17,11 +16,12 @@ from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import get_language
 from django.utils.translation import ungettext
+from django.templatetags.static import static
 
-if 'django.contrib.staticfiles' in settings.INSTALLED_APPS:
-	from django.contrib.staticfiles.templatetags.staticfiles import static
-else:
-	from django.templatetags.static import static
+# contrib admin utils
+NestedObjects = admin_utils.NestedObjects
+label_for_field = admin_utils.label_for_field
+help_text_for_field = admin_utils.help_text_for_field
 
 try:
 	import json

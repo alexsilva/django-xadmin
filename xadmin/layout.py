@@ -1,9 +1,16 @@
 # coding=utf-8
 import math
 
+from crispy_forms import bootstrap
+from crispy_forms import helper
 from crispy_forms import layout
-from crispy_forms.layout import Field
+from crispy_forms.bootstrap import *
+from crispy_forms.layout import *
 from crispy_forms.utils import render_field, TEMPLATE_PACK
+
+# local reference to prevent optimization tools from removing the import
+FormHelper = helper.FormHelper
+bootstrap = bootstrap
 
 
 class Fieldset(layout.Fieldset):
