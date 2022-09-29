@@ -1,3 +1,4 @@
+# coding=utf-8
 import inspect
 from functools import update_wrapper
 
@@ -5,7 +6,6 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models.base import ModelBase
 from django.template.engine import Engine
-from django.utils import six
 from django.views.decorators.cache import never_cache
 
 
@@ -368,7 +368,7 @@ class AdminSite:
 		]
 
 		# Add in each model's views.
-		for model, admin_class in six.iteritems(self._registry):
+		for model, admin_class in self._registry.items():
 			view_urls = [
 				re_path(
 					_path,

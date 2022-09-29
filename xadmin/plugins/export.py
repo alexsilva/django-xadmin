@@ -1,6 +1,9 @@
+# coding=utf-8
 import copy
 import datetime
 import sys
+
+import io
 import threading
 
 from django.conf import settings
@@ -10,7 +13,6 @@ from django.core.mail import EmailMultiAlternatives
 from django.db.models import BooleanField, NullBooleanField
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.utils import six
 from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape
 from django.utils.translation import ugettext as _
@@ -111,7 +113,7 @@ class ExportPlugin(BaseAdminPlugin):
 
 	def get_xlsx_export(self, context):
 		datas = self._get_datas(context)
-		output = six.BytesIO()
+		output = io.BytesIO()
 		export_header = self._options_is_on('export_xlsx_header')
 		model_name = self.opts.verbose_name
 		book = xlsxwriter.Workbook(output)
@@ -147,7 +149,7 @@ class ExportPlugin(BaseAdminPlugin):
 
 	def get_xls_export(self, context):
 		datas = self._get_datas(context)
-		output = six.BytesIO()
+		output = io.BytesIO()
 		export_header = self._options_is_on('export_xls_header')
 		model_name = self.opts.verbose_name
 		book = xlwt.Workbook(encoding=self.export_unicode_encoding)
@@ -209,7 +211,7 @@ class ExportPlugin(BaseAdminPlugin):
 			raise ImproperlyConfigured("Need to install module \"unicodecsv\" "
 			                           "in order to export csv as unicode.")
 		datas = self._get_datas(context)
-		stream = six.BytesIO()
+		stream = io.BytesIO()
 		writer = unicodecsv.writer(stream, encoding=self.export_unicode_encoding)
 		writer.writerows(datas)
 		return stream.getvalue()
@@ -221,7 +223,7 @@ class ExportPlugin(BaseAdminPlugin):
 				self._to_xml(xml, item)
 				xml.endElement("row")
 		elif isinstance(data, dict):
-			for key, value in six.iteritems(data):
+			for key, value in data.items():
 				key = key.replace(' ', '_')
 				xml.startElement(key, {})
 				self._to_xml(xml, value)
@@ -232,7 +234,7 @@ class ExportPlugin(BaseAdminPlugin):
 	def get_xml_export(self, context):
 		results = self._get_objects(context)
 
-		stream = six.BytesIO()
+		stream = io.BytesIO()
 
 		xml = SimplerXMLGenerator(stream, self.export_unicode_encoding)
 		xml.startDocument()
@@ -299,20 +301,17 @@ class ExportPlugin(BaseAdminPlugin):
 		if self._options_is_on('export_to_email'):
 			user = request.user
 			email = user.email if hasattr(user, 'email') else None
-			if isinstance(email, six.string_types) and email.strip():
+			if isinstance(email, str) and email.strip():
 				self.send_mail(user, request, context)
-				messages.success(request, (_("The file is sent to your email: ") +
-				                           "<strong>{0:s}</strong>".format(email)))
+				messages.success(request, (_("The file is sent to your email: ") + f"<strong>{email}</strong>"))
 			else:
 				messages.warning(request, _("Your account does not have an email address."))
 			return HttpResponseRedirect(request.path)
 
 		filename, content, file_mimetype = self._get_file_spec(request.GET, context)
-
-		response = HttpResponse(content_type="{0:s}; charset={1:s}".format(file_mimetype, self.export_unicode_encoding))
-		filename_format = u'attachment; filename="{0:s}"'.format(filename)
+		response = HttpResponse(content_type=f"{file_mimetype}; charset={self.export_unicode_encoding}")
+		filename_format = f'attachment; filename="{filename}"'
 		response['Content-Disposition'] = filename_format.encode(self.export_unicode_encoding)
-
 		response.write(content)
 		return response
 

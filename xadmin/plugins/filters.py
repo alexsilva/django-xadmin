@@ -1,15 +1,14 @@
+# coding=utf-8
 import operator
 import urllib.parse
 from functools import reduce
 
 from django.contrib.admin.utils import get_fields_from_path, lookup_needs_distinct
-from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured, ValidationError
+from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured, ValidationError, FieldDoesNotExist
 from django.db import models
 from django.db.models.constants import LOOKUP_SEP
-from django.db.models.fields import FieldDoesNotExist
 from django.template import loader
 from django.template.loader import render_to_string
-from django.utils import six
 from django.utils.encoding import smart_str
 from django.utils.translation import ugettext as _
 
@@ -93,7 +92,7 @@ class FilterPlugin(BaseAdminPlugin):
 	def get_list_queryset(self, queryset):
 		lookup_params = dict([(smart_str(k)[len(FILTER_PREFIX):], v) for k, v in self.admin_view.params.items()
 		                      if smart_str(k).startswith(FILTER_PREFIX) and v != ''])
-		for p_key, p_val in six.iteritems(lookup_params):
+		for p_key, p_val in lookup_params.items():
 			if p_val == "False":
 				lookup_params[p_key] = False
 		use_distinct = False

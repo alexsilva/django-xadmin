@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# encoding=utf-8
+# coding=utf-8
 """
 Author:zcyuefan
 Topic:django-import-export plugin for xadmin to help importing and exporting data using .csv/.xls/.../.json files
@@ -40,26 +40,16 @@ More info about django-import-export please refer https://github.com/django-impo
 """
 import threading
 from datetime import datetime
-
 from django.conf import settings
 from django.core.mail import EmailMultiAlternatives
 from django.db import transaction
 from django.template import loader
-from django.utils import six
-from import_export.admin import DEFAULT_FORMATS
-
+from import_export.formats.base_formats import DEFAULT_FORMATS
+from import_export.tmp_storages import TempFolderStorage
 from xadmin.plugins.utils import get_context_dict
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ListAdminView, ModelAdminView
 from xadmin.views.base import csrf_protect_m, filter_hook
-
-try:
-	from import_export.admin import SKIP_ADMIN_LOG, TMP_STORAGE_CLASS
-except ImportError:
-	from import_export.tmp_storages import TempFolderStorage
-
-	TMP_STORAGE_CLASS = getattr(settings, 'IMPORT_EXPORT_TMP_STORAGE_CLASS', TempFolderStorage)
-	SKIP_ADMIN_LOG = getattr(settings, 'IMPORT_EXPORT_SKIP_ADMIN_LOG', False)
 from import_export.resources import modelresource_factory
 from import_export.forms import (
 	ImportForm,
@@ -77,6 +67,10 @@ from django.contrib import messages
 from django.urls.base import reverse
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect, HttpResponse
+
+
+TMP_STORAGE_CLASS = getattr(settings, 'IMPORT_EXPORT_TMP_STORAGE_CLASS', TempFolderStorage)
+SKIP_ADMIN_LOG = getattr(settings, 'IMPORT_EXPORT_SKIP_ADMIN_LOG', False)
 
 
 class ImportMenuPlugin(BaseAdminPlugin):
@@ -510,10 +504,9 @@ class ExportPlugin(ExportMixin, BaseAdminPlugin):
 	def send_mail_response(self, request, **kwargs):
 		user = request.user
 		email = user.email if hasattr(user, 'email') else None
-		if isinstance(email, six.string_types) and email.strip():
+		if isinstance(email, str) and email.strip():
 			self.send_mail(user, request, **kwargs)
-			messages.success(request, (_("The file is sent to your email: ")
-			                           + "<strong>{0:s}</strong>".format(email)))
+			messages.success(request, (_("The file is sent to your email: ") + f"<strong>{email}</strong>"))
 		else:
 			messages.warning(request, _("Your account does not have an email address."))
 		return HttpResponseRedirect(request.path)
