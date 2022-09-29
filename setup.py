@@ -28,7 +28,7 @@ setup(
 	],
 	extras_require={
 		'Excel': ['xlwt', 'xlsxwriter'],
-		'Reversion': ['django-reversion>=2.0.0'],
+		'Reversion': ['django-reversion>=5.0.2'],
 	},
 	zip_safe=False,
 	keywords=['admin', 'django', 'xadmin', 'bootstrap'],
