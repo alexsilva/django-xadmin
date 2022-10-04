@@ -22,13 +22,10 @@
   {% vendor 'jquery.js' %}
   {% url 'xadmin:index' as indexurl %}
   <script type="text/javascript">
-    window.__admin_media_prefix__ = "{% filter escapejs %}{% static "xadmin/" %}{% endfilter %}";
-    window.__admin_path_prefix__ = "{% filter escapejs %}{{ indexurl }}{% endfilter %}";
-    window.__admin_language_code__ = "{{LANGUAGE_CODE}}";
     window.xadmin = {
-        language_code: window.__admin_language_code__,
-        media_prefix: window.__admin_media_prefix__,
-        path_prefix: window.__admin_path_prefix__
+        media_prefix: "{% filter escapejs %}{% static 'xadmin/' %}{% endfilter %}",
+        path_prefix: "{% filter escapejs %}{{ indexurl }}{% endfilter %}",
+        language_code: "{{LANGUAGE_CODE}}"
     }
   </script>
   <script type="text/javascript" src="{% url 'xadmin:jsi18n' %}"></script>
