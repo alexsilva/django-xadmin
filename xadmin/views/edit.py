@@ -15,6 +15,7 @@ from django.utils.encoding import force_text
 from django.utils.html import escape
 from django.utils.text import get_text_list
 from django.utils.translation import ugettext as _
+from django.core.exceptions import FieldDoesNotExist
 
 from xadmin import widgets
 from xadmin.layout import FormHelper, Layout, Fieldset, TabHolder, Container, Column, Col, Field, Tab
@@ -402,7 +403,7 @@ class CreateAdminView(ModelFormAdminView):
 					key = re.sub('^' + re.escape(self.model_form.prefix + '-'), '', key)
 				try:
 					field = self.opts.get_field(key)
-				except models.FieldDoesNotExist:
+				except FieldDoesNotExist:
 					continue
 				if isinstance(field, models.ManyToManyField):
 					initial_new[key] = initial[key_prefix].split(",")

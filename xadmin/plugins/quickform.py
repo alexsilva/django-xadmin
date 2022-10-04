@@ -13,6 +13,7 @@ from django.utils.encoding import force_bytes
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
+from django.core.exceptions import FieldDoesNotExist
 
 from xadmin.filters import SEARCH_VAR
 from xadmin.layout import Layout
@@ -112,7 +113,7 @@ class QuickFormPlugin(BaseAdminPlugin):
 					key = re.sub('^' + re.escape(self.admin_view.model_form.prefix + '-'), '', key)
 				try:
 					field = self.opts.get_field(key)
-				except models.FieldDoesNotExist:
+				except FieldDoesNotExist:
 					continue
 				if isinstance(field, models.ManyToManyField):
 					initial_new[key] = self.request_params[key_prefix].split(",")

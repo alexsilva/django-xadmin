@@ -17,16 +17,14 @@ from django.utils.text import capfirst
 from django.utils.translation import get_language
 from django.utils.translation import ungettext
 from django.templatetags.static import static
+from django.core.exceptions import FieldDoesNotExist
+import json
 
 # contrib admin utils
 NestedObjects = admin_utils.NestedObjects
 label_for_field = admin_utils.label_for_field
 help_text_for_field = admin_utils.help_text_for_field
 
-try:
-	import json
-except ImportError:
-	from django.utils import simplejson as json
 
 try:
 	from django.utils.timezone import template_localtime as tz_localtime
@@ -280,7 +278,7 @@ def lookup_field(name, obj, model_admin=None):
 	opts = obj._meta
 	try:
 		f = opts.get_field(name)
-	except models.FieldDoesNotExist:
+	except FieldDoesNotExist:
 		# For non-field values, the value is either a method, property or
 		# returned via a callable.
 		if callable(name):
