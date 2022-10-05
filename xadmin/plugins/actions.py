@@ -102,6 +102,11 @@ class DeleteSelectedAction(BaseActionView):
 		if self.request.POST.get('post'):
 			if perms_needed:
 				raise PermissionDenied
+			# fix Cannot call delete() after .distinct().
+			if queryset.query.distinct or queryset.query.distinct_fields:
+				queryset = queryset.model._default_manager.filter(
+					pk__in=queryset.values_list("pk", flat=True)
+				)
 			self.delete_models(queryset)
 			# Return None to display the change list page again.
 			return None
