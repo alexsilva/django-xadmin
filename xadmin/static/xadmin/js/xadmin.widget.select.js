@@ -28,8 +28,8 @@
                         },
                         success: function(res) {
                             var objects = null;
-                            if (window.hasOwnProperty("__admin_object_id__")) {
-                                var object_id = window.__admin_object_id__;
+                            if (window.xadmin.object_id) {
+                                var object_id = window.xadmin.object_id;
                                 objects = [];
                                 $.each(res.objects, function (idx, item) {
                                     if (object_id !== item.id) {

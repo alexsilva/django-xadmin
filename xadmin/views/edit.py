@@ -518,7 +518,7 @@ class UpdateAdminView(ModelFormAdminView):
 	def block_extrahead(self, context, nodes):
 		nodes.append(f"""
         <script type="text/javascript">
-        window.__admin_object_id__ = "{context['object_id']}";
+        window.xadmin.object_id = "{context['object_id']}";
         </script>
          """)
 
