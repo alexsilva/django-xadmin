@@ -146,14 +146,10 @@ class FilterPlugin(BaseAdminPlugin):
 						})
 
 					# Check if we need to use distinct()
-					use_distinct = (use_distinct or
-					                lookup_needs_distinct(self.opts, field_path))
+					use_distinct = (use_distinct or lookup_needs_distinct(self.opts, field_path))
 				if spec and spec.has_output():
 					try:
-						if hasattr(spec, 'do_filte'):
-							new_qs = spec.do_filte(queryset)
-						else:
-							new_qs = spec.do_filter(queryset)
+						new_qs = spec.do_filter(queryset)
 					except ValidationError as e:
 						new_qs = None
 						self.admin_view.message_user(_("<b>Filtering error:</b> %s") % e.messages[0], 'error')
