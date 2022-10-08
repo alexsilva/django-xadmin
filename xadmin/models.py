@@ -186,5 +186,5 @@ class Log(models.Model):
 		return self.message
 
 	def get_edited_object(self):
-		"Returns the edited object represented by this log entry"
+		"""Returns the edited object represented by this log entry"""
 		return self.content_type.get_object_for_this_type(pk=self.object_id)

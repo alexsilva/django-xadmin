@@ -91,7 +91,7 @@ class WizardFormPlugin(BaseAdminPlugin):
 				raise ValidationError('ManagementForm data is missing or has been tampered.')
 
 			form_current_step = management_form.cleaned_data['current_step']
-			if (form_current_step != self.steps.current and self.storage.current_step is not None):
+			if form_current_step != self.steps.current and self.storage.current_step is not None:
 				# form refreshed, change current step
 				self.storage.current_step = form_current_step
 

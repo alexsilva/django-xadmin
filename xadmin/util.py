@@ -497,4 +497,4 @@ def is_related_field(field):
 
 
 def is_related_field2(field):
-	return (hasattr(field, 'remote_field') and field.remote_field != None) or is_related_field(field)
+	return (hasattr(field, 'remote_field') and field.remote_field is not None) or is_related_field(field)

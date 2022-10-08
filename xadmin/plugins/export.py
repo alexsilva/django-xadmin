@@ -245,7 +245,7 @@ class ExportPlugin(BaseAdminPlugin):
 		xml.endElement("objects")
 		xml.endDocument()
 
-		return stream.getvalue().split((b'\n'))[1]
+		return stream.getvalue().split(b'\n')[1]
 
 	def get_json_export(self, context):
 		results = self._get_objects(context)
