@@ -27,19 +27,8 @@
                             callback();
                         },
                         success: function(res) {
-                            var objects = null;
-                            if (window.hasOwnProperty("__admin_object_id__")) {
-                                var object_id = window.__admin_object_id__;
-                                objects = [];
-                                $.each(res.objects, function (idx, item) {
-                                    if (object_id !== item.id) {
-                                        objects.push(item);
-                                    }
-                                });
-                            } else {
-                                objects = res.objects;
-                            }
-                            callback(objects);
+                            $el.trigger("xadmin_search_select_load", [res]);
+                            callback(res.objects);
                         }
                     });
                 }
