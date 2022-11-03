@@ -25,7 +25,7 @@ class MobilePlugin(BaseAdminPlugin):
 	#     return media + self.vendor('xadmin.mobile.css', )
 
 	def block_extrahead(self, context, nodes):
-		nodes.append('<script>window.__admin_ismobile__ = true;</script>')
+		nodes.append('<script>window.xadmin.ismobile = true;</script>')
 
 
 site.register_plugin(MobilePlugin, CommAdminView)

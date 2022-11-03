@@ -32,7 +32,7 @@
             });
             onchange();
         }
-        if(window.__admin_ismobile__){
+        if(window.xadmin.ismobile){
             $(window).bind('resize', function(e){
                 var rate = $(window).height() / $(window).width();
                 var action_bar = $('.form-actions');
