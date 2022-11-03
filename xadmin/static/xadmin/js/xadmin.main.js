@@ -129,7 +129,7 @@
     var csrftoken = $.getCookie('csrftoken');
     $.ajax({
       type: 'POST',
-      url: window.__admin_path_prefix__ + 'settings/user',
+      url: window.xadmin.media_prefix + 'settings/user',
       data: {'key': key, 'value': value},
       success: success,
       error: error,
