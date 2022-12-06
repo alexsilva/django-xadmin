@@ -271,10 +271,13 @@
           }));
         }
       }
-      $.get(this.refresh_url + selected.join() ,function(form_html, status, xhr){
-        wrap.html($('<body>' + form_html + '</body>').find('#' + wrap.attr('id')).html());
-        wrap.exform();
-      });
+      // updating the field in the form is optional (depending on configuration).
+      if (this.refresh_url) {
+        $.get(this.refresh_url + selected.join() ,function(form_html, status, xhr){
+          wrap.html($('<body>' + form_html + '</body>').find('#' + wrap.attr('id')).html());
+          wrap.exform();
+        });
+      }
       // clean cache due inline validation
       this.modal.modal('hide');
       this.modal.data("form", null);
