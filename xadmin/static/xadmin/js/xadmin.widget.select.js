@@ -6,20 +6,20 @@
                   return $el.hasClass('select-placeholder') && $el.data('placeholder') ? $el.data('placeholder') : null
               },
               selectPlaceholderTemplate = function (data, escape) {
-                var label = escape(getPlaceholder(this.$input));
-                var text = escape(data[this.settings.labelField]);
-                  return (
-                      '<div class="selectize-field-content" title="' + text + '">' +
-                      '<span class="selectize-field-label">' + label + ':</span>' +
-                      '<span class="selectize-field-text">' + text + '</span>' +
-                      '<div>'
-                  );
+                var label = escape(getPlaceholder(this.$input)),
+                    text = escape(data[this.settings.labelField]);
+                  return $.fn.nunjucks_env.renderString(
+                      '<div class="selectize-field-content" title="{{text}}">' +
+                      '<span class="selectize-field-label">{{tabel}}:</span>' +
+                      '<span class="selectize-field-text">{{text}}</span>' +
+                      '<div>',
+                      {label: label, text: text});
               }
 
           f.find('select:not(.select-search):not(.selectize-off):not([multiple=multiple])').each(function () {
               var $el = $(this),
                   placeholder = getPlaceholder($el),
-                  options = {}
+                  options = {};
 
               if (placeholder) {
                   options.render = {
