@@ -42,6 +42,7 @@
                     create: false,
                     maxItems: 1,
                     preload: preload,
+                    plugins: ["clear_button"],
                     load: function (query, callback) {
                         if (!preload && !query.length) return callback();
                         $.ajax({
