@@ -200,7 +200,7 @@ class ChoicesFieldListFilter(ListFieldFilter):
 
 	def choices(self):
 		yield {
-			'selected': self.lookup_exact_val is '',
+			'selected': self.lookup_exact_val == '',
 			'query_string': self.query_string({}, [self.lookup_exact_name]),
 			'display': _('All')
 		}
@@ -500,9 +500,8 @@ class MultiSelectFieldListFilter(ListFieldFilter):
 				return
 
 		# Else rebuild it
-		queryset = self.admin_view.queryset().exclude(**{"%s__isnull" % field_path: True}).values_list(field_path,
-		                                                                                               flat=True).distinct()
-		# queryset = self.admin_view.queryset().distinct(field_path).exclude(**{"%s__isnull"%field_path:True})
+		queryset = self.admin_view.queryset().exclude(**{"%s__isnull" % field_path: True})
+		queryset = queryset.values_list(field_path, flat=True).distinct()
 
 		if field_order_by is not None:
 			# Do a subquery to order the distinct set
@@ -511,7 +510,14 @@ class MultiSelectFieldListFilter(ListFieldFilter):
 		if field_limit is not None and type(field_limit) == int and queryset.count() > field_limit:
 			queryset = queryset[:field_limit]
 
-		self.lookup_choices = [str(it) for it in queryset.values_list(field_path, flat=True) if str(it).strip() != ""]
+		lookup_choices = []
+		for value in queryset.values_list(field_path, flat=True):
+			value = str(value).strip()
+			# avoids duplicate and empty values.
+			if value != "" and value not in lookup_choices:
+				lookup_choices.append(value)
+		self.lookup_choices = lookup_choices
+
 		if sort_key is not None:
 			self.lookup_choices = sorted(self.lookup_choices, key=sort_key)
 
