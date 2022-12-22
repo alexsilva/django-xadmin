@@ -60,8 +60,10 @@ function sifterTask() {
 }
 
 function selectizeTask() {
-    return gulp.src(["bower_components/selectize/dist/**/*.js",
-        "bower_components/selectize/dist/**/*.css"])
+    return gulp.src([
+        "bower_components/selectize/dist/**/*.js",
+        "bower_components/selectize/dist/**/*.css",
+        "!bower_components/selectize/dist/lib/**"])
         .pipe(gulp.dest('vendor/selectize'));
 }
 
@@ -129,6 +131,7 @@ function bootstrapTask() {
 }
 
 exports.select2 = select2Task;
+exports.selectize = selectizeTask;
 exports.default = gulp.series(
     genericTask,
     jqueryTask,

@@ -204,20 +204,28 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 		output.extend(['<div class="flex-grow-1 mr-2" id="id_%s_wrap_container">' % name,
 		               self.widget.render(name, value, attrs=attrs, **kwargs), '</div>'])
 		if self.change_url:
+			refresh_url = self.rel_change_url
+			if refresh_url:
+				refresh_url += "?" + urllib.parse.urlencode({'_field': name, name: ''})
+			title_i18n_change = self.kwargs.get('title_i18n_change', _('Change %s'))
 			html = render_to_string("xadmin/plugins/quickform_btn.html", context={
-				'title': _('Change %s') % self.rel.model._meta.verbose_name,
+				'title': title_i18n_change % self.rel.model._meta.verbose_name,
 				'editable_url': self.change_url,
-				'refresh_url': self.rel_change_url + "?" + urllib.parse.urlencode({'_field': name, name: ''}),
+				'refresh_url': refresh_url,
 				'for_id': name,
 				'icon': 'fa fa-edit',
 				'action': 'change'
 			})
 			output.append(html)
 		if self.add_url:
+			refresh_url = self.rel_add_url
+			if refresh_url:
+				refresh_url += "?" + urllib.parse.urlencode({'_field': name, name: ''})
+			title_i18n_add = self.kwargs.get('title_i18n_add', _('Create New %s'))
 			html = render_to_string("xadmin/plugins/quickform_btn.html", context={
-				'title': _('Create New %s') % self.rel.model._meta.verbose_name,
+				'title': title_i18n_add % self.rel.model._meta.verbose_name,
 				'editable_url': self.add_url,
-				'refresh_url': self.rel_add_url + "?" + urllib.parse.urlencode({'_field': name, name: ''}),
+				'refresh_url': refresh_url,
 				'for_id': name,
 				'icon': 'fa fa-plus',
 				'action': 'add'

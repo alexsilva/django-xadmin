@@ -138,14 +138,14 @@ vendors = {
 				# required by selectize
 				'xadmin/vendor/sifter/js/sifter.js',
 				'xadmin/vendor/microplugin/js/microplugin.js',
-				'xadmin/vendor/selectize/js/standalone/selectize.js',
+				'xadmin/vendor/selectize/js/selectize.js',
 				'xadmin/vendor/select2/js/select2.js',
 				'xadmin/vendor/select2/js/i18n/%(lang)s.js'],
 			'production': [
 				# required by selectize
 				'xadmin/vendor/sifter/js/sifter.min.js',
 				'xadmin/vendor/microplugin/js/microplugin.js',
-				'xadmin/vendor/selectize/js/standalone/selectize.min.js',
+				'xadmin/vendor/selectize/js/selectize.min.js',
 				'xadmin/vendor/select2/js/select2.min.js',
 				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
 			]
