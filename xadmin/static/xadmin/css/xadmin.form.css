@@ -16,6 +16,26 @@ select.selectmultiple {
   padding-top: 3px;
 }
 
+
+.select-placeholder .selectize-input {
+  position: relative;
+  padding-bottom: 0;
+}
+
+.select-placeholder .selectize-field-content {
+  display: inline-block;
+}
+
+.select-placeholder .selectize-field-label {
+  font-size: 90%;
+  font-weight: bold;
+  padding-right: .25rem;
+}
+
+.select-placeholder .selectize-field-text {
+  font-size: 90%;
+}
+
 /* form css */
 .form-container .column{
   min-height: 60px;
