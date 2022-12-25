@@ -426,7 +426,10 @@ class ListWidget(ModelBaseWidget, PartialBaseWidget):
 			self.title = self.model._meta.verbose_name_plural
 
 		req = self.make_get_request("", self.list_params)
-		self.list_view = self.get_view_class(ListAdminView, self.model)(req)
+
+		self.list_view = self.get_view_class(ListAdminView, self.model)()
+		self.list_view.setup(req)
+
 		if self.list_count:
 			self.list_view.list_per_page = self.list_count
 

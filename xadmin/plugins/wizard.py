@@ -137,10 +137,14 @@ class WizardFormPlugin(BaseAdminPlugin):
 		form = self.get_step_form(step)
 		instance = (None if not self.wizard_for_update else
 		            getattr(self.admin_view, 'org_obj', None))
-		return form(prefix=self._get_form_prefix(step),
-		            data=self.storage.get_step_data(step),
-		            files=self.storage.get_step_files(step),
-		            instance=instance)
+		options = dict(
+			prefix=self._get_form_prefix(step),
+			data=self.storage.get_step_data(step),
+			files=self.storage.get_step_files(step)
+		)
+		if issubclass(form, forms.ModelForm):
+			options['instance'] = instance
+		return form(**options)
 
 	def get_form_datas(self, datas):
 		datas['prefix'] = self._get_form_prefix()
