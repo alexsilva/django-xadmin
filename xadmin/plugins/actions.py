@@ -149,15 +149,21 @@ class ActionPlugin(BaseAdminPlugin):
 		self.actions = self.get_actions()
 		return bool(self.actions)
 
+	def setup(self, *args, **kwargs):
+		self.action_field_name = 'action_checkbox'
+		self.admin_view.action_checkbox = action_checkbox
+
 	def get_list_display(self, list_display):
 		if self.actions:
-			list_display.insert(0, 'action_checkbox')
-			self.admin_view.action_checkbox = action_checkbox
+			if self.action_field_name not in list_display:
+				list_display.insert(0, self.action_field_name)
+			elif list_display.index(self.action_field_name) != 0:
+				list_display.insert(0, list_display.pop(list_display.index(self.action_field_name)))
 		return list_display
 
 	def get_list_display_links(self, list_display_links):
 		if self.actions:
-			if len(list_display_links) == 1 and list_display_links[0] == 'action_checkbox':
+			if len(list_display_links) == 1 and list_display_links[0] == self.action_field_name:
 				return list(self.admin_view.list_display[1:2])
 		return list_display_links
 
@@ -284,12 +290,12 @@ class ActionPlugin(BaseAdminPlugin):
 
 	# View Methods
 	def result_header(self, item, field_name, row):
-		if item.attr and field_name == 'action_checkbox':
+		if item.attr and field_name == self.action_field_name:
 			item.classes.append("action-checkbox-column")
 		return item
 
 	def result_item(self, item, obj, field_name, row):
-		if item.field is None and field_name == u'action_checkbox':
+		if item.field is None and field_name == self.action_field_name:
 			item.classes.append("action-checkbox")
 		return item
 
