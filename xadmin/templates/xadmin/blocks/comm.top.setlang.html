@@ -24,7 +24,8 @@
 </li>
 <script type="text/javascript">
   $(function(){
-    $('#g-setlang-menu a').click(function(e){
+    $('#g-setlang-menu a').click(function(evt){
+      evt.preventDefault();
       var lang = $(this).data('lang');
       $('#setlang-form #setlang-id_language').attr('value', lang);
       $('#setlang-form').submit();
