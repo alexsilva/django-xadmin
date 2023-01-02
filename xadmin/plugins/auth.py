@@ -188,9 +188,9 @@ class ChangePasswordView(ModelAdminView):
 
 	@csrf_protect_m
 	def get(self, request, object_id):
-		if not self.has_change_permission(request):
-			raise PermissionDenied
 		self.obj = self.get_object(unquote(object_id))
+		if not self.has_change_permission(self.obj):
+			raise PermissionDenied
 		self.form = self.change_password_form(self.obj)
 
 		return self.get_response()
@@ -226,9 +226,9 @@ class ChangePasswordView(ModelAdminView):
 	@method_decorator(sensitive_post_parameters())
 	@csrf_protect_m
 	def post(self, request, object_id):
-		if not self.has_change_permission(request):
-			raise PermissionDenied
 		self.obj = self.get_object(unquote(object_id))
+		if not self.has_change_permission(self.obj):
+			raise PermissionDenied
 		self.form = self.change_password_form(self.obj, request.POST)
 
 		if self.form.is_valid():
