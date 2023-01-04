@@ -4,7 +4,7 @@ from django.views.i18n import set_language
 
 from xadmin.plugins.utils import get_context_dict
 from xadmin.sites import site
-from xadmin.views import BaseAdminPlugin, CommAdminView, BaseAdminView
+from xadmin.views import BaseAdminPlugin, CommAdminView, BaseAdminView, filter_hook
 
 
 class SetLangNavPlugin(BaseAdminPlugin):
@@ -21,6 +21,7 @@ class SetLangNavPlugin(BaseAdminPlugin):
 
 class SetLangView(BaseAdminView):
 
+	@filter_hook
 	def post(self, request, *args, **kwargs):
 		if 'nav_menu' in request.session:
 			del request.session['nav_menu']
