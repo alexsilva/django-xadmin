@@ -14,7 +14,7 @@ from django.utils.encoding import force_text, smart_text
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
-from django.utils.translation import get_language
+from django.utils.translation import get_language, to_locale
 from django.utils.translation import ungettext
 from django.templatetags.static import static
 from django.core.exceptions import FieldDoesNotExist
@@ -37,7 +37,9 @@ def xstatic(*tags):
 	node = vendors
 
 	fs = []
-	lang = get_language()
+	lang = get_language()  # en-us
+	# Turn a language name (en-us) into a locale name (en-US)
+	lang_locale = to_locale(lang).replace('_', '-')
 
 	for tag in tags:
 		try:
@@ -68,7 +70,7 @@ def xstatic(*tags):
 			files = node[mode]
 
 		files = type(files) in (list, tuple) and files or [files, ]
-		fs.extend([f % {'lang': lang.replace('_', '-')} for f in files])
+		fs.extend([f % {'lang': lang_locale} for f in files])
 
 	return [f.startswith('http://') and f or static(f) for f in fs]
 
