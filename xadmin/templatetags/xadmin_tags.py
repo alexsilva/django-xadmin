@@ -56,7 +56,7 @@ static = register.simple_tag(static)
 
 @register.filter
 def xslugify(value):
-	return re.sub('\W+', "_", value, re.I)
+	return re.sub(r'\W+', "_", value, re.I)
 
 
 @register.simple_tag(takes_context=True)
