@@ -21,7 +21,7 @@ setup(
 		'django>=3,<4',
 		'django-crispy-forms==1.14.0',
 		'django-import-export==3.0.2',
-		'django-reversion==5.0.2',
+		'django-reversion==5.0.4',
 		'django-formtools==2.4',
 		'httplib2==0.20.4'
 	],
