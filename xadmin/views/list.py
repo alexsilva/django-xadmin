@@ -241,7 +241,8 @@ class ListAdminView(ModelAdminView):
 				pass
 
 		# Then, set queryset ordering.
-		queryset = queryset.order_by(*self.get_ordering())
+		ordering = self.get_ordering()
+		queryset = queryset.order_by(*ordering)
 
 		# Return the queryset.
 		return queryset
@@ -337,7 +338,7 @@ class ListAdminView(ModelAdminView):
 					order_type = 'asc'
 				for attr in self.list_display:
 					if self.get_ordering_field(attr) == field:
-						ordering_fields[field] = order_type
+						ordering_fields[attr] = order_type
 						break
 		else:
 			for p in self.params[ORDER_VAR].split('.'):
