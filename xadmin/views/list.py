@@ -293,9 +293,7 @@ class ListAdminView(ModelAdminView):
 		if ORDER_VAR in self.params and self.params[ORDER_VAR]:
 			ordering = []
 			# Clear ordering and used params
-			for n, pfx, field_name in map(
-					lambda p: p.rpartition('-'),
-					self.params[ORDER_VAR].split('.')):
+			for n, pfx, field_name in [p.rpartition('-') for p in self.params[ORDER_VAR].split('.')]:
 				field = self.get_ordering_field(field_name)
 				if not field:
 					continue
