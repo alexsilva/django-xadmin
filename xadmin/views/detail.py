@@ -58,13 +58,14 @@ class ShowField(Field):
 
 class ResultField:
 
-	def __init__(self, obj, field_name, admin_view=None):
+	def __init__(self, obj, field_name, admin_view=None, admin_form=None):
 		self.text = '&nbsp;'
 		self.wraps = []
 		self.allow_tags = False
 		self.obj = obj
 		self.admin_view = admin_view
 		self.field_name = field_name
+		self.admin_form = admin_form
 		self.field = None
 		self.attr = None
 		self.label = None
@@ -73,9 +74,9 @@ class ResultField:
 		self.init()
 
 	def get_admin_view_form(self):
-		form_obj = getattr(self.admin_view, 'form_obj', None)
-		if form_obj is None or not isinstance(form_obj, forms.ModelForm) and \
-				hasattr(self.admin_view, 'instance_forms'):
+		form_obj = self.admin_form or getattr(self.admin_view, 'form_obj', None)
+		if ((form_obj is None or not isinstance(form_obj, forms.ModelForm)) and
+				hasattr(self.admin_view, 'instance_forms')):
 			self.admin_view.instance_forms()
 			form_obj = self.admin_view.form_obj
 		return form_obj
@@ -113,11 +114,9 @@ class ResultField:
 
 	@property
 	def val(self):
-		text = mark_safe(
-			self.text) if self.allow_tags else conditional_escape(self.text)
+		text = mark_safe(self.text) if self.allow_tags else conditional_escape(self.text)
 		if force_text(text) == '' or text == 'None' or text == EMPTY_CHANGELIST_VALUE:
-			text = mark_safe(
-				'<span class="text-muted">%s</span>' % EMPTY_CHANGELIST_VALUE)
+			text = mark_safe('<span class="text-muted">%s</span>' % EMPTY_CHANGELIST_VALUE)
 		for wrap in self.wraps:
 			text = mark_safe(wrap % text)
 		return text
@@ -262,11 +261,18 @@ class DetailAdminView(ModelAdminView):
 		helper.filter(str, max_level=20).wrap(ShowField, admin_view=self)
 		return helper
 
+	def instance_forms(self):
+		form_obj = getattr(self, "form_obj", None)
+		if form_obj is not None:
+			return form_obj
+		form_class = self.get_model_form()
+		self.form_obj = form_class(instance=self.obj)
+		return self.form_obj
+
 	@csrf_protect_m
 	@filter_hook
 	def get(self, request, *args, **kwargs):
-		form = self.get_model_form()
-		self.form_obj = form(instance=self.obj)
+		self.instance_forms()
 		helper = self.get_form_helper()
 		if helper:
 			self.form_obj.helper = helper
