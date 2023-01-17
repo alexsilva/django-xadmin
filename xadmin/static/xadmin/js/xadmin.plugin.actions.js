@@ -3,7 +3,7 @@
     $.fn.actions = function(opts) {
         var self = this
         var options = $.extend({}, $.fn.actions.defaults, opts);
-        var actionCheckboxes = $(this);
+        var actionCheckboxes = $(this).filter(":not(:disabled)");
 
         updateCounter = function() {
             var sel = $(actionCheckboxes).filter(":checked").length;
@@ -13,7 +13,7 @@
                 cnt: _actions_icnt
             }, true));
 
-            if (sel == actionCheckboxes.length) {
+            if (sel && sel == actionCheckboxes.length) {
                 showQuestion();
                 $(options.allToggle).prop('checked', true);
             } else {
