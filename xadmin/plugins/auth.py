@@ -2,8 +2,12 @@
 from django import forms
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import (UserCreationForm, UserChangeForm,
-                                       AdminPasswordChangeForm, PasswordChangeForm)
+from django.contrib.auth.forms import (
+	UserCreationForm,
+	UserChangeForm,
+	AdminPasswordChangeForm,
+	PasswordChangeForm
+)
 from django.contrib.auth.models import Group, Permission
 from django.core.exceptions import PermissionDenied
 from django.forms import ModelMultipleChoiceField
@@ -173,7 +177,9 @@ class AccountMenuPlugin(BaseAdminPlugin):
 
 	def block_top_account_menu(self, context, nodes):
 		ctx = {'password_change_url': self.get_admin_url('account_password')}
-		if self.has_model_perm(User, "change", self.request.user):
+		has_change_perm = self.has_object_change_permission(ModelFormAdminView, User,
+		                                                    obj=self.request.user)
+		if has_change_perm:
 			ctx['account_change_url'] = self.get_model_url(User, "change", self.request.user.pk)
 		return render_to_string('xadmin/blocks/comm.top.account_menu.html', context=ctx)
 
