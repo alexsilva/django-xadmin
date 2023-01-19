@@ -1,6 +1,7 @@
 import copy
 import datetime
 import decimal
+import django.db.models
 import functools
 from collections import OrderedDict
 from inspect import getfullargspec
@@ -162,6 +163,12 @@ class BaseAdminObject:
 		return user.has_perm(self.get_model_perm(model, name)) or (
 					name == 'view' and self.has_model_perm(model, 'change', user))
 
+	def has_object_perm(self, model, name, user=None, obj=None):
+		"""Validation of permissions for the object"""
+		user = user or self.user
+		return user.has_perm(self.get_model_perm(model, name), obj) or (
+					name == 'view' and self.has_object_perm(model, 'change', user=user, obj=obj))
+
 	def get_query_string(self, new_params=None, remove=None):
 		if new_params is None:
 			new_params = {}
@@ -270,6 +277,41 @@ class BaseAdminPlugin(BaseAdminObject):
 	def setup(self, *args, **kwargs):
 		"""Configure the plugin after activation"""
 		pass
+
+	def has_object_site_perm(self, view_class, model, obj, perm_name, **options):
+		"""Permission validation for the object (including the view)"""
+		has_change_perm = self.has_object_perm(model, perm_name, obj=obj)
+		if not has_change_perm:
+			# validates permission for the object
+			opts = self.admin_site.get_registry(model, None)
+			view = self.admin_site.get_view_class(view_class, opts)()
+			# The view needs to have a method for validating the object.
+			permission_method = f"has_{perm_name}_permission"
+			if not hasattr(view, permission_method):
+				return has_change_perm
+			try:
+				# remove plugin from list to not initialize recursively.
+				view.plugin_classes.remove(type(self))
+			except ValueError:
+				pass
+			request = options.get('request', self.request)
+			args = options.get('args', self.args)
+			kwargs = options.get('kwargs', self.kwargs)
+			view.setup(request, *args, **kwargs)
+			has_change_perm = getattr(view, permission_method)(obj=obj)
+		return has_change_perm
+
+	def has_object_view_permission(self, view_class, model: django.db.models.Model, obj, **options):
+		return self.has_object_site_perm(view_class, model, obj, "view", **options)
+
+	def has_object_add_permission(self, view_class, model: django.db.models.Model, obj, **options):
+		return self.has_object_site_perm(view_class, model, obj, "add", **options)
+
+	def has_object_change_permission(self, view_class, model: django.db.models.Model, obj, **options):
+		return self.has_object_site_perm(view_class, model, obj, "change", **options)
+
+	def has_object_delete_permission(self, view_class, model: django.db.models.Model, obj, **options):
+		return self.has_object_site_perm(view_class, model, obj, "delete", **options)
 
 
 class PluginManager:
