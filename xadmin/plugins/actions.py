@@ -47,6 +47,11 @@ class BaseActionView(ModelAdminView):
 		self.list_view = list_view
 		self.admin_site = list_view.admin_site
 
+	def get_context(self):
+		ctx = super().get_context()
+		ctx['action_name'] = self.action_name
+		return ctx
+
 	@filter_hook
 	def do_action(self, queryset):
 		pass
