@@ -130,7 +130,8 @@ class BatchChangeAction(BaseActionView):
 			"form": batch_form,
 			"fields": fields,
 			"formfield_callback": self.formfield_for_dbfield,
-			"exclude": getattr(self.edit_view, "batch_fields_exclude", ())
+			"exclude": getattr(self.edit_view, "batch_fields_exclude",
+			                   self.batch_fields_exclude)
 		}
 		return modelform_factory(self.model, **defaults)
 
