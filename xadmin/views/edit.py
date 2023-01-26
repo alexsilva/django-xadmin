@@ -159,14 +159,20 @@ class ModelFormAdminView(ModelAdminView):
 		add_view and change_view.
 		"""
 		form = self.get_form_class()
+		form_opts = getattr(form, "_meta", None)
 		fields = self.get_form_fields()
 		fields_exclude = self.get_form_exclude()
 		exclude = [] if fields_exclude is None else list(fields_exclude)
 		exclude.extend(self.get_readonly_fields())
-		if fields_exclude is None and hasattr(form, '_meta') and form._meta.exclude:
-			# Take the custom ModelForm's Meta.exclude into account only if the
-			# ModelAdmin doesn't define its own.
-			exclude.extend(form._meta.exclude)
+		form_widgets = self.formfield_widgets
+		if form_opts:
+			if fields_exclude is None and form_opts.exclude:
+				# Take the custom ModelForm's Meta.exclude into account only if the
+				# ModelAdmin doesn't define its own.
+				exclude.extend(form_opts.exclude)
+			if form_opts.widgets:
+				form_widgets = form_opts.widgets.copy()
+				form_widgets.update(self.formfield_widgets)
 		defaults = {
 			"form": form,
 			"fields": fields and list(fields) or None,
@@ -174,7 +180,7 @@ class ModelFormAdminView(ModelAdminView):
 			# default on modelform_factory
 			"exclude": exclude or None,
 			"formfield_callback": self.formfield_for_dbfield,
-			"widgets": self.formfield_widgets
+			"widgets": form_widgets
 		}
 		defaults.update(kwargs)
 
