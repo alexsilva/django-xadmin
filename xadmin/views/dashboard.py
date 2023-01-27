@@ -469,8 +469,8 @@ class AddFormWidget(ModelBaseWidget, PartialBaseWidget):
 			self.title = _('Add %s') % self.model._meta.verbose_name
 
 		req = self.make_get_request("")
-		self.add_view = self.get_view_class(
-			CreateAdminView, self.model, list_per_page=10)(req)
+		self.add_view = self.get_view_class(CreateAdminView, self.model, list_per_page=10)()
+		self.add_view.setup(req)
 		self.add_view.instance_forms()
 
 	def context(self, context):
