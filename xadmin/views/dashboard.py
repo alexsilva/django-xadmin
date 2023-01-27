@@ -188,8 +188,8 @@ class BaseWidget(forms.Form):
 		self.admin_site = dashboard.admin_site
 		self.request = dashboard.request
 		self.user = dashboard.request.user
-		self.convert(data)
 		super(BaseWidget, self).__init__(data)
+		self.convert(data)
 
 		if not self.is_valid():
 			raise WidgetDataError(self, self.errors.as_text())
@@ -368,8 +368,12 @@ class QuickBtnWidget(BaseWidget):
 	base_title = _("Quick Buttons")
 	widget_icon = 'fa fa-caret-square-o-right'
 
+	url = forms.CharField(label=_("Target Url"), required=True)
+
 	def convert(self, data):
-		self.q_btns = data.pop('btns', [])
+		self.q_btns = data.pop('btns', [
+			dict([(f.name, f.value()) for f in self])
+		])
 
 	def get_model(self, model_or_label):
 		if isinstance(model_or_label, ModelBase):
