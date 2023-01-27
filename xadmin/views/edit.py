@@ -483,6 +483,8 @@ class CreateAdminView(ModelFormAdminView):
 			# redirect to the admin index.
 			if "_redirect" in request.POST:
 				return request.POST["_redirect"]
+			elif "_redirect" in request.GET:  # redirect from dashboard
+				return request.GET["_redirect"]
 			elif self.has_view_permission():
 				return self.model_admin_url('changelist')
 			else:
