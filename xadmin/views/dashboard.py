@@ -82,6 +82,12 @@ class UserWidgetAdmin:
 		(_("Widget Params"), {'callback': "get_widget_params_form", 'convert': "convert_widget_params"})
 	)
 
+	def get_readonly_fields(self):
+		fields = list(super().get_readonly_fields())
+		if self.org_obj:
+			fields.append('user')
+		return fields
+
 	def formfield_for_dbfield(self, db_field, **kwargs):
 		if db_field.name == 'widget_type':
 			widgets = widget_manager.get_widgets(self.request.GET.get('page_id', ''))
