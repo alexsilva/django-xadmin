@@ -248,8 +248,9 @@ class HtmlWidget(BaseWidget):
 	widget_icon = 'fa fa-file-o'
 	description = _('Html Content Widget, can write any html content in widget.')
 
-	content = forms.CharField(label=_(
-		'Html Content'), widget=exwidgets.AdminTextareaWidget, required=False)
+	content = forms.CharField(label=_('Html Content'),
+	                          widget=exwidgets.AdminTextareaWidget,
+	                          required=False)
 
 	def has_perm(self):
 		return True
