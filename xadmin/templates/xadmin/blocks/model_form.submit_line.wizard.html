@@ -1,5 +1,6 @@
 {% load i18n %}
-<div class="d-block d-md-none">
+<div class="d-flex d-md-none">
+  <div class="btn-group flex-fill px-0">
     <button id="wizard_goto_step" name="wizard_goto_step"
     {% if wizard.steps.prev %}
     class="btn btn-secondary"
@@ -15,17 +16,23 @@
         <button name="_save" value="wizard_save" type="submit" class="btn btn-block btn-success">
             <i class="fa fa-save"></i> {% trans "Save" %}
         </button>
+        <button type="button" class="btn btn-success more" data-toggle="collapse" data-target=".nav-collapse.more-btns">
+          <i class="fa fa-ellipsis-v"></i>
+        </button>
         {% endif %}
     </div>
+  </div>
 </div>
+
 <div class="d-none d-md-inline-block">
     <button id="wizard_goto_step" name="wizard_goto_step"
     {% if wizard.steps.prev %}
     class="btn btn-secondary"
     {% else %}
-    class="btn btn-secondary disabled" disabled="disabled" 
+    class="btn btn-secondary disabled" disabled="disabled"
     {% endif %}
-    type="submit" value="{{ wizard.steps.step0|add:"-1" }}">&larr;<span> {% trans "Prev step" %}</span></button>
+    type="submit" value="{{ wizard.steps.step0|add:"-1" }}">&larr;<span> {% trans "Prev step" %}</span>
+    </button>
 
     {% if wizard.steps.last != wizard.steps.current %}
     <button name="_save" type="submit" class="btn btn-primary mr-1">{% trans "Next step" %} &rarr;</button>
@@ -35,3 +42,9 @@
     </button>
     {% endif %}
 </div>
+
+<div class="nav-collapse collapse more-btns">
+  {% if wizard.steps.last == wizard.steps.current %}
+  {% if show_wizard_save_and_add_another %}<input type="submit" class="btn btn-primary ml-0 mr-1" value="{% trans 'Save and add another' %}" name="_addanother" {{ onclick_attrib }} />{% endif %}
+  {% if show_wizard_save_and_continue %}<input type="submit" class="btn btn-secondary ml-0 mr-1" value="{% trans 'Save and continue editing' %}" name="_continue" {{ onclick_attrib }}/>{% endif %}
+{% endif %}

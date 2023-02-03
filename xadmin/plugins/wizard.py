@@ -212,6 +212,8 @@ class WizardFormPlugin(BaseAdminPlugin):
 
 	def get_context(self, context):
 		context.update({
+			"show_wizard_save_and_add_another": context.get('has_add_permission', False),
+			"show_wizard_save_and_continue": context.get('has_change_permission', False),
 			"show_save": False,
 			"show_save_as_new": False,
 			"show_save_and_add_another": False,
