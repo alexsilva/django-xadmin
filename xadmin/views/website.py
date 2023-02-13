@@ -1,5 +1,5 @@
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.contrib.auth.views import LoginView as login
+from django.contrib.auth.views import LoginView as AuthLoginView
 from django.contrib.auth.views import LogoutView as logout
 from django.http import HttpResponse
 from django.utils.translation import ugettext as _
@@ -33,41 +33,65 @@ class UserSettingView(BaseAdminView):
 		return HttpResponse('')
 
 
-class LoginView(BaseAdminView):
+class LoginView(BaseAdminView, AuthLoginView):
 	title = _("Please Login")
 	login_form = None
 	login_template = None
 
 	@filter_hook
-	def update_params(self, defaults):
-		pass
+	def get_form_class(self, form_class=None):
+		return form_class or self.login_form or AdminAuthenticationForm
 
-	@never_cache
-	def get(self, request, *args, **kwargs):
-		context = self.get_context()
+	@filter_hook
+	def get_context_data(self, **kwargs):
+		context = super().get_context_data(**kwargs)
+		helper = self.get_form_helper()
+		# view context default
+		ctx = self.get_context()
+		context.update(ctx, **{
+			'helper': helper,
+			'app_path': self.request.get_full_path(),
+			REDIRECT_FIELD_NAME: self.request.get_full_path()
+		})
+		return context
+
+	@filter_hook
+	def get_template_names(self):
+		return [self.login_template or 'xadmin/views/login.html']
+
+	@filter_hook
+	def get_form_helper(self):
 		helper = FormHelper()
 		helper.form_tag = False
 		helper.use_custom_control = False
 		helper.include_media = False
-		context.update({
-			'title': self.title,
-			'helper': helper,
-			'app_path': request.get_full_path(),
-			REDIRECT_FIELD_NAME: request.get_full_path(),
-		})
-		defaults = {
-			'extra_context': context,
-			# 'current_app': self.admin_site.name,
-			'authentication_form': self.login_form or AdminAuthenticationForm,
-			'template_name': self.login_template or 'xadmin/views/login.html',
-		}
-		self.update_params(defaults)
-		# return login(request, **defaults)
-		return login.as_view(**defaults)(request)
+		return helper
+
+	@filter_hook
+	def form_valid(self, form):
+		return super().form_valid(form)
+
+	@filter_hook
+	def form_invalid(self, form):
+		return super().form_invalid(form)
+
+	@filter_hook
+	def get_form_kwargs(self):
+		return super().get_form_kwargs()
+
+	@filter_hook
+	def get_success_url(self):
+		return super().get_success_url()
 
 	@never_cache
+	@filter_hook
+	def get(self, request, *args, **kwargs):
+		return super().get(request, *args, **kwargs)
+
+	@never_cache
+	@filter_hook
 	def post(self, request, *args, **kwargs):
-		return self.get(request)
+		return super().post(request, *args, **kwargs)
 
 
 class LogoutView(BaseAdminView):
