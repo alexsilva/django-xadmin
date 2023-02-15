@@ -37,6 +37,7 @@ class LoginView(BaseAdminView, AuthLoginView):
 	title = _("Please Login")
 	login_form = None
 	login_template = None
+	redirect_authenticated_user = True
 
 	@filter_hook
 	def get_form_class(self, form_class=None):
@@ -81,7 +82,9 @@ class LoginView(BaseAdminView, AuthLoginView):
 
 	@filter_hook
 	def get_success_url(self):
-		return super().get_success_url()
+		url = self.get_redirect_url()
+		# Using LOGIN_REDIRECT_URL will not always have the expected behavior in administration.
+		return url or self.get_admin_url("index")
 
 	@filter_hook
 	def get_redirect_url(self):
