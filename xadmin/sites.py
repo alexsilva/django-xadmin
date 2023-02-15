@@ -416,5 +416,5 @@ site = AdminSite()
 def register(models, **kwargs):
 	def _model_admin_wrapper(admin_class):
 		site.register(models, admin_class)
-
+		return admin_class
 	return _model_admin_wrapper
