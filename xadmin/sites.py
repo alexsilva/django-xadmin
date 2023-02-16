@@ -63,6 +63,7 @@ class AdminSite:
 		self._registry_settings = data['settings']
 		self._registry_modelviews = data['modelviews']
 		self._registry_plugins = data['plugins']
+		self._registry_plugins_opts_view_cache = {}
 
 	def register_modelview(self, path, admin_view_class, name):
 		from xadmin.views.base import BaseAdminView
@@ -238,11 +239,17 @@ class AdminSite:
 
 	def _get_merge_attrs(self, option_class, plugin_class):
 		attrs = {}
-		for name in dir(option_class):
-			if name[0] != '_' and hasattr(plugin_class, name):
-				attr = getattr(option_class, name)
-				if not callable(attr):
-					attrs[name] = attr
+		options = self._registry_plugins_opts_view_cache.get(option_class)
+		if options is None:
+			# optimizes execution by excluding everything protected and private from the list and caches.
+			options = set([name for name in dir(option_class) if name[0] != '_'])
+			self._registry_plugins_opts_view_cache[option_class] = options
+		for name in options:
+			if not hasattr(plugin_class, name):
+				continue
+			attr = getattr(option_class, name)
+			if not callable(attr):
+				attrs[name] = attr
 		return attrs
 
 	def _get_settings_class(self, admin_view_class):
@@ -380,6 +387,10 @@ class AdminSite:
 			urlpatterns += [
 				re_path(r'^%s/%s/' % (model._meta.app_label, model._meta.model_name), include(view_urls))
 			]
+
+		# removes plugin build optimization cache
+		# no longer needed because views are built only one time.
+		self._registry_plugins_opts_view_cache.clear()
 		return urlpatterns
 
 	@property
