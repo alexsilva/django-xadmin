@@ -291,26 +291,29 @@ class AdminSite:
 		return merge_class
 
 	def get_plugins(self, admin_view_class, *option_classes):
+		"""Extrai os plugins registrados na hierarquia de views"""
 		from xadmin.views import BaseAdminView
 		plugins = []
-		opts = [oc for oc in option_classes if oc]
-		for klass in admin_view_class.mro():
+		# option classes affect all plugins but the impact of this is mitigated by caching names
+		# OptionViewClassA - PluginA.option | OptionViewClassB(OptionViewClassA).option afect PluginA
+		option_classes = [oc for oc in option_classes if oc]
+		for klass in admin_view_class.mro()[:-1]:  # exclude object
+			klass_options = []
 			if klass == BaseAdminView or issubclass(klass, BaseAdminView):
-				merge_opts = []
-				reg_class = self._registry_avs.get(klass)
-				if reg_class:
-					merge_opts.append(reg_class)
+				reg_avs_class = self._registry_avs.get(klass)
+				if reg_avs_class:
+					klass_options.append(reg_avs_class)
 				settings_class = self._get_settings_class(klass)
 				if settings_class:
-					merge_opts.append(settings_class)
-				merge_opts.extend(opts)
-				plugins_class = self._registry_plugins.get(klass, [])
-				if merge_opts:
-					merge_func = self._create_plugin(merge_opts)
-					for plugin_class in plugins_class:
-						plugins.append(merge_func(plugin_class))
-				else:
-					plugins.extend(plugins_class)
+					klass_options.append(settings_class)
+				plugins_class = self._registry_plugins.get(klass, ())
+				# update option history
+				option_classes.extend(klass_options)
+				# will extract common options in reverse order
+				plugin_cls_opts = option_classes[::-1]
+				merge_func = self._create_plugin(plugin_cls_opts)
+				for plugin_class in plugins_class:
+					plugins.append(merge_func(plugin_class))
 		return plugins
 
 	def get_view_class(self, view_class, option_class=None, **opts):
