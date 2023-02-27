@@ -35,13 +35,14 @@ class UserSettingView(BaseAdminView):
 
 class LoginView(BaseAdminView, AuthLoginView):
 	title = _("Please Login")
-	login_form = None
+	login_form = AdminAuthenticationForm
+	authentication_form = None
 	login_template = None
 	redirect_authenticated_user = True
 
 	@filter_hook
-	def get_form_class(self, form_class=None):
-		return form_class or self.login_form or AdminAuthenticationForm
+	def get_form_class(self):
+		return self.authentication_form or self.login_form
 
 	@filter_hook
 	def get_context_data(self, **kwargs):
