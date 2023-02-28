@@ -44,7 +44,8 @@ class ThemePlugin(BaseAdminPlugin):
 		return self.default_theme
 
 	def get_context(self, context):
-		context['site_theme'] = self._get_theme()
+		if not context.get('site_theme'):
+			context['site_theme'] = self._get_theme()
 		return context
 
 	def cache(self, key):
