@@ -12,7 +12,7 @@
       <a class="card-toggle" data-toggle="collapse" role="button"
          data-parent="#{{ formset.css_id }}-{{inline_style}}" href="#{{ prefix }}-{{ forloop.counter0 }}-body"
          aria-expanded="{% if fs.is_bound and fs.is_valid %}false{% else %}true{% endif %}">
-          <b>{{ formset.opts.verbose_name|title }}:</b>&nbsp
+          <b>{{ formset.opts.verbose_name }}:</b>&nbsp
           {% if fs.instance.pk %}{{ fs.instance }}{% else %}#<span class="formset-num">{{ forloop.counter }}</span>{% endif %}
       </a>
     </div>
@@ -31,7 +31,7 @@
           <a class="delete-row float-right"><i class="fa fa-times"></i></a>
       {% endif %}
       <a class="card-toggle" data-toggle="collapse" data-parent="#{{ formset.css_id }}-{{inline_style}}" href="#{{ prefix }}-__prefix__-body">
-        <b>{{ formset.opts.verbose_name|title }}:</b>&nbsp;
+        <b>{{ formset.opts.verbose_name }}:</b>&nbsp;
           {% if fs.instance.pk %}{{ fs.instance }}{% else %}#<span class="formset-num">{{ forloop.counter }}</span>{% endif %}
       </a>
     </div>
