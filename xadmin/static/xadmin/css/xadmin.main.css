@@ -3,6 +3,10 @@
     display: none !important;
 }
 
+.no_label > label {
+    display: none !important;
+}
+
 .card.unsort .card-header a.btn.btn-link[data-toggle="collapse"] {
     display: none;
 }
