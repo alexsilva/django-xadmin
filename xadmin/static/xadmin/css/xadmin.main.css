@@ -7,6 +7,10 @@
     display: none !important;
 }
 
+.unchevron .chevron-parent {
+    display: none;
+}
+
 .card.unsort .card-header a.btn.btn-link[data-toggle="collapse"] {
     display: none;
 }
