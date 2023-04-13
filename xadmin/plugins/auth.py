@@ -23,7 +23,7 @@ from django.views.decorators.debug import sensitive_post_parameters
 from xadmin.layout import Fieldset, Main, Side, Row, FormHelper
 from xadmin.sites import site
 from xadmin.util import unquote
-from xadmin.views import BaseAdminPlugin, ModelFormAdminView, ModelAdminView, CommAdminView, csrf_protect_m
+from xadmin.views import BaseAdminPlugin, ModelFormAdminView, ModelAdminView, CommAdminView, csrf_protect_m, filter_hook
 
 User = get_user_model()
 
@@ -192,13 +192,26 @@ class ChangePasswordView(ModelAdminView):
 	change_password_form = AdminPasswordChangeForm
 	change_user_password_template = None
 
+	@filter_hook
+	def get_form(self, *args, **kwargs):
+		return self.change_password_form(*args, **kwargs)
+
+	@filter_hook
+	def form_valid(self, form):
+		form.save()
+		self.message_user(_('Password changed successfully.'), 'success')
+		return HttpResponseRedirect(self.model_admin_url('change', self.obj.pk))
+
+	@filter_hook
+	def form_invalid(self, form):
+		return self.get_response()
+
 	@csrf_protect_m
 	def get(self, request, object_id):
 		self.obj = self.get_object(unquote(object_id))
 		if not self.has_change_permission(self.obj):
 			raise PermissionDenied
-		self.form = self.change_password_form(self.obj)
-
+		self.form = self.get_form(self.obj)
 		return self.get_response()
 
 	def get_media(self):
@@ -235,14 +248,12 @@ class ChangePasswordView(ModelAdminView):
 		self.obj = self.get_object(unquote(object_id))
 		if not self.has_change_permission(self.obj):
 			raise PermissionDenied
-		self.form = self.change_password_form(self.obj, request.POST)
-
+		self.form = self.get_form(self.obj, request.POST)
 		if self.form.is_valid():
-			self.form.save()
-			self.message_user(_('Password changed successfully.'), 'success')
-			return HttpResponseRedirect(self.model_admin_url('change', self.obj.pk))
+			response = self.form_valid(self.form)
 		else:
-			return self.get_response()
+			response = self.form_invalid(self.form)
+		return response
 
 
 class ChangeAccountPasswordView(ChangePasswordView):
@@ -251,8 +262,7 @@ class ChangeAccountPasswordView(ChangePasswordView):
 	@csrf_protect_m
 	def get(self, request):
 		self.obj = self.user
-		self.form = self.change_password_form(self.obj)
-
+		self.form = self.get_form(self.obj)
 		return self.get_response()
 
 	def get_context(self):
@@ -263,18 +273,22 @@ class ChangeAccountPasswordView(ChangePasswordView):
 		})
 		return context
 
+	@filter_hook
+	def form_valid(self, form):
+		form.save()
+		self.message_user(_('Password changed successfully.'), 'success')
+		return HttpResponseRedirect(self.get_admin_url('index'))
+
 	@method_decorator(sensitive_post_parameters())
 	@csrf_protect_m
 	def post(self, request):
 		self.obj = self.user
-		self.form = self.change_password_form(self.obj, request.POST)
-
+		self.form = self.get_form(self.obj, request.POST)
 		if self.form.is_valid():
-			self.form.save()
-			self.message_user(_('Password changed successfully.'), 'success')
-			return HttpResponseRedirect(self.get_admin_url('index'))
+			response = self.form_valid(self.form)
 		else:
-			return self.get_response()
+			response = self.form_invalid(self.form)
+		return response
 
 
 user_model = settings.AUTH_USER_MODEL.lower().replace('.', '/')
