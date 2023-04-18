@@ -95,7 +95,7 @@ class ResetPasswordComfirmView(BaseAdminView):
 
 
 site.register_view(
-	r'^xadmin/password_reset/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+	r'^xadmin/password_reset/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$',
 	ResetPasswordComfirmView, name='xadmin_password_reset_confirm')
 
 
