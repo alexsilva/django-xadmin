@@ -74,20 +74,30 @@ class ResetPasswordComfirmView(BaseAdminView):
 	password_reset_confirm_template = 'xadmin/auth/password_reset/confirm.html'
 	password_reset_token_generator = default_token_generator
 
-	def do_view(self, request, uidb36, token, *args, **kwargs):
+	def get_password_reset_view(self, request, **options):
+		"""Creates and returns an instance of the 'PasswordResetConfirmView' view"""
+		view = password_reset_confirm(**options)
+		view.setup(request, *self.args, **self.kwargs)
+		return view
+
+	def do_view(self, request, uidb64, token, *args, **kwargs):
 		context = super(ResetPasswordComfirmView, self).get_context()
-		return password_reset_confirm(request, uidb36, token,
-		                              template_name=self.password_reset_confirm_template,
-		                              token_generator=self.password_reset_token_generator,
-		                              set_password_form=self.password_reset_set_form,
-		                              post_reset_redirect=self.get_admin_url('xadmin_password_reset_complete'),
-		                              current_app=self.admin_site.name, extra_context=context)
+		view = self.get_password_reset_view(
+			request,
+			template_name=self.password_reset_confirm_template,
+			token_generator=self.password_reset_token_generator,
+			set_password_form=self.password_reset_set_form,
+			success_url=self.get_admin_url('xadmin_password_reset_complete'),
+			current_app=self.admin_site.name,
+			extra_context=context
+		)
+		return view.dispatch(request, uidb64=uidb64, token=token, *args, **kwargs)
 
-	def get(self, request, uidb36, token, *args, **kwargs):
-		return self.do_view(request, uidb36, token)
+	def get(self, request, uidb64, token, *args, **kwargs):
+		return self.do_view(request, uidb64, token)
 
-	def post(self, request, uidb36, token, *args, **kwargs):
-		return self.do_view(request, uidb36, token)
+	def post(self, request, uidb64, token, *args, **kwargs):
+		return self.do_view(request, uidb64, token)
 
 	def get_media(self):
 		return super(ResetPasswordComfirmView, self).get_media() + \
@@ -95,7 +105,7 @@ class ResetPasswordComfirmView(BaseAdminView):
 
 
 site.register_view(
-	r'^xadmin/password_reset/(?P<uidb36>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
+	r'^xadmin/password_reset/(?P<uidb64>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$',
 	ResetPasswordComfirmView, name='xadmin_password_reset_confirm')
 
 
