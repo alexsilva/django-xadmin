@@ -40,6 +40,12 @@ class LoginView(BaseAdminView, AuthLoginView):
 	login_template = None
 	redirect_authenticated_user = True
 
+	def dispatch(self, request, *args, **kwargs):
+		# Ensures the logged in user still has permission to access admin views.
+		# Not validating this results in recursion of redirects.
+		self.redirect_authenticated_user &= bool(self.admin_site.has_permission(self.request))
+		return super().dispatch(request, *args, **kwargs)
+
 	@filter_hook
 	def get_form_class(self):
 		return self.authentication_form or self.login_form
