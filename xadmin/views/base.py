@@ -483,10 +483,14 @@ class CommAdminView(BaseAdminView):
 		return site_menu
 
 	@filter_hook
+	def has_session_nav_menu(self):
+		return not settings.DEBUG and 'nav_menu' in self.request.session
+
+	@filter_hook
 	def get_context(self):
 		context = super(CommAdminView, self).get_context()
 
-		if not settings.DEBUG and 'nav_menu' in self.request.session:
+		if self.has_session_nav_menu():
 			nav_menu = json.loads(self.request.session['nav_menu'])
 		else:
 			menus = copy.copy(self.get_nav_menu())
