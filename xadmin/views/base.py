@@ -516,7 +516,6 @@ class CommAdminView(BaseAdminView):
 			nav_menu = list(filter(lambda x: x, nav_menu))
 
 			if not settings.DEBUG:
-				self.request.session['nav_menu'] = json.dumps(nav_menu, cls=JSONEncoder)
 				self.request.session['nav_menu'] = json.dumps(nav_menu, cls=JSONEncoder, ensure_ascii=False)
 				self.request.session.modified = True
 
