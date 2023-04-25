@@ -35,10 +35,14 @@
       {% for action in action_list %}
         <tr>
           <td class="text-center">
-            <input type="radio" name="version_a" value="{{action.version.id}}">
+            <div class="form-check">
+              <input class="form-check-input position-static" type="radio" name="version_a" value="{{action.version.id}}">
+            </div>
           </td>
           <td class="text-center">
-            <input type="radio" name="version_b" value="{{action.version.id}}">
+            <div class="form-check">
+              <input class="form-check-input position-static" type="radio" name="version_b" value="{{action.version.id}}">
+            </div>
           </td>
           <td><a href="{{action.url}}">{{action.revision.date_created}}</a></td>
           <td>
