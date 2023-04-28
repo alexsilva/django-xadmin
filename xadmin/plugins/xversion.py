@@ -53,18 +53,18 @@ def _register_model(admin, model):
 				ct_field = getattr(inline, 'ct_field', 'content_type')
 				ct_fk_field = getattr(inline, 'ct_fk_field', 'object_id')
 				for field in model._meta.many_to_many:
-					if isinstance(field, GenericRelation) \
-							and field.remote_field.model == inline_model \
-							and field.object_id_field_name == ct_fk_field \
-							and field.content_type_field_name == ct_field:
+					if (isinstance(field, GenericRelation)
+						and field.remote_field.model == inline_model
+						and field.object_id_field_name == ct_fk_field
+						and field.content_type_field_name == ct_field):
 						inline_fields.append(field.name)
 				_autoregister(admin, inline_model)
 			else:
 				fk_name = getattr(inline, 'fk_name', None)
 				if not fk_name:
 					for field in inline_model._meta.fields:
-						if isinstance(field, (models.ForeignKey, models.OneToOneField)) and issubclass(model,
-						                                                                               field.remote_field.model):
+						if (isinstance(field, (models.ForeignKey, models.OneToOneField))
+							and issubclass(model, field.remote_field.model)):
 							fk_name = field.name
 				_autoregister(admin, inline_model, follow=[fk_name])
 				if not inline_model._meta.get_field(fk_name).remote_field.is_hidden():
