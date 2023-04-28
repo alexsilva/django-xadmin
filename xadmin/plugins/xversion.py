@@ -16,7 +16,7 @@ from django.utils.text import capfirst
 from django.utils.translation import ugettext as _
 from reversion import RegistrationError
 from reversion.models import Revision, Version
-from reversion.revisions import register, is_registered, create_revision, set_user
+from reversion.revisions import register, is_registered, create_revision, set_user, unregister
 
 from xadmin.layout import Field, render_field, render_to_string
 from xadmin.plugins.actions import BaseActionView
@@ -35,9 +35,9 @@ def _autoregister(admin, model, follow=None):
 		raise RegistrationError("Proxy models cannot be used with django-reversion, register the parent class instead")
 	if not is_registered(model):
 		follow = follow or []
-		for parent_cls, field in model._meta.parents.items():
+		for parent_model, field in model._meta.concrete_model._meta.parents.items():
 			follow.append(field.name)
-			_autoregister(admin, parent_cls)
+			_autoregister(admin, parent_model)
 		register(model, follow=follow, format=admin.reversion_format)
 
 
@@ -47,12 +47,14 @@ def _register_model(admin, model):
 
 	if not is_registered(model):
 		inline_fields = []
+		opts = model._meta
 		for inline in getattr(admin, 'inlines', []):
 			inline_model = inline.model
+			inline_opts = inline_model._meta
 			if getattr(inline, 'generic_inline', False):
 				ct_field = getattr(inline, 'ct_field', 'content_type')
 				ct_fk_field = getattr(inline, 'ct_fk_field', 'object_id')
-				for field in model._meta.many_to_many:
+				for field in opts.private_fields:
 					if (isinstance(field, GenericRelation)
 						and field.remote_field.model == inline_model
 						and field.object_id_field_name == ct_fk_field
@@ -62,14 +64,17 @@ def _register_model(admin, model):
 			else:
 				fk_name = getattr(inline, 'fk_name', None)
 				if not fk_name:
-					for field in inline_model._meta.fields:
+					for field in inline_opts.get_fields():
 						if (isinstance(field, (models.ForeignKey, models.OneToOneField))
 							and issubclass(model, field.remote_field.model)):
 							fk_name = field.name
-				_autoregister(admin, inline_model, follow=[fk_name])
-				if not inline_model._meta.get_field(fk_name).remote_field.is_hidden():
-					accessor = inline_model._meta.get_field(fk_name).remote_field.get_accessor_name()
-					inline_fields.append(accessor)
+							break
+				if fk_name:
+					_autoregister(admin, inline_model, follow=[fk_name])
+					if not inline_opts.get_field(fk_name).remote_field.is_hidden():
+						field = inline_opts.get_field(fk_name)
+						accessor = field.remote_field.get_accessor_name()
+						inline_fields.append(accessor)
 		_autoregister(admin, model, inline_fields)
 
 
@@ -529,38 +534,36 @@ class InlineRevisionPlugin(BaseAdminPlugin):
 			fk_name = formset.ct_fk_field.name
 		# Look up the revision data.
 		revision_versions = version.revision.version_set.all()
-		related_versions = dict([(related_version.object_id, related_version)
-		                         for related_version in revision_versions
-		                         if ContentType.objects.get_for_id(
-				related_version.content_type_id).model_class() == formset.model
-		                         and smart_text(related_version.field_dict[fk_name]) == smart_text(object_id)])
+		related_versions = {}
+		for related_version in revision_versions:
+			model_class = ContentType.objects.get_for_id(related_version.content_type_id).model_class()
+			if (model_class == formset.model
+				and smart_text(related_version.field_dict[fk_name]) == smart_text(object_id)):
+				related_versions[related_version.object_id] = related_version
 		return related_versions
 
 	def _hack_inline_formset_initial(self, revision_view, formset):
 		"""Hacks the given formset to contain the correct initial data."""
 		# Now we hack it to push in the data from the revision!
 		initial = []
-		related_versions = self.get_related_versions(
-			revision_view.org_obj, revision_view.version, formset)
+		related_versions = self.get_related_versions(revision_view.org_obj,
+		                                             revision_view.version, formset)
 		formset.related_versions = related_versions
 		for related_obj in formset.queryset:
 			if smart_text(related_obj.pk) in related_versions:
-				initial.append(
-					related_versions.pop(smart_text(related_obj.pk)).field_dict)
+				initial.append(related_versions.pop(smart_text(related_obj.pk)).field_dict)
 			else:
 				initial_data = model_to_dict(related_obj)
 				initial_data["DELETE"] = True
 				initial.append(initial_data)
 		for related_version in related_versions.values():
 			initial_row = related_version.field_dict
-			pk_name = ContentType.objects.get_for_id(
-				related_version.content_type_id).model_class()._meta.pk.name
+			pk_name = ContentType.objects.get_for_id(related_version.content_type_id).model_class()._meta.pk.name
 			del initial_row[pk_name]
 			initial.append(initial_row)
 		# Reconstruct the forms with the new revision data.
 		formset.initial = initial
-		formset.forms = [formset._construct_form(
-			n) for n in range(len(initial))]
+		formset.forms = [formset._construct_form(n) for n in range(len(initial))]
 
 		# Hack the formset to force a save of everything.
 
@@ -584,8 +587,7 @@ class InlineRevisionPlugin(BaseAdminPlugin):
 			for form in formset.forms:
 				instance = form.instance
 				if instance.pk:
-					form.detail = self.get_view(
-						DetailAdminUtil, fake_admin_class, instance)
+					form.detail = self.get_view(DetailAdminUtil, fake_admin_class, instance)
 
 	def instance_form(self, formset, **kwargs):
 		admin_view = self.admin_view.admin_view
