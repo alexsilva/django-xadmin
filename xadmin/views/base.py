@@ -367,6 +367,10 @@ class BaseAdminView(BaseAdminObject, View):
 	def init_request(self, *args, **kwargs):
 		pass
 
+	@filter_hook
+	def setup_view(self, *args, **kwargs):
+		pass
+
 	def init_plugin(self, *args, **kwargs):
 		self.plugins = self.plugin_manager.init(*args, **kwargs)
 
