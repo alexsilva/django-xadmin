@@ -452,15 +452,18 @@ class RevisionView(BaseRevisionView):
 
 			if fvalue != vvalue:
 				diff_fields[f.name] = self.detail.get_field_result(f.name).val
+
+		readonly_fields = self.get_readonly_fields()
 		for k, v in diff_fields.items():
+			if k in readonly_fields:
+				continue
 			helper[k].wrap(DiffField, orgdata=v)
 		return helper
 
 	@filter_hook
 	def get_context(self):
 		context = super(RevisionView, self).get_context()
-		context["title"] = _(
-			"Revert %s") % force_text(self.model._meta.verbose_name)
+		context["title"] = _("Revert %s") % force_text(self.model._meta.verbose_name)
 		return context
 
 	@filter_hook
