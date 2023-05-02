@@ -357,14 +357,13 @@ class BaseAdminView(BaseAdminObject, View):
 
 		self.init_plugin(*args, **kwargs)
 		self.init_request(*args, **kwargs)
-
-	@classonlymethod
-	def as_view(cls, *initargs, **initkwargs):
-		view = super().as_view(*initargs, **initkwargs)
-		view.need_site_permission = cls.need_site_permission
-		return view
+		self.setup_view(*args, **kwargs)
 
 	def init_request(self, *args, **kwargs):
+		pass
+
+	@filter_hook
+	def setup_view(self, *args, **kwargs):
 		pass
 
 	def init_plugin(self, *args, **kwargs):
@@ -381,6 +380,12 @@ class BaseAdminView(BaseAdminObject, View):
 	@filter_hook
 	def get_media(self):
 		return forms.Media()
+
+	@classonlymethod
+	def as_view(cls, *initargs, **initkwargs):
+		view = super().as_view(*initargs, **initkwargs)
+		view.need_site_permission = cls.need_site_permission
+		return view
 
 
 class CommAdminView(BaseAdminView):

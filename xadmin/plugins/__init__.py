@@ -27,7 +27,8 @@ PLUGINS = (
 	'language',
 	'quickfilter',
 	'sortablelist',
-	'importexport'
+	'importexport',
+	'xversion'
 )
 
 
