@@ -119,6 +119,12 @@ class ReversionPlugin(BaseAdminPlugin):
 			unregister(self.model)
 			_register_model(self.admin_view, self.model)
 
+	def save_models(self, __):
+		# fix: DatabaseError: Save with update_fields did not affect any rows
+		if hasattr(self.admin_view, "new_obj") and self.admin_view.new_obj.pk:
+			self.admin_view.new_obj.reversion = True
+		return __()
+
 	def do_post(self, __):
 		def _method():
 			self.revision_context_manager.set_user(self.user)
