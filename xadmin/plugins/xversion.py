@@ -95,13 +95,7 @@ def do_create_revision(request):
 		yield
 
 
-class ReversionPlugin(BaseAdminPlugin):
-	# The serialization format to use when registering models with reversion.
-	reversion_format = "json"
-
-	# Whether to ignore duplicate revision data.
-	ignore_duplicate_revisions = False
-
+class ReversionRegisterPlugin(BaseAdminPlugin):
 	reversion_enable = False
 
 	def init_request(self, *args, **kwargs):
@@ -118,6 +112,19 @@ class ReversionPlugin(BaseAdminPlugin):
 		if not self.admin_view_inlines and getattr(self.admin_view, "inlines", ()):
 			unregister(self.model)
 			_register_model(self.admin_view, self.model)
+
+
+class ReversionPlugin(ReversionRegisterPlugin):
+	# The serialization format to use when registering models with reversion.
+	reversion_format = "json"
+
+	# Whether to ignore duplicate revision data.
+	ignore_duplicate_revisions = False
+
+	reversion_enable = False
+
+	def init_request(self, *args, **kwargs):
+		return self.reversion_enable
 
 	def save_models(self, __):
 		# fix: DatabaseError: Save with update_fields did not affect any rows
@@ -655,6 +662,8 @@ site.register_modelview(
 site.register_plugin(ReversionPlugin, ListAdminView)
 site.register_plugin(ReversionPlugin, ModelFormAdminView)
 site.register_plugin(ReversionPlugin, DeleteAdminView)
+
+site.register_plugin(ReversionRegisterPlugin, RecoverListView)
 
 site.register_plugin(InlineRevisionPlugin, InlineModelAdmin)
 site.register_plugin(ActionRevisionPlugin, BaseActionView)
