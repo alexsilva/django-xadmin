@@ -1,10 +1,11 @@
 from contextlib import contextmanager
 from functools import partial
 
+import re
 from crispy_forms.utils import TEMPLATE_PACK
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, FieldDoesNotExist
 from django.db import models
 from django.db.models.query import QuerySet
 from django.forms.models import model_to_dict
@@ -557,9 +558,19 @@ class InlineRevisionPlugin(BaseAdminPlugin):
 				initial_data["DELETE"] = True
 				initial.append(initial_data)
 		for related_version in related_versions.values():
-			initial_row = related_version.field_dict
-			pk_name = ContentType.objects.get_for_id(related_version.content_type_id).model_class()._meta.pk.name
-			del initial_row[pk_name]
+			field_dict = related_version.field_dict
+			ctype_model = ContentType.objects.get_for_id(related_version.content_type_id).model_class()
+			ctype_opts = ctype_model._meta
+			pk_name = ctype_opts.pk.name
+			del field_dict[pk_name]
+			initial_row = {}
+			for field_name in field_dict:
+				name = re.sub("_id$", "", field_name)
+				try:
+					ctype_opts.get_field(name)
+					initial_row[name] = field_dict[field_name]
+				except FieldDoesNotExist:
+					initial_row[field_name] = field_dict[field_name]
 			initial.append(initial_row)
 		# Reconstruct the forms with the new revision data.
 		formset.initial = initial
