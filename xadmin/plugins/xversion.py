@@ -107,6 +107,18 @@ class ReversionPlugin(BaseAdminPlugin):
 	def init_request(self, *args, **kwargs):
 		return self.reversion_enable
 
+	def setup(self, *args, **kwargs):
+		model = getattr(self, "model", None)
+		self.admin_view_inlines = getattr(self.admin_view, "inlines", ())
+		if model and not is_registered(model):
+			_register_model(self.admin_view, model)
+
+	def setup_view(self, *args, **kwargs):
+		# The inlines are linked to the view instance and were created dynamically.
+		if not self.admin_view_inlines and getattr(self.admin_view, "inlines", ()):
+			unregister(self.model)
+			_register_model(self.admin_view, self.model)
+
 	def do_post(self, __):
 		def _method():
 			self.revision_context_manager.set_user(self.user)
