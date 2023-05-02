@@ -430,11 +430,9 @@ class RevisionView(BaseRevisionView):
 	revision_form_template = None
 
 	def init_request(self, object_id, version_id):
-		self.detail = self.get_model_view(
-			DetailAdminView, self.model, object_id)
+		self.detail = self.get_model_view(DetailAdminView, self.model, object_id)
 		self.org_obj = self.detail.obj
-		self.version = get_object_or_404(
-			Version, pk=version_id, object_id=smart_text(self.org_obj.pk))
+		self.version = get_object_or_404(Version, pk=version_id, object_id=smart_text(self.org_obj.pk))
 
 		self.prepare_form()
 
