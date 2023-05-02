@@ -664,6 +664,7 @@ site.register_plugin(ReversionPlugin, ModelFormAdminView)
 site.register_plugin(ReversionPlugin, DeleteAdminView)
 
 site.register_plugin(ReversionRegisterPlugin, RecoverListView)
+site.register_plugin(ReversionRegisterPlugin, RevisionListView)
 
 site.register_plugin(InlineRevisionPlugin, InlineModelAdmin)
 site.register_plugin(ActionRevisionPlugin, BaseActionView)
