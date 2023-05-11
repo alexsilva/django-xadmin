@@ -226,6 +226,9 @@
         modal.find('.modal-footer').show();
         modal.find('.btn-submit').click(function(){form.submit()});
         modal.data("form", form);
+
+        // event handle
+        self.$btn.trigger("load_quickform", form);
       });
     }
     , click: function(e) {
