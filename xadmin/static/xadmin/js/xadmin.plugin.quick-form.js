@@ -111,8 +111,7 @@
     }
     , save: function(newValue) {
 
-      this.$form.find('.text-error, .help-inline.error').remove();
-      this.$form.find('.control-group').removeClass('error');
+      this.$form.find('.invalid-feedback').remove();
 
       this.$mask.show();
       this.$form.find('submit, button[type=submit], input[type=submit]').addClass('disabled');
