@@ -77,18 +77,16 @@ class InputGroup(layout.Field):
 		self.input_size = None
 		css_class = kwargs.get('css_class', '')
 		if 'input-lg' in css_class:
-			self.input_size = 'input-lg'
+			self.input_size = 'input-group-lg'
 		if 'input-sm' in css_class:
-			self.input_size = 'input-sm'
+			self.input_size = 'input-group-sm'
 
 		super(InputGroup, self).__init__(field, **kwargs)
 
 	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
-		classes = form.fields[self.field].widget.attrs.get('class', '')
 		extra_context = {
 			'inputs': self.inputs,
 			'input_size': self.input_size,
-			'classes': classes.replace('form-control', '')
 		}
 		if hasattr(self, 'wrapper_class'):
 			extra_context['wrapper_class'] = self.wrapper_class

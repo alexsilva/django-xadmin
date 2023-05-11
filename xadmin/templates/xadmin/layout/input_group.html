@@ -3,27 +3,37 @@
 {% if field.is_hidden %}
     {{ field }}
 {% else %}
-    <div id="div_{{ field.auto_id }}" class="form-group{% if wrapper_class %} {{ wrapper_class }}{% endif %}{% if form_show_errors and field.errors %} has-error{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
-
+    <{% if tag %}{{ tag }}{% else %}div{% endif %} id="div_{{ field.auto_id }}"
+                                                   class="{% if not field|is_checkbox %}form-group{% if 'form-horizontal' in form_class %} row{% endif %}{% else %}{% if use_custom_control %}custom-control custom-checkbox{% else %}form-check{% endif %}{% endif %}{% if wrapper_class %} {{ wrapper_class }}{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
         {% if field.label and form_show_labels %}
-            <label for="{{ field.id_for_label }}" class="col-form-label {{ label_class }}{% if field.field.required %} requiredField{% endif %}">
-                {{ field.label|safe }}{% if field.field.required %}<span class="text-danger">*</span>{% endif %}
+            <label {% if field.id_for_label and not field|is_radioselect %}for="{{ field.id_for_label }}" {% endif %}class="{% if 'form-horizontal' in form_class %}col-form-label {% endif %}{{ label_class }}{% if field.field.required %} requiredField{% endif %}">
+                {{ field.label|safe }}{% if field.field.required %}<span class="asteriskField">*</span>{% endif %}
             </label>
         {% endif %}
-
-        <div class="controls {{ field_class }}">
-            <div class="input-group {{classes}}">
-            {% for input in inputs %}
-              {% if input == '@@' %}
-                {% crispy_field field %}
-              {% else %}
-                 <span class="input-group-addon">{{input|safe}}</span>
-              {% endif %}
-            {% endfor %}
+        <div{% if field_class %} class="{{ field_class }}"{% endif %}>
+            <div class="input-group {% if input_size %}{{ input_size }}{% endif %}">
+                {% if inputs|first == '@@' %}
+                    {% if field.errors %}
+                        {% crispy_field field 'class' 'form-control is-invalid' %}
+                    {% else %}
+                        {% crispy_field field 'class' 'form-control' %}
+                    {% endif %}
+                    <div class="input-group-append">
+                        <span class="input-group-text">{{ inputs|last|safe }}</span>
+                    </div>
+                {% else %}
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">{{ inputs|first|safe }}</span>
+                    </div>
+                    {% if field.errors %}
+                        {% crispy_field field 'class' 'form-control is-invalid' %}
+                    {% else %}
+                        {% crispy_field field 'class' 'form-control' %}
+                    {% endif %}
+                {% endif %}
             </div>
-
             {% include 'bootstrap4/layout/help_text_and_errors.html' %}
         </div>
-    </div>
+    </{% if tag %}{{ tag }}{% else %}div{% endif %}>
 {% endif %}
 
