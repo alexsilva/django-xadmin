@@ -24,8 +24,7 @@ jQuery(function() {
         modal.find('.btn-submit').click(function(){
           var csrftoken = $.getCookie('csrftoken');
           //clean form errors
-          form.find('.text-error,.help-inline.error').remove();
-          form.find('.control-group').removeClass('error');          
+          form.find('.invalid-feedback').remove();
           $.ajax({
             type: 'POST',
             url: form.attr('action'),
@@ -50,7 +49,7 @@ jQuery(function() {
                 if(non_fields_errors.length){
                   err_html = [];
                   for (index = non_fields_errors.length - 1; index >= 0; index--) {
-                    err_html.push('<p class="text-error"><strong>'+e['errors'][index]+'</strong></p>');
+                    err_html.push('<p class="invalid-feedback"><strong>'+e['errors'][index]+'</strong></p>');
                   }
                   form.prepend(err_html.join('\n'));
                 }

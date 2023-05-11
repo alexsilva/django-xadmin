@@ -146,7 +146,6 @@
   }
 
   Editpop.prototype.save = function(newValue) {
-    this.$form.find('.control-group').removeClass('has-error');
     this.$form.find('.controls .help-block.error').remove();
 
     this.$mask.show();
