@@ -197,6 +197,10 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 		new_name = self.request_params.get('_field_inline_' + name)
 		return (new_name and new_name[0]) or name
 
+	def render_extra_output(self, name, value, **kwargs):
+		"""render inside container"""
+		return None
+
 	def render(self, name, value, attrs=None, **kwargs):
 		name = self.resolve_field_name_if_inline(name)
 		self.widget.choices = self.choices
@@ -211,6 +215,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 			title_i18n_change = self.kwargs.get('title_i18n_change', _('Change %s'))
 			html = render_to_string(self.quickform_btn_template, context={
 				'title': title_i18n_change % self.rel.model._meta.verbose_name,
+				'css_class': 'btn btn-primary',
 				'editable_url': self.change_url,
 				'refresh_url': refresh_url,
 				'for_id': name,
@@ -225,6 +230,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 			title_i18n_add = self.kwargs.get('title_i18n_add', _('Create New %s'))
 			html = render_to_string(self.quickform_btn_template, context={
 				'title': title_i18n_add % self.rel.model._meta.verbose_name,
+				'css_class': 'btn btn-primary',
 				'editable_url': self.add_url,
 				'refresh_url': refresh_url,
 				'for_id': name,
@@ -232,6 +238,8 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 				'action': 'add'
 			})
 			output.append(html)
+		if extra_output := self.render_extra_output(name, value, attrs=attrs, **kwargs):
+			output.extend(extra_output)
 		output.extend(['</div>'])
 		return mark_safe(''.join(output))
 
