@@ -159,6 +159,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 	This class is a wrapper to a given widget to add the add icon for the
 	admin interface.
 	"""
+	quickform_btn_template = "xadmin/plugins/quickform_btn.html"
 
 	def __init__(self, widget, rel, add_url, rel_add_url, change_url=None, rel_change_url=None, **kwargs):
 		self.needs_multipart_form = widget.needs_multipart_form
@@ -208,7 +209,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 			if refresh_url:
 				refresh_url += "?" + urllib.parse.urlencode({'_field': name, name: ''})
 			title_i18n_change = self.kwargs.get('title_i18n_change', _('Change %s'))
-			html = render_to_string("xadmin/plugins/quickform_btn.html", context={
+			html = render_to_string(self.quickform_btn_template, context={
 				'title': title_i18n_change % self.rel.model._meta.verbose_name,
 				'editable_url': self.change_url,
 				'refresh_url': refresh_url,
@@ -222,7 +223,7 @@ class RelatedFieldWidgetWrapper(forms.Widget):
 			if refresh_url:
 				refresh_url += "?" + urllib.parse.urlencode({'_field': name, name: ''})
 			title_i18n_add = self.kwargs.get('title_i18n_add', _('Create New %s'))
-			html = render_to_string("xadmin/plugins/quickform_btn.html", context={
+			html = render_to_string(self.quickform_btn_template, context={
 				'title': title_i18n_add % self.rel.model._meta.verbose_name,
 				'editable_url': self.add_url,
 				'refresh_url': refresh_url,
