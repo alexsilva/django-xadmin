@@ -22,40 +22,42 @@
 <div class="module">
 {% if action_list %}
   <form id="changelist-form" action="" method="post"{% view_block 'result_list_form' %} {% view_block 'form_tag_attrs' %}>{% csrf_token %}
-  <table id="change-history" class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th scope="col" colspan="2">{% trans 'Diff' %}</th>
-        <th scope="col">{% trans 'Date/time' %}</th>
-        <th scope="col">{% trans 'User' %}</th>
-        <th scope="col">{% trans 'Comment' %}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for action in action_list %}
+  <div class="table-responsive">
+    <table id="change-history" class="table table-bordered table-hover">
+      <thead>
         <tr>
-          <td class="text-center">
-            <div class="form-check">
-              <input class="form-check-input position-static" type="radio" name="version_a" value="{{action.version.id}}">
-            </div>
-          </td>
-          <td class="text-center">
-            <div class="form-check">
-              <input class="form-check-input position-static" type="radio" name="version_b" value="{{action.version.id}}">
-            </div>
-          </td>
-          <td><a href="{{action.url}}">{{action.revision.date_created}}</a></td>
-          <td>
-            {% if action.revision.user %}
-              {{action.revision.user.username}}
-              {% if action.revision.user.first_name %} ({{action.revision.user.first_name}}{% if action.revision.user.last_name %}&nbsp;{{action.revision.user.last_name}}{% endif %}){% endif %}
-            {% endif %}
-          </td>
-          <td>{{action.revision.comment|linebreaksbr|default:""}}</td>
+          <th scope="col" colspan="2">{% trans 'Diff' %}</th>
+          <th scope="col">{% trans 'Date/time' %}</th>
+          <th scope="col">{% trans 'User' %}</th>
+          <th scope="col">{% trans 'Comment' %}</th>
         </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {% for action in action_list %}
+          <tr>
+            <td class="text-center">
+              <div class="form-check">
+                <input class="form-check-input position-static" type="radio" name="version_a" value="{{action.version.id}}">
+              </div>
+            </td>
+            <td class="text-center">
+              <div class="form-check">
+                <input class="form-check-input position-static" type="radio" name="version_b" value="{{action.version.id}}">
+              </div>
+            </td>
+            <td><a href="{{action.url}}">{{action.revision.date_created}}</a></td>
+            <td>
+              {% if action.revision.user %}
+                {{action.revision.user.username}}
+                {% if action.revision.user.first_name %} ({{action.revision.user.first_name}}{% if action.revision.user.last_name %}&nbsp;{{action.revision.user.last_name}}{% endif %}){% endif %}
+              {% endif %}
+            </td>
+            <td>{{action.revision.comment|linebreaksbr|default:""}}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
   <div class="form-actions">
     <button class="btn btn-primary">{% trans "Diff Select Versions" %}</button>
   </div>
