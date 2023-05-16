@@ -1,3 +1,4 @@
+import reversion
 from contextlib import contextmanager
 from functools import partial
 
@@ -17,7 +18,7 @@ from django.utils.text import capfirst
 from django.utils.translation import ugettext as _
 from reversion import RegistrationError
 from reversion.models import Revision, Version
-from reversion.revisions import register, is_registered, create_revision, set_user, unregister
+from reversion.revisions import register, is_registered, create_revision, set_user, unregister, set_comment
 
 from xadmin.layout import Field, render_field, render_to_string
 from xadmin.plugins.actions import BaseActionView
@@ -152,6 +153,11 @@ class ReversionPlugin(ReversionRegisterPlugin):
 			return __()
 
 		return _method
+
+	def log_obj(self, log, *args, **kwargs):
+		"""Adds a default log message for object revision."""
+		if reversion.is_active() and not reversion.get_comment():
+			set_comment(log.message)
 
 	def post(self, __, request, *args, **kwargs):
 		with do_create_revision(request):
