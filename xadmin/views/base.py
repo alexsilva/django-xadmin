@@ -246,6 +246,7 @@ class BaseAdminObject:
 			# Limits the representation to the maximum size of the field.
 			log.object_repr = Truncator(force_text(obj)).chars(log.object_repr_length)
 		log.save()
+		return log
 
 
 @functools.total_ordering
@@ -588,6 +589,14 @@ class ModelAdminView(CommAdminView):
 		self.app_label = self.opts.app_label
 		self.model_name = self.opts.model_name
 		self.model_info = (self.app_label, self.model_name)
+
+	@filter_hook
+	def log_obj(self, flag, message, obj):
+		"""hook that allows plugins to access logs for edited objects."""
+		return super().log(flag, message, obj)
+
+	def log(self, flag, message, obj=None):
+		return self.log_obj(flag, message, obj)
 
 	@filter_hook
 	def get_context(self):
