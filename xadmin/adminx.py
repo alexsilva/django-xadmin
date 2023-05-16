@@ -19,13 +19,16 @@ class LogAdmin:
 			admin_url = self.get_admin_url('%s_%s_change' % (instance.content_type.app_label,
 			                                                 instance.content_type.model),
 			                               instance.object_id)
-			return "<a href='%s'>%s</a>" % (admin_url, _('Admin Object'))
+			text = _('Admin Object')
+			target = getattr(self.link, "target", "")
+			return f"<a href='{admin_url}' target='{target}'>{text}</a>"
 		else:
 			return ''
 
 	link.short_description = ""
 	link.allow_tags = True
 	link.is_column = False
+	link.target = "_blank"
 
 	list_display = ('action_time', 'user', 'ip_addr', '__str__', 'link')
 	list_filter = ['user', 'action_time']
