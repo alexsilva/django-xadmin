@@ -190,7 +190,7 @@ msgstr "Descrição"
 
 #: xadmin/models.py:169
 msgid "log entry"
-msgstr "Histório de dados"
+msgstr "Histórico de dados"
 
 #: xadmin/models.py:170
 msgid "log entries"
@@ -1501,7 +1501,7 @@ msgstr "Navegar"
 
 #: xadmin/templates/xadmin/widgets/clearable_file_input.html:18
 msgid "Choose file"
-msgstr "Escolher tudo"
+msgstr "Escolher arquivo"
 
 #: xadmin/templates/xadmin/widgets/time.html:10
 msgid "Now"
