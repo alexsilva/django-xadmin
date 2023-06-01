@@ -174,6 +174,12 @@ class AdminFileWidget(forms.ClearableFileInput):
 			final_attrs.update(attrs)
 		super(AdminFileWidget, self).__init__(attrs=final_attrs)
 
+	@property
+	def media(self):
+		media = super().media
+		media += vendor("xadmin.widget.file.js")
+		return media
+
 
 class AdminTextareaWidget(forms.Textarea):
 
