@@ -128,7 +128,7 @@ class RelateObject:
 		field = self.opts.get_field(parts[0])
 
 		if not is_related_field2(field):
-			raise Exception(u'Relate Lookup field must a related field')
+			raise Exception('Relate Lookup field must a related field')
 
 		self.to_model = field.related_model
 		self.rel_name = '__'.join(parts[1:])

@@ -307,8 +307,8 @@ class ImportProcessView(ImportBaseView):
 							action_flag=logentry_map[row.import_type],
 							change_message="%s through import_export" % row.import_type,
 						)
-			success_message = str(_(u'Import finished')) + ' , ' + str(_(u'Add')) + ' : %d' % result.totals[
-				RowResult.IMPORT_TYPE_NEW] + ' , ' + str(_(u'Update')) + ' : %d' % result.totals[
+			success_message = str(_('Import finished')) + ' , ' + str(_('Add')) + ' : %d' % result.totals[
+				RowResult.IMPORT_TYPE_NEW] + ' , ' + str(_('Update')) + ' : %d' % result.totals[
 				                  RowResult.IMPORT_TYPE_UPDATE]
 
 			messages.success(request, success_message)

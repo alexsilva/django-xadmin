@@ -59,7 +59,7 @@ class BaseActionView(ModelAdminView):
 
 class DeleteSelectedAction(BaseActionView):
 	action_name = "delete_selected"
-	description = _(u'Delete selected %(verbose_name_plural)s')
+	description = _('Delete selected %(verbose_name_plural)s')
 
 	delete_confirmation_template = None
 	delete_selected_confirmation_template = None

@@ -78,7 +78,7 @@ class AdminSplitDateTime(forms.SplitDateTimeWidget):
 		}))
 
 	def format_output(self, rendered_widgets):
-		return mark_safe(u'<div class="datetime clearfix">%s%s</div>' %
+		return mark_safe('<div class="datetime clearfix">%s%s</div>' %
 		                 (rendered_widgets[0], rendered_widgets[1]))
 
 
@@ -95,9 +95,9 @@ class AdminRadioInput(RadioChoiceInput):
 			label_for = ''
 		choice_label = conditional_escape(force_text(self.choice_label))
 		if attrs.get('inline', False):
-			return mark_safe(u'<label%s class="radio-inline">%s %s</label>' % (label_for, self.tag(), choice_label))
+			return mark_safe('<label%s class="radio-inline">%s %s</label>' % (label_for, self.tag(), choice_label))
 		else:
-			return mark_safe(u'<div class="radio"><label%s>%s %s</label></div>' % (label_for, self.tag(), choice_label))
+			return mark_safe('<div class="radio"><label%s>%s %s</label></div>' % (label_for, self.tag(), choice_label))
 
 
 class AdminRadioFieldRenderer(forms.RadioSelect):
@@ -111,7 +111,7 @@ class AdminRadioFieldRenderer(forms.RadioSelect):
 		return AdminRadioInput(self.name, self.value, self.attrs.copy(), choice, idx)
 
 	def render(self, *args, **kwargs):
-		return mark_safe(u'\n'.join([force_text(w) for w in self]))
+		return mark_safe('\n'.join([force_text(w) for w in self]))
 
 
 class AdminRadioSelect(forms.RadioSelect):
@@ -133,7 +133,7 @@ class AdminCheckboxSelect(forms.CheckboxSelectMultiple):
 			# so that the checkboxes don't all have the same ID attribute.
 			if has_id:
 				final_attrs = dict(final_attrs, id='%s_%s' % (attrs['id'], i))
-				label_for = u' for="%s"' % final_attrs['id']
+				label_for = ' for="%s"' % final_attrs['id']
 			else:
 				label_for = ''
 
@@ -145,11 +145,11 @@ class AdminCheckboxSelect(forms.CheckboxSelectMultiple):
 
 			if final_attrs.get('inline', False):
 				output.append(
-					u'<label%s class="checkbox-inline">%s %s</label>' % (label_for, rendered_cb, option_label))
+					'<label%s class="checkbox-inline">%s %s</label>' % (label_for, rendered_cb, option_label))
 			else:
 				output.append(
-					u'<div class="checkbox"><label%s>%s %s</label></div>' % (label_for, rendered_cb, option_label))
-		return mark_safe(u'\n'.join(output))
+					'<div class="checkbox"><label%s>%s %s</label></div>' % (label_for, rendered_cb, option_label))
+		return mark_safe('\n'.join(output))
 
 
 class AdminSelectMultiple(forms.SelectMultiple):
@@ -163,9 +163,9 @@ class AdminSelectMultiple(forms.SelectMultiple):
 
 class AdminFileWidget(forms.ClearableFileInput):
 	template_name = 'xadmin/widgets/clearable_file_input.html'
-	template_with_initial = (u'<p class="file-upload">%s</p>'
+	template_with_initial = ('<p class="file-upload">%s</p>'
 	                         % forms.ClearableFileInput.initial_text)
-	template_with_clear = (u'<span class="clearable-file-input">%s</span>'
+	template_with_clear = ('<span class="clearable-file-input">%s</span>'
 	                       % forms.ClearableFileInput.clear_checkbox_label)
 
 	def __init__(self, attrs=None):

@@ -81,7 +81,7 @@ class AdminSite:
 		if issubclass(plugin_class, BaseAdminPlugin):
 			self._registry_plugins.setdefault(admin_view_class, []).append(plugin_class)
 		else:
-			raise ImproperlyConfigured(u'The registered plugin class %s isn\'t subclass of %s' %
+			raise ImproperlyConfigured('The registered plugin class %s isn\'t subclass of %s' %
 			                           (plugin_class.__name__, BaseAdminPlugin.__name__))
 
 	def unregister_plugin(self, admin_view_class, *plugin_classes):
@@ -92,7 +92,7 @@ class AdminSite:
 		from xadmin.views.base import BaseAdminPlugin
 		from xadmin.views.base import BaseAdminView
 		if not issubclass(admin_view_class, BaseAdminView):
-			raise ImproperlyConfigured(u'The registered view class %s isn\'t subclass of %s' %
+			raise ImproperlyConfigured('The registered view class %s isn\'t subclass of %s' %
 			                           (admin_view_class.__name__, BaseAdminView.__name__))
 		for plugin_class in plugin_classes:
 			if issubclass(plugin_class, BaseAdminPlugin):
@@ -101,7 +101,7 @@ class AdminSite:
 				except ValueError:
 					raise NotRegistered('Plugin \"%s\" was not registered' % plugin_class.__name__)
 			else:
-				raise ImproperlyConfigured(u'The registered plugin class %s isn\'t subclass of %s' %
+				raise ImproperlyConfigured('The registered plugin class %s isn\'t subclass of %s' %
 				                           (plugin_class.__name__, BaseAdminPlugin.__name__))
 
 	def register_settings(self, name, admin_class):

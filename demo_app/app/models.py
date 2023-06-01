@@ -103,7 +103,7 @@ class HostGroup(models.Model):
 	name = models.CharField(max_length=32)
 	description = models.TextField()
 	hosts = models.ManyToManyField(
-		Host, verbose_name=u'Hosts', blank=True, related_name='groups')
+		Host, verbose_name='Hosts', blank=True, related_name='groups')
 
 	class Meta:
 		verbose_name = "Host Group"

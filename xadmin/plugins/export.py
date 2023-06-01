@@ -118,7 +118,7 @@ class ExportPlugin(BaseAdminPlugin):
 		model_name = self.opts.verbose_name
 		book = xlsxwriter.Workbook(output)
 		sheet = book.add_worksheet(
-			"%s %s" % (_(u'Sheet'), force_text(model_name)))
+			"%s %s" % (_('Sheet'), force_text(model_name)))
 		styles = {'datetime': book.add_format({'num_format': 'yyyy-mm-dd hh:mm:ss'}),
 		          'date': book.add_format({'num_format': 'yyyy-mm-dd'}),
 		          'time': book.add_format({'num_format': 'hh:mm:ss'}),
@@ -153,7 +153,7 @@ class ExportPlugin(BaseAdminPlugin):
 		export_header = self._options_is_on('export_xls_header')
 		model_name = self.opts.verbose_name
 		book = xlwt.Workbook(encoding=self.export_unicode_encoding)
-		sheet = book.add_sheet("%s %s" % (_(u'Sheet'), force_text(model_name)))
+		sheet = book.add_sheet("%s %s" % (_('Sheet'), force_text(model_name)))
 		styles = {'datetime': xlwt.easyxf(num_format_str='yyyy-mm-dd hh:mm:ss'),
 		          'date': xlwt.easyxf(num_format_str='yyyy-mm-dd'),
 		          'time': xlwt.easyxf(num_format_str='hh:mm:ss'),

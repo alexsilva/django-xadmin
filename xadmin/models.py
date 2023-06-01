@@ -42,12 +42,12 @@ post_migrate.connect(add_view_permissions)
 
 
 class Bookmark(models.Model):
-	title = models.CharField(_(u'Title'), max_length=128)
+	title = models.CharField(_('Title'), max_length=128)
 	user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name=_("user"), blank=True, null=True)
-	url_name = models.CharField(_(u'Url Name'), max_length=64)
+	url_name = models.CharField(_('Url Name'), max_length=64)
 	content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-	query = models.CharField(_(u'Query String'), max_length=1000, blank=True)
-	is_share = models.BooleanField(_(u'Is Shared'), default=False)
+	query = models.CharField(_('Query String'), max_length=1000, blank=True)
+	is_share = models.BooleanField(_('Is Shared'), default=False)
 
 	@property
 	def url(self):
@@ -60,7 +60,7 @@ class Bookmark(models.Model):
 		return self.title
 
 	class Meta:
-		verbose_name = _(u'Bookmark')
+		verbose_name = _('Bookmark')
 		verbose_name_plural = _('Bookmarks')
 
 
@@ -97,7 +97,7 @@ class UserSettings(models.Model):
 		return "%s %s" % (self.user, self.key)
 
 	class Meta:
-		verbose_name = _(u'User Setting')
+		verbose_name = _('User Setting')
 		verbose_name_plural = _('User Settings')
 
 
@@ -132,7 +132,7 @@ class UserWidget(models.Model):
 		return "%s %s widget" % (self.user, self.widget_type)
 
 	class Meta:
-		verbose_name = _(u'User Widget')
+		verbose_name = _('User Widget')
 		verbose_name_plural = _('User Widgets')
 
 

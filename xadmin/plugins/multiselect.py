@@ -21,7 +21,7 @@ class SelectMultipleTransfer(forms.SelectMultiple):
 
 	def render_opt(self, selected_choices, option_value, option_label):
 		option_value = force_text(option_value)
-		return u'<option value="%s">%s</option>' % (
+		return '<option value="%s">%s</option>' % (
 			escape(option_value), conditional_escape(force_text(option_label))), bool(option_value in selected_choices)
 
 	def get_context(self, name, value, attrs):
@@ -41,7 +41,7 @@ class SelectMultipleTransfer(forms.SelectMultiple):
 
 		for option_value, option_label in self.choices:
 			if isinstance(option_label, (list, tuple)):
-				available_output.append(u'<optgroup label="%s">' %
+				available_output.append('<optgroup label="%s">' %
 				                        escape(force_text(option_value)))
 				for option in option_label:
 					output, selected = self.render_opt(
@@ -50,7 +50,7 @@ class SelectMultipleTransfer(forms.SelectMultiple):
 						chosen_output.append(output)
 					else:
 						available_output.append(output)
-				available_output.append(u'</optgroup>')
+				available_output.append('</optgroup>')
 			else:
 				output, selected = self.render_opt(
 					selected_choices, option_value, option_label)
@@ -64,8 +64,8 @@ class SelectMultipleTransfer(forms.SelectMultiple):
 			'attrs': attrs,
 			'field_id': attrs['id'],
 			'flatatts': flatatt(final_attrs),
-			'available_options': u'\n'.join(available_output),
-			'chosen_options': u'\n'.join(chosen_output),
+			'available_options': '\n'.join(available_output),
+			'chosen_options': '\n'.join(chosen_output),
 		}
 
 		ctx.update(context)
