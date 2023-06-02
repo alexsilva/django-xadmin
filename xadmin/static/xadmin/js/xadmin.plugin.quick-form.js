@@ -261,7 +261,7 @@
           selected = [data['obj_id']];
       $form.data('ajaxform').clean();
       if (input.attr('multiple')){
-        if (input.hasClass("select2-multiple")) {
+        if (input.hasClass("select2-multiple") || input.hasClass("selectized")) {
           selected.push($("#" + input.attr("id")).val());
         } else {
           var opt = 'option';
