@@ -10,7 +10,7 @@
                     text = escape(data[this.settings.labelField]);
                   return $.fn.nunjucks_env.renderString(
                       '<div class="selectize-field-content" title="{{text}}">' +
-                      '<span class="selectize-field-label">{{tabel}}:</span>' +
+                      '<span class="selectize-field-label">{{label}}:</span>' +
                       '<span class="selectize-field-text">{{text}}</span>' +
                       '<div>',
                       {label: label, text: text});
@@ -32,8 +32,8 @@
           });
 
         f.find('.select-search').each(function(){
-            var $el = $(this),
-                preload = $el.hasClass('select-preload'),
+            var $el = $(this);
+            var preload = $el.hasClass('select-preload'),
                 placeholder = getPlaceholder($el),
                 options = {
                     valueField: 'id',
@@ -80,6 +80,8 @@
                     item: selectPlaceholderTemplate
                 }
             }
+
+            $($el).trigger( "selectize_pre_init", [ options, placeholder ] );
 
             var $select = $el.selectize(options);
             $el.data('selectize', $select[0].selectize);
