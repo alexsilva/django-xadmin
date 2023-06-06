@@ -81,8 +81,7 @@
                 }
             }
 
-            $($el).trigger( "selectize_pre_init", [ options, placeholder ] );
-
+            $el.trigger( "selectize_pre_init", [ options, placeholder ] );
             var $select = $el.selectize(options);
             $el.data('selectize', $select[0].selectize);
         })
