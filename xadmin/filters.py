@@ -348,10 +348,11 @@ class RelatedFieldSearchFilter(FieldFilter):
 
 	def __init__(self, field, request, params, model, model_admin, field_path):
 		other_model = get_model_from_relation(field)
+		other_model_opts = other_model._meta
 		if hasattr(field, 'remote_field'):
 			rel_name = field.remote_field.get_related_field().name
 		else:
-			rel_name = other_model._meta.pk.name
+			rel_name = other_model_opts.pk.name
 
 		self.lookup_formats = {'in': '%%s__%s__in' % rel_name, 'exact': '%%s__%s__exact' % rel_name}
 		super(RelatedFieldSearchFilter, self).__init__(
@@ -365,8 +366,8 @@ class RelatedFieldSearchFilter(FieldFilter):
 		else:
 			self.lookup_title = other_model._meta.verbose_name
 		self.title = self.lookup_title
-		self.search_url = model_admin.get_admin_url('%s_%s_changelist' % (other_model._meta.app_label,
-		                                                                  other_model._meta.model_name))
+		self.search_url = model_admin.get_admin_url('%s_%s_changelist' % (other_model_opts.app_label,
+		                                                                  other_model_opts.model_name))
 		self.label = self.label_for_value(other_model, rel_name, self.lookup_exact_val) if self.lookup_exact_val else ""
 		self.choices = '?'
 		rel_limit_choices_to = get_limit_choices_to_url_params(field.remote_field)
