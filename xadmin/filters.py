@@ -1,4 +1,5 @@
 import datetime
+import urllib.parse
 
 from django.core.cache import caches
 from django.core.exceptions import ImproperlyConfigured
@@ -6,7 +7,7 @@ from django.db import models
 from django.template.loader import get_template
 from django.utils import timezone
 from django.utils.encoding import smart_text
-from django.utils.html import escape, format_html
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
 from django.utils.translation import ugettext_lazy as _
@@ -369,11 +370,11 @@ class RelatedFieldSearchFilter(FieldFilter):
 		                                                                  other_model_opts.model_name))
 		self.label = self.label_for_value(other_model, rel_name, self.lookup_exact_val) if self.lookup_exact_val else ""
 		self.choices = '?'
-		rel_limit_choices_to = get_limit_choices_to_url_params(field.remote_field)
-		if rel_limit_choices_to:
-			for key in rel_limit_choices_to:
-				self.choices += "&_p_%s=%s" % (key, rel_limit_choices_to[key])
-			self.choices = format_html(self.choices)
+		if rel_limit_choices_to := get_limit_choices_to_url_params(field.remote_field):
+			self.choices += urllib.parse.urlencode([
+				(FILTER_PREFIX + key, rel_limit_choices_to[key])
+				for key in rel_limit_choices_to
+			])
 
 	def label_for_value(self, other_model, rel_name, value):
 		try:
