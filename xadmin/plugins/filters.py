@@ -89,6 +89,25 @@ class FilterPlugin(BaseAdminPlugin):
 			verbose_name = default
 		return verbose_name
 
+	def _fsearch_url_params(self, queryset: models.QuerySet, params: dict) -> models.QuerySet:
+		"""Filters parameters passed to another view (fk_search)"""
+		try:
+			lookup_params = {}
+			lookups = ("__in",)
+			for key, value in params.items():
+				value_list = value.split(',')
+				if len(value_list) > 0 and any([key.endswith(lookup) for lookup in lookups]):
+					lookup_params[key] = value_list
+				else:
+					lookup_params[key] = value
+			if lookup_params:
+				queryset = queryset.filter(**lookup_params)
+		except (SuspiciousOperation, ImproperlyConfigured):
+			raise
+		except Exception as e:
+			raise IncorrectLookupParameters(e)
+		return queryset
+
 	def get_list_queryset(self, queryset):
 		lookup_params = dict([(smart_str(k)[len(FILTER_PREFIX):], v) for k, v in self.admin_view.params.items()
 		                      if smart_str(k).startswith(FILTER_PREFIX) and v != ''])
@@ -169,24 +188,8 @@ class FilterPlugin(BaseAdminPlugin):
 		except FieldDoesNotExist as e:
 			raise IncorrectLookupParameters(e)
 
-		try:
-			# fix a bug by david: In demo, quick filter by IDC Name() cannot be used.
-			if isinstance(queryset, models.query.QuerySet) and lookup_params:
-				new_lookup_parames = dict()
-				for k, v in lookup_params.items():
-					list_v = v.split(',')
-					if len(list_v) > 0:
-						new_lookup_parames.update({k: list_v})
-					else:
-						new_lookup_parames.update({k: v})
-				queryset = queryset.filter(**new_lookup_parames)
-		except (SuspiciousOperation, ImproperlyConfigured):
-			raise
-		except Exception as e:
-			raise IncorrectLookupParameters(e)
-		else:
-			if not isinstance(queryset, models.query.QuerySet):
-				pass
+		if isinstance(queryset, models.QuerySet) and lookup_params:
+			queryset = self._fsearch_url_params(queryset, lookup_params)
 
 		query = urllib.parse.unquote_plus(self.request.GET.get(SEARCH_VAR, ''))
 
