@@ -376,8 +376,9 @@ class RevisionListView(BaseReversionView):
 			if type(value_a) is QuerySet and type(value_b) is QuerySet:
 				is_diff = list(value_a) != list(value_b)
 
-			diffs.append((label, detail_a.get_field_result(
-				f.name).val, detail_b.get_field_result(f.name).val, is_diff))
+			diffs.append((label, detail_a.get_field_result(f.name).val,
+			              detail_b.get_field_result(f.name).val,
+			              is_diff))
 
 		context = super(RevisionListView, self).get_context()
 		context.update({
