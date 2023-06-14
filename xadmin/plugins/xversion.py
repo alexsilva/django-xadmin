@@ -24,7 +24,7 @@ from xadmin.layout import Field, render_field, render_to_string
 from xadmin.plugins.actions import BaseActionView
 from xadmin.plugins.inline import InlineModelAdmin
 from xadmin.sites import site
-from xadmin.util import unquote, quote, is_related_field2
+from xadmin.util import unquote, quote, is_related_field2, is_related_remote_field, is_related_field, get_model_opts
 from xadmin.views import BaseAdminPlugin, ModelAdminView, CreateAdminView, UpdateAdminView, DetailAdminView, \
 	ModelFormAdminView, DeleteAdminView, ListAdminView
 from xadmin.views.base import csrf_protect_m, filter_hook
@@ -351,8 +351,14 @@ class RevisionListView(BaseReversionView):
 		obj_b, detail_b = self.get_version_object(version_b)
 
 		for f in (self.opts.fields + self.opts.many_to_many):
-			if is_related_field2(f):
-				label = f.opts.verbose_name
+			if is_related_remote_field(f):
+				field_opts = get_model_opts(f.remote_field.model)
+				if isinstance(f, models.ManyToManyField):
+					label = field_opts.verbose_name_plural
+				else:
+					label = field_opts.verbose_name
+			elif is_related_field(f):
+				label = get_model_opts(f.model).verbose_name
 			else:
 				label = f.verbose_name
 
