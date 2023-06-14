@@ -32,6 +32,10 @@ except ImportError:
 	from django.utils.timezone import localtime as tz_localtime
 
 
+def get_model_opts(model):
+	return getattr(model, "_meta")
+
+
 def xstatic(*tags):
 	from .vendors import vendors
 	node = vendors
@@ -498,5 +502,9 @@ def is_related_field(field):
 	return isinstance(field, ForeignObjectRel)
 
 
+def is_related_remote_field(field):
+	return hasattr(field, 'remote_field') and field.remote_field is not None
+
+
 def is_related_field2(field):
-	return (hasattr(field, 'remote_field') and field.remote_field is not None) or is_related_field(field)
+	return is_related_remote_field(field) or is_related_field(field)
