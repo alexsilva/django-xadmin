@@ -53,6 +53,16 @@ vendors = {
 			]
 		}
 	},
+	'datatables': {
+		"js": {
+			'dev': ['xadmin/vendor/datatables/datatables.js'],
+			'production': ['xadmin/vendor/datatables/datatables.min.js']
+		},
+		"css": {
+			'dev': ['xadmin/vendor/datatables/datatables.css'],
+			'production': ['xadmin/vendor/datatables/datatables/datatables.min.css']
+		}
+	},
 	"font-awesome": {
 		"css": {
 			'dev': [
