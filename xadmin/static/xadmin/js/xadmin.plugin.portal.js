@@ -1,6 +1,6 @@
 
-jQuery(function() {
-    $(".column").sortable({
+$(function() {
+    $(".column").html5sortable({
         acceptFrom: ".column",
         handle: '.card-header',
         hoverClass: "cursor-move",

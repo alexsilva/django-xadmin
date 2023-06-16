@@ -9,7 +9,7 @@
             }
         });
 
-        $(".results table tbody").sortable({
+        $(".results table tbody").html5sortable({
             items: 'tr',
             cursor: 'move',
             opacity: 0.8,
@@ -29,7 +29,7 @@
                 var $rows = $(this);
                 $("#save-order").on("click", function(evt) {
                     var self = $(this),
-                        serialize = $rows.sortable('serialize'),
+                        serialize = $rows.html5sortable('serialize'),
                         $btn_icon = $('#save-order-icon', self),
                         btn_icon_default = $btn_icon.attr('class'),
                         btn_icon_icon_loading = self.data('loading-icon'),
