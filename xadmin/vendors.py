@@ -60,7 +60,7 @@ vendors = {
 		},
 		"css": {
 			'dev': ['xadmin/vendor/datatables/datatables.css'],
-			'production': ['xadmin/vendor/datatables/datatables/datatables.min.css']
+			'production': ['xadmin/vendor/datatables/datatables.min.css']
 		}
 	},
 	"font-awesome": {
