@@ -54,6 +54,7 @@ vendors = {
 		}
 	},
 	'datatables': {
+		'lang': 'xadmin/vendor/datatables/i18n/%(lang)s.json',
 		"js": {
 			'dev': ['xadmin/vendor/datatables/datatables.js'],
 			'production': ['xadmin/vendor/datatables/datatables.min.js']
