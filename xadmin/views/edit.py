@@ -76,6 +76,8 @@ class ModelFormAdminView(ModelAdminView):
 	add_form_template = None
 	change_form_template = None
 
+	# If enabled, it allows adding the inline label to the input.
+	horizontal_form_layout = False
 	form_layout = None
 
 	def __init__(self, *args, **kwargs):
@@ -235,7 +237,15 @@ class ModelFormAdminView(ModelAdminView):
 		helper.form_tag = False
 		helper.html5_required = True
 		helper.label_class = 'font-weight-bold'
-		helper.field_class = 'controls'
+
+		# Lets you add the inline label to the input.
+		if self.horizontal_form_layout:
+			helper.form_class = 'form-horizontal'
+			helper.field_class = 'controls col-sm-8'
+			helper.label_class = 'col-sm-4'
+		else:
+			helper.field_class = 'controls'
+
 		helper.include_media = False
 		helper.use_custom_control = False
 		helper.add_layout(self.get_form_layout())
