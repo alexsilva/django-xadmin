@@ -3,6 +3,9 @@
 {% block box_attrs %}{% if fieldset.css_id %}id="{{ fieldset.css_id }}"{% endif %} {{ fieldset.flat_attrs|safe }}{% endblock box_attrs %}
 {% block box_title %}{{ legend|safe }}{% if fieldset.description %} <small class="m">{{fieldset.description}}</small>{% endif %}{% endblock box_title %}
 {% block box_collapse_target_id %}{% block box_collapse_target %}card-collapse-{{ fieldset.css_id }}{% endblock %}{% endblock %}
+{% block box_collapse_show %}{% if fieldset.collapsed is not False %}show{% endif %}{% endblock %}
+{% block box_collapse_expanded %}{% if fieldset.collapsed is False %}false{% else %}true{% endif %}{% endblock %}
+{% block box_collapse_icon_variant %}{% if fieldset.collapsed is False %}down{% else %}up{% endif %}{% endblock %}
 {% block box_content %}
 {{ fields|safe }}
 {% endblock box_content %}

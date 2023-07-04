@@ -5,13 +5,13 @@
         {% block box_header %}
         <a class="btn btn-link chevron-parent shadow-none py-0" href="#" role="button" data-toggle="collapse"
             data-target="#{% block box_collapse_target %}{% endblock %}"
-            aria-expanded="true">
-            <i class='icon fa fa-chevron-up chevron'></i>
+            aria-expanded="{% block box_collapse_expanded %}true{% endblock %}">
+            <i class='icon fa fa-chevron-{% block box_collapse_icon_variant %}up{% endblock %} chevron'></i>
         </a>
         {% endblock box_header %}
         </div>
     </div>
-    <div id="{% block box_collapse_target_id %}{% endblock %}" class="collapse show">
+    <div id="{% block box_collapse_target_id %}{% endblock %}" class="collapse {% block box_collapse_show %}show{% endblock %}">
         <div class="card-body {% block box_content_class %}{% endblock box_content_class %}"
                 {% block box_content_attrs %}{% endblock box_content_attrs %}>
             {% block box_content %}{% endblock box_content %}
