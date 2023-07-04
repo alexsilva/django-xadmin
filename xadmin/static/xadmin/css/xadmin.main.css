@@ -3,7 +3,9 @@
     display: none !important;
 }
 
-.no_label > label {
+.no_label > label,
+.no_label > .form-group > label,
+.no_label > .form-row > label {
     display: none !important;
 }
 
