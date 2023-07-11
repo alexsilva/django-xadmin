@@ -83,7 +83,7 @@ class InputGroup(layout.Field):
 
 		super(InputGroup, self).__init__(field, **kwargs)
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		extra_context = {
 			'inputs': self.inputs,
 			'input_size': self.input_size,
@@ -91,9 +91,9 @@ class InputGroup(layout.Field):
 		if hasattr(self, 'wrapper_class'):
 			extra_context['wrapper_class'] = self.wrapper_class
 
-		return render_field(
-			self.field, form, form_style, context, template=self.template,
-			attrs=self.attrs, template_pack=template_pack, extra_context=extra_context, **kwargs)
+		return render_field(self.field, form, context, template=self.template,
+		                    attrs=self.attrs, extra_context=extra_context,
+		                    **kwargs)
 
 
 class PrependedText(InputGroup):

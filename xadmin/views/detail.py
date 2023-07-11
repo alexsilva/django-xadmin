@@ -30,8 +30,8 @@ class ShowField(Field):
 		super(ShowField, self).__init__(*args, **kwargs)
 		self.results = [(field, callback(field)) for field in self.fields]
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, extra_context=None, **kwargs):
-		super(ShowField, self).render(form, form_style, context, template_pack, extra_context, **kwargs)
+	def render(self, form, context, template_pack=TEMPLATE_PACK, extra_context=None, **kwargs):
+		super(ShowField, self).render(form, context, template_pack, extra_context, **kwargs)
 		if extra_context is None:
 			extra_context = {}
 		if hasattr(self, 'wrapper_class'):
@@ -192,7 +192,7 @@ class DetailAdminView(ModelAdminView):
 			layout = Layout(Container(*fs))
 
 			if self.detail_show_all:
-				rendered_fields = [i[1] for i in layout.get_field_names()]
+				rendered_fields = [p.name for p in layout.get_field_names()]
 				container = layout[0].fields
 				other_fieldset = Fieldset(_('Other Fields'), *[
 					f for f in self.form_obj.fields.keys() if f not in rendered_fields])

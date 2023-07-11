@@ -33,7 +33,7 @@ class ShowField(Field):
 			template = "xadmin/layout/field_value_td.html"
 		return template
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		html = ''
 		if hasattr(form, 'detail'):
 			detail = form.detail
@@ -51,16 +51,16 @@ class ShowField(Field):
 						form_field.widget = forms.HiddenInput(attrs=form_field_widget.attrs)
 						html += mark_safe(str(form[field_name]))
 				elif show_hidden_detail:
-					return super().render(form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs)
+					return super().render(form, context, **kwargs)
 		return html
 
 
 class DeleteField(Field):
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		if form.instance.pk:
 			self.attrs['type'] = 'hidden'
-			return super(DeleteField, self).render(form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs)
+			return super(DeleteField, self).render(form, context, **kwargs)
 		else:
 			return ""
 
@@ -292,7 +292,7 @@ class InlineModelAdmin(ModelFormAdminView):
 		empty_form = instance.empty_form
 
 		def layout_hidden_fields(layout):
-			rendered_fields = [i[1] for i in layout.get_field_names()]
+			rendered_fields = [p.name for p in layout.get_field_names()]
 			layout.extend([f for f in empty_form.fields.keys() if f not in rendered_fields])
 
 		if layout is None:
@@ -435,7 +435,7 @@ class InlineFormset(Fieldset):
 		self.flat_attrs = flatatt(kwargs)
 		self.extra_attrs = formset.style.get_attrs()
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		context = get_context_dict(context)
 		context.update(dict(
 			formset=self,
@@ -453,7 +453,7 @@ class Inline(Fieldset):
 		self.fields = []
 		super(Inline, self).__init__(legend="")
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		return ""
 
 

@@ -429,13 +429,13 @@ class BaseRevisionView(ModelFormAdminView):
 
 class DiffField(Field):
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		html = ''
 		for field in self.fields:
 			html += (
 						'<div class="diff_field" rel="tooltip"><textarea class="org-data" style="display:none;">%s</textarea>%s</div>' %
 						(_('Current: %s') % self.attrs.pop('orgdata', ''),
-						 render_field(field, form, form_style, context, template_pack=template_pack, attrs=self.attrs)))
+						 render_field(field, form, context, attrs=self.attrs)))
 		return html
 
 
@@ -535,19 +535,20 @@ class RecoverView(BaseRevisionView):
 
 class InlineDiffField(Field):
 
-	def render(self, form, form_style, context, template_pack=TEMPLATE_PACK, **kwargs):
+	def render(self, form, context, **kwargs):
 		html = ''
 		instance = form.instance
 		if not instance.pk:
-			return super(InlineDiffField, self).render(form, form_style, context)
+			return super(InlineDiffField, self).render(form, context, **kwargs)
 
 		initial = form.initial
 		opts = instance._meta
 		detail = form.detail
 		for field in self.fields:
 			f = opts.get_field(field)
-			f_html = render_field(field, form, form_style, context,
-			                      template_pack=template_pack, attrs=self.attrs)
+			f_html = render_field(field, form, context,
+			                      template_pack=kwargs['template_pack'],
+			                      attrs=self.attrs)
 			if f.value_from_object(instance) != initial.get(field, None):
 				current_val = detail.get_field_result(f.name).val
 				html += (
