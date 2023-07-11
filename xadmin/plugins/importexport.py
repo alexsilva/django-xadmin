@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # coding=utf-8
+
 """
 Author:zcyuefan
 Topic:django-import-export plugin for xadmin to help importing and exporting data using .csv/.xls/.../.json files
@@ -7,16 +7,16 @@ Topic:django-import-export plugin for xadmin to help importing and exporting dat
 Use:
 +++ settings.py +++
 INSTALLED_APPS = (
-    ...
-    'import_export',
+	...
+	'import_export',
 )
 
 +++ model.py +++
 from django.db import models
 
 class Foo(models.Model):
-    name = models.CharField(max_length=64)
-    description = models.TextField()
+	name = models.CharField(max_length=64)
+	description = models.TextField()
 
 +++ adminx.py +++
 import xadmin
@@ -26,48 +26,44 @@ from .models import Foo
 class FooResource(resources.ModelResource):
 
     class Meta:
-        model = Foo
-        # fields = ('name', 'description',)
-        # exclude = ()
+		model = Foo
+		# fields = ('name', 'description',)
+		# exclude = ()
 
 
 @xadmin.sites.register(Foo)
 class FooAdmin:
-    import_export_args = {'import_resource_class': FooResource, 'export_resource_class': FooResource}
+	import_export_args = {'import_resource_class': FooResource, 'export_resource_class': FooResource}
 
 ++++++++++++++++
 More info about django-import-export please refer https://github.com/django-import-export/django-import-export
 """
 import threading
 from datetime import datetime
+
 from django.conf import settings
+from django.contrib import messages
+from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import PermissionDenied
 from django.core.mail import EmailMultiAlternatives
 from django.db import transaction
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template import loader
+from django.template.response import TemplateResponse
+from django.urls.base import reverse
+from django.utils.encoding import force_text
+from django.utils.translation import ugettext_lazy as _
 from import_export.formats.base_formats import DEFAULT_FORMATS
+from import_export.forms import (ImportForm, ConfirmImportForm, ExportForm)
+from import_export.resources import modelresource_factory
+from import_export.results import RowResult
+from import_export.signals import post_export, post_import
 from import_export.tmp_storages import TempFolderStorage
 from xadmin.plugins.utils import get_context_dict
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ListAdminView, ModelAdminView
 from xadmin.views.base import csrf_protect_m, filter_hook
-from import_export.resources import modelresource_factory
-from import_export.forms import (
-	ImportForm,
-	ConfirmImportForm,
-	ExportForm,
-)
-from import_export.results import RowResult
-from import_export.signals import post_export, post_import
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
-from django.template.response import TemplateResponse
-from django.contrib.admin.models import LogEntry, ADDITION, CHANGE, DELETION
-from django.contrib.contenttypes.models import ContentType
-from django.contrib import messages
-from django.urls.base import reverse
-from django.core.exceptions import PermissionDenied
-from django.http import HttpResponseRedirect, HttpResponse
-
 
 TMP_STORAGE_CLASS = getattr(settings, 'IMPORT_EXPORT_TMP_STORAGE_CLASS', TempFolderStorage)
 SKIP_ADMIN_LOG = getattr(settings, 'IMPORT_EXPORT_SKIP_ADMIN_LOG', False)
@@ -94,8 +90,7 @@ class ImportMenuPlugin(BaseAdminPlugin):
 
 
 class ImportBaseView(ModelAdminView):
-	"""
-	"""
+	""" ImportBaseView """
 	resource_class = None
 	import_export_args = {}
 	#: template for import view
