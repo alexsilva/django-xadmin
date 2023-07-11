@@ -23,7 +23,7 @@ setup(
 		'django-import-export==3.0.2',
 		'django-reversion==5.0.4',
 		'django-formtools==2.4',
-		'httplib2==0.20.4'
+		'httplib2==0.22.0'
 	],
 	extras_require={
 		'Excel': ['xlwt', 'xlsxwriter'],
