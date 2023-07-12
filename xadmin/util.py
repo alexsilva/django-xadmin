@@ -341,9 +341,9 @@ def display_for_field(value, field):
 		return formats.localize(tz_localtime(value))
 	elif isinstance(field, (models.DateField, models.TimeField)):
 		return formats.localize(value)
-	elif isinstance(field, models.DecimalField):
+	elif isinstance(field, models.DecimalField) and isinstance(value, decimal.Decimal):
 		return formats.number_format(value, field.decimal_places)
-	elif isinstance(field, models.FloatField):
+	elif isinstance(field, models.FloatField) and isinstance(value, float):
 		return formats.number_format(value)
 	elif isinstance(field.remote_field, models.ManyToManyRel):
 		return ', '.join([smart_text(obj) for obj in value.all()])
