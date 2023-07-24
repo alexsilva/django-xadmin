@@ -171,7 +171,7 @@ class WizardFormPlugin(BaseAdminPlugin):
 		file_field_list = []
 		for f in opts.fields:
 			if not f.editable or isinstance(f, models.AutoField) \
-					or not f.name in cleaned_data:
+					or f.name not in cleaned_data:
 				continue
 			if exclude and f.name in exclude:
 				continue
@@ -186,6 +186,11 @@ class WizardFormPlugin(BaseAdminPlugin):
 			f.save_form_data(instance, cleaned_data[f.name])
 
 		instance.save()
+
+		for f in opts.private_fields:
+			# for custom GenericRelation editable
+			if f.editable and f.name in cleaned_data:
+				f.save_form_data(instance, cleaned_data[f.name])
 
 		for f in opts.many_to_many:
 			if f.name in cleaned_data:
