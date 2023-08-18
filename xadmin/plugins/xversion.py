@@ -453,8 +453,7 @@ class RevisionView(BaseRevisionView):
 		helper = super(RevisionView, self).get_form_helper()
 		diff_fields = {}
 		version_data = self.version.field_dict
-
-		for f in self.opts.fields:
+		for f in (self.opts.fields + self.opts.many_to_many):
 			fvalue = f.value_from_object(self.org_obj)
 			vvalue = version_data.get(f.name, None)
 
