@@ -160,6 +160,10 @@ class AdminSelectMultiple(forms.SelectMultiple):
 			final_attrs.update(attrs)
 		super(AdminSelectMultiple, self).__init__(attrs=final_attrs)
 
+	@property
+	def media(self):
+		return vendor('select.js', 'select.css', 'xadmin.widget.select.js')
+
 
 class AdminFileWidget(forms.ClearableFileInput):
 	template_name = 'xadmin/widgets/clearable_file_input.html'
