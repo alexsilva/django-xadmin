@@ -3,40 +3,41 @@
 {% block title %}{{ title }} | {{ site_title }}{% endblock %}
 
 {% block extrahead %}
- {{ block.super }}
- <script type="text/nunjucks" id="nunjucks-modal-main">
+  {{ block.super }}
+  <script type="text/nunjucks" id="nunjucks-modal-main">
   {% include 'xadmin/modal/main.html' %}
- </script>
+  </script>
 {% endblock %}
 
 {% block body %}
   <!-- Header -->
   {% block top-nav %}
-  <nav id="top-nav" class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
-    <a class="navbar-brand d-flex align-items-center py-0 my-2 my-md-0" href="{% url 'xadmin:index' %}">{% block branding %}{{ site_title }}{% endblock %}</a>
-      <div class="navbar-collapse collapse" >
-      <ul class="navbar-nav ml-auto">
-        {% view_block 'top_navmenu' %}
-        {% if user.is_active and user.is_staff %}
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" href="#">
-             <strong>{% trans 'Welcome,' %} {% firstof user.first_name user.username %}</strong>
+    <nav id="top-nav" class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
+      <a class="navbar-brand d-flex align-items-center py-0 my-2 my-md-0" href="{% url 'xadmin:index' %}">
+        {% block branding %}{{ site_title }}{% endblock %}</a>
+      <div class="navbar-collapse collapse">
+        <ul class="navbar-nav ml-auto">
+          {% view_block 'top_navmenu' %}
+          {% if user.is_active and user.is_staff %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" href="#">
+                <strong>{% trans 'Welcome,' %} {% firstof user.first_name user.username %}</strong>
+              </a>
+              <div id="g-account-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% view_block 'top_account_menu' %}
+              </div>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link text-nowrap" href="{% url 'xadmin:logout' %}">
+              <i class="fa fa-sign-out-alt" title="{% trans 'Log out' %}"></i>
+              <span class="d-md-none d-lg-inline-block">{% trans 'Log out' %}</span>
             </a>
-            <div id="g-account-menu" class="dropdown-menu" aria-labelledby="navbarDropdown">
-              {% view_block 'top_account_menu' %}
-            </div>
           </li>
-        {% endif %}
-        <li class="nav-item">
-          <a class="nav-link text-nowrap" href="{% url 'xadmin:logout' %}">
-            <i class="fa fa-sign-out-alt" title="{% trans 'Log out' %}"></i>
-            <span class="d-md-none d-lg-inline-block">{% trans 'Log out' %}</span>
-          </a>
-        </li>
-      </ul>
-      {% view_block 'top_navbar' %}
-    </div>
-  </nav>
+        </ul>
+        {% view_block 'top_navbar' %}
+      </div>
+    </nav>
   {% endblock %}
   <div class="container-fluid">
     <div id="body-content" class="{% block body_content_class %}clearfix row pt-3{% endblock %}">
@@ -50,80 +51,84 @@
         {% endblock %}
         {% view_block 'left_navbar' %}
       </div>
-  
+
       <div id="content-block" class="{% block content_block_class %}col-sm-12 col-md-10{% endblock %}">
         {% block breadcrumbs %}
-        <nav aria-label="breadcrumb">
-         <ol class="breadcrumb">
-         {% for bc in breadcrumbs %}
-          <li class="breadcrumb-item{% if forloop.last %} active" aria-current="page{% endif %}">
-            {% if forloop.last or not bc.url %}{{bc.title}}
-            {% else %}<a href="{{bc.url}}">{{bc.title}}</a>
-            {% endif %}
-          </li>
-         {% empty %}
-          <li class="breadcrumb-item"><a href="{% url 'xadmin:index' %}">{% trans 'Home' %}</a></li>
-          {% if title %}<li class="breadcrumb-item active" aria-current="page">{{ title }}</li>{% endif %}
-         {% endfor %}
-         </ol>
-        </nav>
-        {% endblock %}
-  
-      {% block content-nav %}
-         <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3" data-toggle="breakpoint"
-          data-class-xs="navbar content-navbar navbar-expand-xs navbar-dark bg-dark fixed-top"
-          data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded mb-3"
-          data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3">
-             {% block nav_toggles %}
-               {% include "xadmin/includes/toggle_back.html" %}
-             {% endblock %}
-             {% block nav_brand %}
-              <a class="navbar-brand ml-2 my-2 ml-md-0 mr-auto mr-md-2 my-md-0" href="#" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
-               {% block nav_title %}{% endblock %}
-              </a>
-             {% endblock %}
-             {% view_block 'nav_toggles' %}
-              <div class="navbar-collapse collapse">
-                  <ul class="navbar-nav mr-auto">
-                      {% view_block 'nav_menu' %}
-                  </ul>
-                  {% view_block 'nav_form' %}
-                  {% block nav_form %}{% endblock %}
-  
-                  <div class="navbar-btn d-none d-md-block ml-1">
-                      {% view_block 'nav_btns' %}
-                      {% block nav_btns %}{% endblock %}
-                  </div>
-              </div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              {% for bc in breadcrumbs %}
+                <li class="breadcrumb-item{% if forloop.last %} active" aria-current="page{% endif %}">
+                  {% if forloop.last or not bc.url %}{{ bc.title }}
+                  {% else %}<a href="{{ bc.url }}">{{ bc.title }}</a>
+                  {% endif %}
+                </li>
+              {% empty %}
+                <li class="breadcrumb-item"><a href="{% url 'xadmin:index' %}">{% trans 'Home' %}</a></li>
+                {% if title %}
+                  <li class="breadcrumb-item active" aria-current="page">{{ title }}</li>
+                {% endif %}
+              {% endfor %}
+            </ol>
           </nav>
-  
-      {% endblock %}
-  
+        {% endblock %}
+
+        {% block content-nav %}
+          <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3"
+               data-toggle="breakpoint"
+               data-class-xs="navbar content-navbar navbar-expand-xs navbar-dark bg-dark fixed-top"
+               data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded mb-3"
+               data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3">
+            {% block nav_toggles %}
+              {% include "xadmin/includes/toggle_back.html" %}
+            {% endblock %}
+            {% block nav_brand %}
+              <a class="navbar-brand ml-2 my-2 ml-md-0 mr-auto mr-md-2 my-md-0" href="#" data-toggle="collapse"
+                 data-target="#top-nav .navbar-collapse">
+                {% block nav_title %}{% endblock %}
+              </a>
+            {% endblock %}
+            {% view_block 'nav_toggles' %}
+            <div class="navbar-collapse collapse">
+              <ul class="navbar-nav mr-auto">
+                {% view_block 'nav_menu' %}
+              </ul>
+              {% view_block 'nav_form' %}
+              {% block nav_form %}{% endblock %}
+
+              <div class="navbar-btn d-none d-md-block ml-1">
+                {% view_block 'nav_btns' %}
+                {% block nav_btns %}{% endblock %}
+              </div>
+            </div>
+          </nav>
+
+        {% endblock %}
+
         {% block messages %}
-        {% if messages %}
-          {% for message in messages %}
-          <div class="alert alert-dismissable{% if message.tags %} {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}{% endif %}">
-            <button type="button" class="close" data-dismiss="alert" aria-label="{% trans 'Close' %}">&times;</button>
-            {{ message|safe }}
-          </div>
-          {% endfor %}
-        {% endif %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-dismissable{% if message.tags %} {% if message.tags == 'error' %}alert-danger{% else %}alert-{{ message.tags }}{% endif %}{% endif %}">
+                <button type="button" class="close" data-dismiss="alert" aria-label="{% trans 'Close' %}">&times;</button>
+                {{ message|safe }}
+              </div>
+            {% endfor %}
+          {% endif %}
         {% endblock messages %}
-  
+
         {% block content %}
-        {{ content }}
+          {{ content }}
         {% endblock %}
       </div>
     </div>
   </div>
 
   {% block footer %}
-  <div id="footer">
-    <hr/>
-    <footer class="text-center">
+    <div id="footer">
+      <hr/>
+      <footer class="text-center">
         <p>&copy; {% block site_footer %}{{ site_footer }}{% endblock %}</p>
-    </footer>
-  </div>
+      </footer>
+    </div>
   {% endblock %}
 
 {% endblock body %}
