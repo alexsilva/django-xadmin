@@ -81,7 +81,25 @@
       $(this).addClass('open');
     });
   }
-  
+
+  /*Hides the side menu when any area of the document is clicked (except the menu itself)*/
+  $(document).click(function (event) {
+      var $menu = $("#left-side"),
+          $target = $(event.target);
+      if (!$menu.is($target) &&
+          !$target.hasClass("navbar-toggler") &&
+          !$target.hasClass("navbar-toggler-icon") &&
+          !$menu.find($target).length) {
+          var card = $menu.find(".card-sitemenu-md:visible");
+          if (card.length) {
+               var $btn = card.find("button[data-toggle='class']"),
+                   target = $btn.attr('data-target'),
+                   class_name = $btn.attr('data-class-name');
+                $(target).toggleClass(class_name);
+          }
+      }
+  });
+
   //toggle class button
   $('body').on('click.xa.togglebtn.data-api', '[data-toggle=class]', function (e) {
     var $this  = $(this), href;
@@ -89,7 +107,7 @@
         || e.preventDefault()
         || (href = $this.attr('href')) && href.replace(/.*(?=#[^\s]+$)/, ''); //strip for ie7
     var className = $this.attr('data-class-name');
-    $(target).toggleClass(className)
+    $(target).toggleClass(className);
   });
   
   // loading btn
