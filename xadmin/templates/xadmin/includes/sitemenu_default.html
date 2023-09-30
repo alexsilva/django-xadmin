@@ -1,7 +1,11 @@
 {% load i18n xadmin_tags %}
 
 {% block navbar_md %}
-<div class="card bg-light d-flex d-md-none d-lg-flex card-sitemenu">
+<div class="card bg-light d-flex d-md-none d-lg-flex card-sitemenu card-sitemenu-md">
+    <button type="button" class="close ml-auto p-2" data-class-name="show_menu"
+            data-target="#body-content" data-toggle="class" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
     <div class="card-body p-2">
       <ul class="nav nav-pills nav-sitemenu flex-column">
         <li class="nav-item">
