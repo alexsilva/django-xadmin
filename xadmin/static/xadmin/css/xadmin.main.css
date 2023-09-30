@@ -74,6 +74,11 @@
     left: 10%;
 }
 
+/* Make the menu have borders */
+.card-sitemenu {
+  border-radius: 0.25rem;
+}
+
 .mask .progress .bar {
     width: 100%;
 }
