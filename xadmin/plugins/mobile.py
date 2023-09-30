@@ -20,10 +20,6 @@ class MobilePlugin(BaseAdminPlugin):
 		context['is_mob'] = True
 		return context
 
-	# Media
-	# def get_media(self, media):
-	#     return media + self.vendor('xadmin.mobile.css', )
-
 	def block_extrahead(self, context, nodes):
 		nodes.append('<script>window.xadmin.ismobile = true;</script>')
 
