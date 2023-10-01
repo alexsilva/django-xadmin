@@ -76,6 +76,10 @@
   float: none;
 }
 
+div.card-sitemenu {
+  opacity: 0.98;
+}
+
 #left-side {
   padding: 0.75rem;
   position: fixed;
