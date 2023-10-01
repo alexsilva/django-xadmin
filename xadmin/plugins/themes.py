@@ -26,10 +26,6 @@ class ThemePlugin(BaseAdminPlugin):
 	def default_theme(self):
 		return static('xadmin/css/themes/bootstrap-xadmin.css')
 
-	@cached_property
-	def bootstrap4_theme(self):
-		return static('xadmin/css/themes/bootstrap.litera.min.css')
-
 	def init_request(self, *args, **kwargs):
 		return self.enable_themes
 
@@ -62,10 +58,8 @@ class ThemePlugin(BaseAdminPlugin):
 
 	# Block Views
 	def block_top_navmenu(self, context, nodes):
-
 		themes = [
-			{'name': _("Default"), 'description': _("Default bootstrap theme"), 'css': self.default_theme},
-			{'name': _("Bootstrap4"), 'description': _("Bootstrap 4.x theme"), 'css': self.bootstrap4_theme},
+			{'name': _("Default"), 'description': _("Default bootstrap theme"), 'css': self.default_theme}
 		]
 		select_css = context.get('site_theme', self.default_theme)
 
