@@ -132,6 +132,8 @@
         };
     $(window).bind('resize', window_resize);
     $(function () {
+        // handler
+        window_resize();
         var $nav = $('[data-toggle=breakpoint]');
         $nav.each(function () {
             $(this).data('class-org', $(this)[0].className);
@@ -139,9 +141,6 @@
         // the navbar when fixed to the top makes the browser lose its relative positioning.
         $(document).scrollTop($(document).scrollTop() - $nav.outerHeight());
     });
-
-    // handler
-    window_resize();
 })(jQuery);
 
 
