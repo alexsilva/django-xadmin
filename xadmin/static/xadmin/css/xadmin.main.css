@@ -287,10 +287,20 @@
     cursor: pointer;
 }
 
-#filter-menu .dropdown-submenu > .dropdown-menu {
-    top: 0;
-    left: 100%;
-    margin-top: -9px;
+@media (min-width: 768px) {
+    #filter-menu .dropdown-submenu > .dropdown-menu {
+        top: 0;
+        left: 100%;
+        margin-top: -9px;
+    }
+}
+
+@media (max-width: 768px) {
+    #filter-menu .dropdown-submenu > .dropdown-menu {
+        top: 0;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
 }
 
 #filter-menu .dropdown-submenu .popover {
