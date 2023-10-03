@@ -73,10 +73,10 @@
 
         {% block content-nav %}
           <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3"
-               data-toggle="breakpoint"
-               data-class-xs="navbar content-navbar navbar-expand-xs navbar-dark bg-dark fixed-top"
+               data-class-xs="navbar fixed-top content-navbar navbar-expand-xs navbar-dark bg-dark"
                data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded mb-3"
-               data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3">
+               data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3"
+               data-toggle="breakpoint">
             {% block nav_toggles %}
               {% include "xadmin/includes/toggle_back.html" %}
             {% endblock %}
