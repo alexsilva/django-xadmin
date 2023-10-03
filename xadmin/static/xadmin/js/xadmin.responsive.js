@@ -98,16 +98,15 @@
         $('.content-navbar .navbar-brand').html("lg-" + $(window).width());
     }
 
-    $(function () {
-        $(window).bind('enterBreakpoint768', function () {
-            enterPhone();
-        });
-        $(window).bind('exitBreakpoint768', function () {
-            exitPhone();
-        });
-        //$(window).setBreakpoints();
-        var lastMode = 'lg';
-        $(window).bind('resize', function (e) {
+    $(window).bind('enterBreakpoint768', function () {
+        enterPhone();
+    });
+    $(window).bind('exitBreakpoint768', function () {
+        exitPhone();
+    });
+
+    var window_resize_mode = 'lg',
+        window_resize = function (e) {
             var width = $(window).width();
             var mode = 'lg';
             if (width < 768) {
@@ -117,28 +116,32 @@
             } else if (width < 1200) {
                 mode = 'md';
             }
-            if (lastMode !== mode) {
+            if (mode && window_resize_mode !== mode) {
                 $('[data-toggle=breakpoint]').each(function () {
                     var $this = $(this),
+                        el = $this[0],
                         class_name = $this.data('class-' + mode);
                     if (class_name) {
-                        $this[0].className = class_name;
+                        el.className = class_name;
                     } else {
-                        $this[0].className = $this.data('class-org');
+                        el.className = $this.data('class-org');
                     }
                 });
-                lastMode = mode;
+                window_resize_mode = mode;
             }
-        });
+        };
+    $(window).bind('resize', window_resize);
+    $(function () {
         var $nav = $('[data-toggle=breakpoint]');
         $nav.each(function () {
             $(this).data('class-org', $(this)[0].className);
         });
         // the navbar when fixed to the top makes the browser lose its relative positioning.
         $(document).scrollTop($(document).scrollTop() - $nav.outerHeight());
-        $(window).trigger('resize');
-    })
+    });
 
+    // handler
+    window_resize();
 })(jQuery);
 
 
