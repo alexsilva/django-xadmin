@@ -119,9 +119,10 @@
             }
             if (lastMode !== mode) {
                 $('[data-toggle=breakpoint]').each(function () {
-                    var $this = $(this);
-                    if (newClass = $this.data('class-' + mode)) {
-                        $this[0].className = newClass;
+                    var $this = $(this),
+                        class_name = $this.data('class-' + mode);
+                    if (class_name) {
+                        $this[0].className = class_name;
                     } else {
                         $this[0].className = $this.data('class-org');
                     }
