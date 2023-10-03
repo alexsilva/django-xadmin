@@ -3,7 +3,10 @@
   <a  href="#" id="drop-filter" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
       <i class="fa fa-filter" title="{% trans "Filters" %}"></i>
-      <span class="d-md-none d-lg-inline-block">{% trans "Filters" %}</span>
+      <span data-class-xs="d-inline-block"
+            data-class-sm="d-none"
+            data-class-md="d-inline-block"
+            data-toggle=breakpoint>{% trans "Filters" %}</span>
       {% if cl.used_filter_num > 0 %}
         <span class="badge badge-success">{{cl.used_filter_num}}</span>
       {% endif %}

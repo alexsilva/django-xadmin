@@ -94,7 +94,10 @@
               {% view_block 'nav_form' %}
               {% block nav_form %}{% endblock %}
 
-              <div class="navbar-btn d-none d-md-block ml-1">
+              <div class="navbar-btn ml-2"
+                   data-class-xs="navbar-btn ml-2 d-none"
+                   data-class-md="navbar-btn ml-2 d-md-block"
+                   data-toggle=breakpoint>
                 {% view_block 'nav_btns' %}
                 {% block nav_btns %}{% endblock %}
               </div>
