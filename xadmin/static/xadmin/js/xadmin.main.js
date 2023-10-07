@@ -95,7 +95,7 @@
                var $btn = card.find("button[data-toggle='class']"),
                    target = $btn.attr('data-target'),
                    class_name = $btn.attr('data-class-name');
-                $(target).toggleClass(class_name);
+                $(target).removeClass(class_name);
           }
       }
   });
