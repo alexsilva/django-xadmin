@@ -83,20 +83,14 @@
   }
 
   /*Hides the side menu when any area of the document is clicked (except the menu itself)*/
-  $(document).click(function (event) {
-      var $menu = $("#left-side"),
+  $("#left-side").click(function (event) {
+      var $sitemenu = $("div.card-sitemenu-md"),
           $target = $(event.target);
-      if (!$menu.is($target) &&
-          !$target.hasClass("navbar-toggler") &&
-          !$target.hasClass("navbar-toggler-icon") &&
-          !$menu.find($target).length) {
-          var card = $menu.find(".card-sitemenu-md:visible");
-          if (card.length) {
-               var $btn = card.find("button[data-toggle='class']"),
-                   target = $btn.attr('data-target'),
-                   class_name = $btn.attr('data-class-name');
-                $(target).removeClass(class_name);
-          }
+      if (!$sitemenu.is($target) && !$sitemenu.find($target).length) {
+           var $btn = $sitemenu.find("button[data-toggle='class']"),
+               target = $btn.attr('data-target'),
+               class_name = $btn.attr('data-class-name');
+            if (class_name) $(target).removeClass(class_name);
       }
   });
 
