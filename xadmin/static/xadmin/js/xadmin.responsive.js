@@ -116,7 +116,7 @@
             } else if (width < 1200) {
                 mode = 'md';
             }
-            if (mode && window_resize_mode !== mode) {
+            if (window_resize_mode !== mode) {
                 $('[data-toggle=breakpoint]').each(function () {
                     var $this = $(this),
                         el = $this[0],
