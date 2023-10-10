@@ -94,11 +94,15 @@ div.card-sitemenu {
   width: 100%;
 }
 
+#body-content.show_menu .card-sitemenu {
+  width: 75%;
+}
+
 #body-content.show_menu #left-side {
   display: block;
 }
+
 #body-content.show_menu #content-block{
-  margin-left: 40%;
   width: 100%;
 }
 
