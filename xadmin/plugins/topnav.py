@@ -1,4 +1,4 @@
-from django.template import loader
+from django.template.loader import render_to_string
 from django.urls.base import reverse, NoReverseMatch
 from django.utils.text import capfirst
 from django.utils.translation import ugettext as _
@@ -39,8 +39,9 @@ class TopNavPlugin(BaseAdminPlugin):
 						})
 					except NoReverseMatch:
 						pass
-		return nodes.append(loader.render_to_string('xadmin/blocks/comm.top.topnav.html',
-		                                            {'search_models': search_models, 'search_name': SEARCH_VAR}))
+		return nodes.append(render_to_string('xadmin/blocks/comm.top.topnav.html',
+		                                     context={'search_models': search_models,
+		                                              'search_name': SEARCH_VAR}))
 
 	def block_top_navmenu(self, context, nodes):
 		add_models = []
@@ -65,8 +66,8 @@ class TopNavPlugin(BaseAdminPlugin):
 				except NoReverseMatch:
 					pass
 
-		nodes.append(
-			loader.render_to_string('xadmin/blocks/comm.top.topnav.html', {'add_models': add_models}))
+		nodes.append(render_to_string('xadmin/blocks/comm.top.topnav.html',
+		                              context={'add_models': add_models}))
 
 
 site.register_plugin(TopNavPlugin, CommAdminView)
