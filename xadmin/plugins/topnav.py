@@ -48,7 +48,7 @@ class TopNavPlugin(BaseAdminPlugin):
 
 		site_name = self.admin_site.name
 
-		if self.global_add_models == None:
+		if self.global_add_models is None:
 			models = self.admin_site._registry.keys()
 		else:
 			models = self.global_add_models
