@@ -120,11 +120,12 @@
                 $('[data-toggle=breakpoint]').each(function () {
                     var $this = $(this),
                         el = $this[0],
-                        class_name = $this.data('class-' + mode);
+                        class_name = $this.data('class-' + mode),
+                        class_org = $this.data('class-org');
                     if (class_name) {
                         el.className = class_name;
-                    } else {
-                        el.className = $this.data('class-org');
+                    } else if (class_org) {
+                        el.className = class_org;
                     }
                 });
                 window_resize_mode = mode;
@@ -134,10 +135,8 @@
     $(function () {
         // handler
         window_resize();
+        $("nav.content-navbar").removeClass('d-none');
         var $nav = $('[data-toggle=breakpoint]');
-        $nav.each(function () {
-            $(this).data('class-org', $(this)[0].className);
-        });
         // the navbar when fixed to the top makes the browser lose its relative positioning.
         $(document).scrollTop($(document).scrollTop() - $nav.outerHeight());
     });

@@ -1,5 +1,5 @@
 {% load i18n %}
-<div class="nav-item dropdown">
+<li class="nav-item dropdown">
   <a  href="#" id="drop-filter" class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
       <i class="fa fa-filter" title="{% trans "Filters" %}"></i>
@@ -21,4 +21,4 @@
     {% endif %}
   	{% for spec in cl.filter_specs %}{{ spec|safe }}{% endfor %}
   </div>
-</div>
+</li>

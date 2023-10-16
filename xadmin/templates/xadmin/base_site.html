@@ -12,8 +12,11 @@
 {% block body %}
   <!-- Header -->
   {% block top-nav %}
-    <nav id="top-nav" class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
-      <a class="navbar-brand d-flex align-items-center py-0 my-2 my-md-0" href="{% url 'xadmin:index' %}">
+    <nav id="top-nav" class="navbar sticky-top navbar-expand-md navbar-dark bg-dark pb-3">
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand mr-auto ml-2 d-none d-sm-block" href="{% url 'xadmin:index' %}">
         {% block branding %}{{ site_title }}{% endblock %}</a>
       <div class="navbar-collapse collapse">
         <ul class="navbar-nav ml-auto">
@@ -72,8 +75,8 @@
         {% endblock %}
 
         {% block content-nav %}
-          <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3"
-               data-class-xs="navbar fixed-top content-navbar navbar-expand-xs navbar-dark bg-dark"
+          <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3 d-none"
+               data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-2"
                data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded mb-3"
                data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3"
                data-toggle="breakpoint">
@@ -81,7 +84,7 @@
               {% include "xadmin/includes/toggle_back.html" %}
             {% endblock %}
             {% block nav_brand %}
-              <a class="navbar-brand ml-2 my-2 ml-md-0 mr-auto mr-md-2 my-md-0" href="#" data-toggle="collapse"
+              <a class="navbar-brand mr-auto ml-2" href="#" data-toggle="collapse"
                  data-target="#top-nav .navbar-collapse">
                 {% block nav_title %}{% endblock %}
               </a>

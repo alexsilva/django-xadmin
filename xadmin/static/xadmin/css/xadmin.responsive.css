@@ -62,7 +62,7 @@
 
 @media (max-width: 767px) {
 #body-content {
-  margin-top: 50px; 
+  margin-top: 25px;
   padding-top: 10px;
 }
 #body-content.show_menu{
@@ -71,9 +71,6 @@
 }
 #footer, .breadcrumb {
   display: none;
-}
-#top-nav .navbar-nav {
-  float: none;
 }
 
 div.card-sitemenu {
