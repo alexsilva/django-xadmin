@@ -293,6 +293,10 @@
         left: 100%;
         margin-top: -9px;
     }
+    #filter-menu .dropdown-submenu .popover {
+        max-width: none;
+        left: 100%;
+    }
 }
 
 @media (max-width: 768px) {
@@ -301,11 +305,9 @@
         padding-left: 2px;
         padding-right: 2px;
     }
-}
-
-#filter-menu .dropdown-submenu .popover {
-    max-width: none;
-    left: 100%;
+    #filter-menu .dropdown-submenu .popover {
+        max-width: none;
+    }
 }
 
 #filter-menu .dropdown-submenu .bs-popover-right {
