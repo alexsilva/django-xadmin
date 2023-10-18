@@ -642,9 +642,9 @@ class ModelAdminView(CommAdminView):
 		else:
 			return None
 
-	def model_admin_url(self, name, args, **kwargs):
+	def model_admin_url(self, name, *args, **kwargs):
 		"""Reverts the model url in the admin view"""
-		return self.get_model_url(self.model, name, args, **kwargs)
+		return self.get_model_url(self.model, name, *args, **kwargs)
 
 	def get_model_perms(self):
 		"""
