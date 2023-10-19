@@ -61,10 +61,15 @@
 }
 
 @media (max-width: 767px) {
+  #top-nav .navbar-nav {
+    margin-top: 8px;
+  }
 #body-content {
   margin-top: 25px;
-  padding-top: 10px;
+  padding-top: 10px !important;
+  padding-bottom: 60px;
 }
+
 #body-content.show_menu{
   width: 100%;
   overflow-x: hidden;
@@ -154,10 +159,6 @@ div.card-sitemenu {
 .form-actions .more-btns .btn,
 .form-actions .more-btns .btn-group {
   margin-top: 5px;
-}
-
-#body-content {
-  padding-bottom: 60px;
 }
 .model_ul {
   margin-left: 0px;

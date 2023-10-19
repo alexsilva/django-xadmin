@@ -12,7 +12,7 @@
 {% block body %}
   <!-- Header -->
   {% block top-nav %}
-    <nav id="top-nav" class="navbar sticky-top navbar-expand-md navbar-dark bg-dark pb-3">
+    <nav id="top-nav" class="navbar sticky-top navbar-expand-md navbar-dark bg-dark">
       <button class="navbar-toggler" data-toggle="collapse" data-target="#top-nav .navbar-collapse">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -75,10 +75,10 @@
         {% endblock %}
 
         {% block content-nav %}
-          <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3 d-none"
-               data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-2"
-               data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded mb-3"
-               data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded mb-3"
+          <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded d-none"
+               data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-3"
+               data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded"
+               data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded"
                data-toggle="breakpoint">
             {% block nav_toggles %}
               {% include "xadmin/includes/toggle_back.html" %}
