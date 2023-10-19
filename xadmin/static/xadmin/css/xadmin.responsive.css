@@ -108,7 +108,8 @@
     }
 
     #body-content.show_menu .card-sitemenu {
-        width: 75%;
+        top: 25px;
+        width: 85%;
     }
 
     #body-content.show_menu #left-side {
