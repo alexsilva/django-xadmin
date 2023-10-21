@@ -33,6 +33,11 @@
         }));
     }
 
+    /* Modal element access function */
+    BootstrapModal.prototype.$el = function () {
+        return this.$modal;
+    }
+
     BootstrapModal.prototype.find = function (selector) {
         return this.$modal.find(selector)
     }
@@ -42,8 +47,18 @@
         return this.find(".modal-body").html(html);
     }
 
+    /* Displays the modal on the screen. */
     BootstrapModal.prototype.show = function () {
         return this.$modal.modal();
+    }
+
+    /* Hides the modal from the screen. */
+    BootstrapModal.prototype.hide = function () {
+        return this.$modal.modal('hide');
+    }
+
+    BootstrapModal.prototype.dispose = function () {
+        return this.$modal.modal('dispose');
     }
 
     BootstrapModal.prototype.appendTo = function (selector) {
