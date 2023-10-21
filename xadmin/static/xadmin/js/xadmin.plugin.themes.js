@@ -9,14 +9,14 @@
         var topmenu = $('#top-nav .navbar-collapse');
         if(topmenu.data('bs.collapse')) topmenu.collapse('hide');
 
-        var modal = $("#nunjucks-modal-main").template_render$({
+        var modal = xadmin.bs_modal({
             header: {title: gettext('Loading theme')},
             modal: {id: 'load-theme-modal', size: 'modal-md',},
-            body: '<h2 class="text-center"><i class="fa-spinner fa-spin fa fa-large"></i></h2>',
             footer: '&nbsp'
-          }).appendTo('body');
-
-        modal.on('shown.bs.modal', function(){
+          });
+        modal.loading();
+        modal.appendTo('body');
+        modal.$el().on('shown.bs.modal', function(){
           $.save_user_settings("site-theme", themeHref, function(){
             $.setCookie('_theme', themeHref);
 
@@ -24,14 +24,13 @@
             $iframe.addClass("d-none");
             $iframe.appendTo(document.body);
 
-            modal.on('hidden', function() {
-              modal.remove();
+            modal.$el().on('hidden.bs.modal', function() {
+              modal.$el().remove();
             });
 
             $iframe.on("load", function () {
               $('#site-theme').attr('href', themeHref);
-
-              modal.modal('hide');
+              modal.hide();
               $iframe.remove();
             });
 
@@ -45,13 +44,7 @@
             $el.addClass('active');
           });
         });
-
-        modal.modal().css(
-            {
-                'margin-top': function () {
-                    return window.pageYOffset;
-                }
-            });
+        modal.show();
       })
     }
   });
