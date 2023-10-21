@@ -1,7 +1,8 @@
 (function($) {
   $(function(){
     if($("#g-theme-menu")){
-      $('#g-theme-menu a').click(function(){
+      $('#g-theme-menu a').click(function(evt){
+        evt.preventDefault();
         var $el = $(this);
         var themeHref = $el.data('css-href');
         
