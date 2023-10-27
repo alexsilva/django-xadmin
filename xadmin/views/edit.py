@@ -64,6 +64,8 @@ class ReadOnlyField(Field):
 class ModelFormAdminView(ModelAdminView):
 	form = forms.ModelForm
 	formfield_overrides = {}
+	# The option allows you to change form fields by field name.
+	formfield_classes = {}
 	formfield_widgets = {}
 	readonly_fields = ()
 	style_fields = {}
@@ -182,7 +184,8 @@ class ModelFormAdminView(ModelAdminView):
 			# default on modelform_factory
 			"exclude": exclude or None,
 			"formfield_callback": self.formfield_for_dbfield,
-			"widgets": form_widgets
+			"field_classes": self.formfield_classes,
+			"widgets": form_widgets,
 		}
 		defaults.update(kwargs)
 
