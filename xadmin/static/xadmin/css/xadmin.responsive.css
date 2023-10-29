@@ -113,7 +113,7 @@
     }
 
     #body-content.show_menu #left-side {
-        display: block;
+        display: block !important;
     }
 
     #body-content.show_menu #content-block {
