@@ -11,7 +11,7 @@ class CrispyFieldAdminPlugin(BaseAdminPlugin):
 	Example configuration:
 	crispy_fields = {
 		'field_name': {
-			'field': SwitchCheckbox,
+			'layout': SwitchCheckbox,
 			'attrs': {}
 		}
 	}
@@ -37,7 +37,7 @@ class CrispyFieldAdminPlugin(BaseAdminPlugin):
 					if field_opts := self.crispy_fields.get(layout_field_name):
 						field_layout.fields[field_layout.fields.index(layout_field_name)] = (
 							crispy_field(layout_field_name, **field_opts.get('attrs', {}))
-							if (crispy_field := field_opts['field']) and callable(crispy_field) else
+							if (crispy_field := field_opts['layout']) and callable(crispy_field) else
 							crispy_field
 						)
 					elif form_obj := getattr(self.admin_view, "form_obj", None):
