@@ -18,7 +18,7 @@ from django.utils.translation import ugettext as _
 from django.core.exceptions import FieldDoesNotExist
 
 from xadmin import widgets
-from xadmin.layout import FormHelper, Layout, Fieldset, TabHolder, Container, Column, Col, Field, Tab
+from xadmin.layout import FormHelper, Layout, Fieldset, TabHolder, Container, Column, Col, Field, Tab, SwitchCheckbox
 from xadmin.util import unquote
 from xadmin.views.base import ModelAdminView, filter_hook, csrf_protect_m
 from xadmin.views.detail import DetailAdminUtil
@@ -63,6 +63,10 @@ class ReadOnlyField(Field):
 
 class ModelFormAdminView(ModelAdminView):
 	form = forms.ModelForm
+	crispy_fields_overrides = {
+		# plugin crispyfield: changes all checkboxes in the view to the switch type
+		forms.BooleanField: SwitchCheckbox
+	}
 	formfield_overrides = {}
 	# The option allows you to change form fields by field name.
 	formfield_classes = {}
