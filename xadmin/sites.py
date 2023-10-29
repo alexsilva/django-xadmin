@@ -300,6 +300,8 @@ class AdminSite:
 		for klass in admin_view_class.mro()[:-1]:  # exclude object
 			klass_options = []
 			if klass == BaseAdminView or issubclass(klass, BaseAdminView):
+				# Plugin configuration at the registered view level (still being changed by options view).
+				klass_options.append(klass)
 				reg_avs_class = self._registry_avs.get(klass)
 				if reg_avs_class:
 					klass_options.append(reg_avs_class)
