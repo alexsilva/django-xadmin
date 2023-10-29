@@ -44,7 +44,7 @@
   {% endblock %}
   <div class="container-fluid">
     <div id="body-content" class="{% block body_content_class %}row pt-3{% endblock %}">
-      <div id="left-side" class="{% block left_side_class %}col-md-2 col-lg-4 col-xl-2{% endblock %}">
+      <div id="left-side" class="{% block left_side_class %}col col-md-2 col-lg-4 col-xl-3{% endblock %}">
         {% block navbar %}
           {% if nav_menu %}
             {% include menu_template %}
@@ -54,7 +54,7 @@
         {% endblock %}
         {% view_block 'left_navbar' %}
       </div>
-      <div id="content-block" class="{% block content_block_class %}col col-md-10 col-lg-8 col-xl-10{% endblock %}">
+      <div id="content-block" class="{% block content_block_class %}col col-md-10 col-lg-8 col-xl-9{% endblock %}">
         {% block breadcrumbs %}
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
