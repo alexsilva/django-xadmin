@@ -113,3 +113,8 @@ class PrependedAppendedText(InputGroup):
 	def __init__(self, field, prepended_text=None, appended_text=None, *args, **kwargs):
 		super(PrependedAppendedText, self).__init__(
 			field, prepended_text, '@@', appended_text, **kwargs)
+
+
+class SwitchCheckbox(Field):
+	"""custom-control custom-switch"""
+	template = "xadmin/%s/widgets/switch_checkbox.html"
