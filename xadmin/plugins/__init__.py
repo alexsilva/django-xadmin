@@ -28,7 +28,8 @@ PLUGINS = (
 	'quickfilter',
 	'sortablelist',
 	'importexport',
-	'xversion'
+	'xversion',
+	'crispyfield'
 )
 
 
