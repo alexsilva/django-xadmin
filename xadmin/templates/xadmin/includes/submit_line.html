@@ -1,16 +1,16 @@
 {% load i18n %}
 {% load xadmin_tags %}
-<div class="form-actions d-block bg-light border rounded p-2 my-2">
+<div class="d-flex flex-column flex-md-row form-actions bg-light shadow rounded border p-2 m-1">
   {% if show_save %}
-  <button type="submit" class="btn btn-success d-none d-md-inline-block default mr-md-2" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
-      <i class="fa fa-save"></i> {% trans 'Save' %}
+  <button type="submit" class="btn btn-success d-none d-md-block m-1" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
+    <i class="fa fa-save"></i> {% trans 'Save' %}
   </button>
   {% endif %}
 
-  <div class="d-flex d-md-none">
+  <div class="d-flex flex-row d-md-none">
     {% if show_save %}
-    <div class="btn-group flex-fill px-0">
-      <button type="submit" class="btn btn-block btn-success default" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
+    <div class="btn-group flex-fill m-1" role="group" aria-label="Show buttons">
+      <button type="submit" class="btn btn-block btn-success" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
           <i class="fa fa-save"></i> {% trans 'Save' %}
       </button>
       <button type="button" class="btn btn-success more" data-toggle="collapse" data-target=".nav-collapse.more-btns">
@@ -18,21 +18,37 @@
       </button>
     </div>
     {% endif %}
-    
+
     {% if show_delete_link %}
-      <a href="{{ delete_url }}" class="btn btn-danger deletelink px-5"><i class="fa fa-trash-alt"></i></a>
+      <a href="{{ delete_url }}" class="btn btn-danger deletelink m-1"><i class="fa fa-trash-alt"></i></a>
     {% endif %}
   </div>
 
-  <div class="nav-collapse collapse more-btns">
-  {% if show_save_as_new %}<input type="submit" class="btn btn-primary mr-1" value="{% trans 'Save as new' %}" name="_saveasnew" {{ onclick_attrib }}/>{%endif%}
-  {% if show_save_and_add_another %}<input type="submit" class="btn btn-primary ml-0 mr-1" value="{% trans 'Save and add another' %}" name="_addanother" {{ onclick_attrib }} />{% endif %}
-  {% if show_save_and_continue %}<input type="submit" class="btn btn-secondary ml-0 mr-1" value="{% trans 'Save and continue editing' %}" name="_continue" {{ onclick_attrib }}/>{% endif %}
-  {% view_block 'submit_more_btns' %}
+  <div class="nav-collapse more-btns collapse d-md-inline-block">
+    <div class="d-flex flex-column flex-md-row">
+      {% if show_save_as_new %}
+        <button type="submit" class="btn btn-primary m-1" name="_saveasnew" {{ onclick_attrib }}>
+          {% trans 'Save as new' %}
+        </button>
+      {%endif%}
+      {% if show_save_and_add_another %}
+        <button type="submit" class="btn btn-primary m-1" name="_addanother" {{ onclick_attrib }}>
+        {% trans 'Save and add another' %}
+        </button>
+      {% endif %}
+      {% if show_save_and_continue %}
+        <button type="submit" class="btn btn-secondary m-1" name="_continue" {{ onclick_attrib }}>
+        {% trans 'Save and continue editing' %}
+        </button>
+      {% endif %}
+      {% view_block 'submit_more_btns' %}
+    </div>
   </div>
-  
+
   {% if show_delete_link %}
-    <a href="{{ delete_url }}" class="btn btn-danger deletelink float-right d-none d-md-inline-block"><i class="fa fa-trash-alt"></i> {% trans "Delete" %}</a>
+    <a href="{{ delete_url }}" class="btn btn-danger deletelink float-right d-none d-md-inline-block m-1 ml-auto" tabindex="-1" role="button">
+      <i class="fa fa-trash-alt"></i> {% trans "Delete" %}
+    </a>
   {% endif %}
 
   {% view_block 'submit_line' %}

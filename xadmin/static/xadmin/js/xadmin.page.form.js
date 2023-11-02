@@ -2,14 +2,13 @@
     $(function() {
         var action_bar = $('.form-actions');
         if (action_bar.length && !action_bar.data("action_scroll_top")) {
-            var action_bar_height = action_bar.outerHeight();
+            var action_bar_height = action_bar.outerHeight(true);
             var $html = $('html');
 
             var onchange = function () {
+                var html_height = $html.innerHeight();
                 var html_scroll_top = $html.scrollTop();
                 var html_scroll_height = $html.prop('scrollHeight');
-
-                var html_height = $html.innerHeight();
                 var action_bar_offset_top = action_bar.offset().top;
 
                 var has_scroll_end = html_height + html_scroll_top >= html_scroll_height;
@@ -17,7 +16,7 @@
                 var avaliable_action_bar_fixed = (html_scroll_top + html_height) < action_bar_coordenate;
 
                 if (!action_bar.hasClass("fixed") && avaliable_action_bar_fixed) {
-                    action_bar.addClass('fixed')
+                    action_bar.addClass('fixed');
 
                 } else if (has_scroll_end || avaliable_action_bar_fixed) {
                     action_bar.removeClass('fixed');

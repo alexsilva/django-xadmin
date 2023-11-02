@@ -38,11 +38,9 @@
     }
 
     .form-actions .more-btns {
-        display: inline-block !important;
     }
 
     .form-actions .hidden-sm {
-        display: inline-block !important;
     }
 
     .form-actions .col-1,
@@ -57,7 +55,6 @@
     .form-actions .col-10,
     .form-actions .col-11,
     .form-actions .col-12 {
-        width: auto !important;
     }
 
     .quick-form .modal-dialog {
@@ -144,40 +141,22 @@
     }
 
     .form-actions {
-        margin-bottom: 0px;
-        padding: 10px;
-        position: fixed;
-        bottom: 0px;
-        left: 0px;
-        z-index: 295;
-        width: 100%;
-        border: 0px;
-        border-radius: 0px;
     }
 
     .form-actions .btn-group {
-        padding-left: 10px;
-        padding-right: 0px;
     }
 
     .form-actions .more-btns {
-        clear: both;
-        overflow: hidden;
     }
 
     .form-actions .more-btns .btn:first-child {
     }
 
     .form-actions .more-btns .btn, .form-actions .more-btns .btn-group {
-        display: block;
-        width: 100%;
-        padding-right: 0;
-        padding-left: 0;
     }
 
     .form-actions .more-btns .btn,
     .form-actions .more-btns .btn-group {
-        margin-top: 5px;
     }
 
     .model_ul {
