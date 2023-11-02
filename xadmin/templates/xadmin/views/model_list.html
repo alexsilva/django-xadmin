@@ -36,10 +36,10 @@
 {% block content %}
   <div class="row flex-row-reverse no-gutters">
     <div class="col-sm">
-      <div class="content-toolbar btn-toolbar float-md-right mb-3 mt-1">
+      <div class="btn-toolbar content-toolbar d-flex flex-column flex-sm-row align-items-baseline justify-content-start justify-content-sm-end" role="toolbar">
         {% view_block 'top_toolbar' %}
         {% block toolbar_column %}
-        <div class="btn-group ml-2">
+        <div class="btn-group m-1">
           <div class="dropdown">
             <a class="btn btn-sm btn-secondary dropdown-toggle" data-offset="-40"
                href="#" role="button" id="dropdown-menu-modelfields"
@@ -65,7 +65,7 @@
         </div>
         {% endblock toolbar_column %}
         {% block toolbar_layouts %}
-        <div class="btn-group btn-group-toggle layout-btns ml-2" data-toggle="buttons">
+        <div class="btn-group btn-group-toggle layout-btns m-1" data-toggle="buttons">
           <label class="btn btn-sm btn-secondary border-right-0 layout-normal active">
             <input type="radio" autocomplete="off">
             <i class="fa fa-th-large"></i>
@@ -78,7 +78,7 @@
         </div>
         {% endblock toolbar_layouts %}
         {% block toolbar_fullscreen %}
-        <div class="btn-group layout-btns ml-2" data-toggle="buttons-checkbox">
+        <div class="btn-group layout-btns m-1" data-toggle="buttons-checkbox">
           <button type="button" class="btn btn-sm btn-secondary layout-full">
             <i class="fa fa-expand"></i>
           </button>
