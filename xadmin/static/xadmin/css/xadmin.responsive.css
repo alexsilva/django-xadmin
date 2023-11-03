@@ -140,7 +140,17 @@
         margin-bottom: 0;
     }
 
+    /* mobile */
     .form-actions {
+        margin-bottom: 0;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        z-index: 295;
+        width: 100%;
+        border: 0;
+        border-radius: 0;
     }
 
     .form-actions .btn-group {
