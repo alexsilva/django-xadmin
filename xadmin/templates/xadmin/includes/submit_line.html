@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load xadmin_tags %}
-<div class="d-flex flex-column flex-md-row form-actions bg-light shadow rounded border p-2 m-1">
+<div class="d-flex flex-column flex-md-row form-actions bg-light shadow rounded border p-2 my-2">
   {% if show_save %}
   <button type="submit" class="btn btn-success d-none d-md-block m-1" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
     <i class="fa fa-save"></i> {% trans 'Save' %}
@@ -20,7 +20,7 @@
     {% endif %}
 
     {% if show_delete_link %}
-      <a href="{{ delete_url }}" class="btn btn-danger deletelink m-1 px-5"><i class="fa fa-trash-alt"></i></a>
+      <a href="{{ delete_url }}" class="btn btn-danger deletelink m-1 px-4"><i class="fa fa-trash-alt"></i></a>
     {% endif %}
   </div>
 
