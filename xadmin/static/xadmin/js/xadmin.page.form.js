@@ -2,29 +2,29 @@
     $(function() {
         var action_bar = $('.form-actions');
         if (action_bar.length && !action_bar.data("action_scroll_top")) {
-            var action_bar_height = action_bar.outerHeight(true);
-            var $html = $('html');
+            var action_bar_height = action_bar.outerHeight(true),
+                $html = $('html'),
+                timeout = 250;
+            action_bar.data("timeout", Date.now() - timeout);
+
+             function isScrollAtEnd(security_marge) {
+                var document_height = $(document).height(),
+                    scroll_top = $(window).scrollTop(),
+                    window_height = $(window).height();
+                return (document_height + action_bar_height) - (scroll_top + window_height) < security_marge;
+            }
 
             var onchange = function () {
-                var html_height = $html.innerHeight();
-                var html_scroll_top = $html.scrollTop();
-                var html_scroll_height = $html.prop('scrollHeight');
-                var action_bar_offset_top = action_bar.offset().top;
-
-                var has_scroll_end = html_height + html_scroll_top >= html_scroll_height;
-                var action_bar_coordenate = action_bar_offset_top + action_bar_height;
-                var avaliable_action_bar_fixed = (html_scroll_top + html_height) < action_bar_coordenate;
-
-                if (!action_bar.hasClass("fixed") && avaliable_action_bar_fixed) {
-                    action_bar.addClass('fixed');
-
-                } else if (has_scroll_end || avaliable_action_bar_fixed) {
+                if (isScrollAtEnd($html.height() * 0.25)) {
+                    action_bar.data("timeout", Date.now());
                     action_bar.removeClass('fixed');
+                } else if (!action_bar.hasClass("fixed") && (Date.now() - action_bar.data("timeout")) >= timeout) {
+                    action_bar.data("timeout", Date.now());
+                    action_bar.addClass('fixed');
                 }
             }
             action_bar.data("action_scroll_top", true);
-            $(window).scroll(onchange);
-            $(window).resize(onchange);
+            $(window).scroll(onchange).resize(onchange);
             $('a[data-toggle=tab]').on('shown.bs.tab', function (){
                 action_bar.removeClass('fixed');
                 onchange();
