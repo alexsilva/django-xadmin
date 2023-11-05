@@ -76,22 +76,21 @@
 
         {% block content-nav %}
           <div class="mb-3">
-          <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded d-none"
-               data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-3"
-               data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded"
-               data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded"
-               data-toggle="breakpoint">
-            {% block nav_toggles %}
-              {% include "xadmin/includes/toggle_back.html" %}
-            {% endblock %}
+            <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded d-none"
+                 data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-3"
+                 data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded"
+                 data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded"
+                 data-toggle="breakpoint">
+              {% block nav_toggles %}
+                {% include "xadmin/includes/toggle_back.html" %}
+              {% endblock %}
 
-            {% block nav_brand %}
-              <a class="navbar-brand text-truncate mr-auto ml-2 w-25" style="min-width: 120px" href="#" data-toggle="collapse"
-                 data-target="#top-nav .navbar-collapse">
-                {% block nav_title %}{% endblock %}
-              </a>
-            {% endblock %}
-
+              {% block nav_brand %}
+                <a class="navbar-brand text-truncate mr-auto ml-2 w-25" style="min-width: 120px" href="#" data-toggle="collapse"
+                   data-target="#top-nav .navbar-collapse">
+                  {% block nav_title %}{% endblock %}
+                </a>
+              {% endblock %}
 
               <div class="d-flex flex-row flex-nowrap align-items-baseline align-content-end justify-content-end pt-2">
               {% block nav_btns_toggles %}{% endblock %}
@@ -99,21 +98,21 @@
               </div>
 
               <div class="navbar-collapse collapse">
-              <ul class="navbar-nav mr-auto">
-                {% view_block 'nav_menu' %}
-              </ul>
-              {% view_block 'nav_form' %}
-              {% block nav_form %}{% endblock %}
+                <ul class="navbar-nav mr-auto">
+                  {% view_block 'nav_menu' %}
+                </ul>
+                {% view_block 'nav_form' %}
+                {% block nav_form %}{% endblock %}
 
-              <div class="navbar-btn ml-2"
-                   data-class-xs="navbar-btn ml-2 d-none"
-                   data-class-md="navbar-btn ml-2 d-md-block"
-                   data-toggle=breakpoint>
-                {% view_block 'nav_btns' %}
-                {% block nav_btns %}{% endblock %}
+                <div class="navbar-btn ml-2"
+                     data-class-xs="navbar-btn ml-2 d-none"
+                     data-class-md="navbar-btn ml-2 d-md-block"
+                     data-toggle=breakpoint>
+                  {% view_block 'nav_btns' %}
+                  {% block nav_btns %}{% endblock %}
+                </div>
               </div>
-            </div>
-          </nav>
+            </nav>
           </div>
         {% endblock %}
 
