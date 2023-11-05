@@ -1,6 +1,6 @@
 {% load i18n %}
-  <li class="page-item disabled page-item-first">
-      <a class="page-link text-nowrap" href="#" tabindex="-1">
+  <li class="page-item disabled page-item-first" style="width: 35%; max-width: 200px">
+      <a class="page-link text-truncate" href="#" tabindex="-1">
           <span class="text-success page-result-count">{{ cl.result_count }}</span>
           <span>
               {% ifequal cl.result_count 1 %}
@@ -15,6 +15,6 @@
   {% endif %}
   {% if show_all_url %}
     <li class="page-item">
-        <a href="{{ show_all_url }}" class="page-link showall text-nowrap" tabindex="-1">{% trans 'Show all' %}</a>
+        <a href="{{ show_all_url }}" class="page-link showall" tabindex="-1">{% trans 'Show all' %}</a>
     </li>
   {% endif %}
