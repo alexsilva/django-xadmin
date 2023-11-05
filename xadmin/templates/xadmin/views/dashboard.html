@@ -13,7 +13,7 @@
 {% include "xadmin/includes/toggle_menu.html" %}
 {% endblock %}
 
-{% block nav_brand %}
+{% block nav_btns_toggles %}
     {{ block.super }}
     {% if has_add_widget_permission %}
       <a title="{% trans "Add Widget" %}" href="{{ add_widget_url }}" class="navbar-toggler">

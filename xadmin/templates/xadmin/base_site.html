@@ -84,14 +84,21 @@
             {% block nav_toggles %}
               {% include "xadmin/includes/toggle_back.html" %}
             {% endblock %}
+
             {% block nav_brand %}
-              <a class="navbar-brand text-truncate mr-auto ml-2" href="#" data-toggle="collapse"
+              <a class="navbar-brand text-truncate mr-auto ml-2 w-25" style="min-width: 120px" href="#" data-toggle="collapse"
                  data-target="#top-nav .navbar-collapse">
                 {% block nav_title %}{% endblock %}
               </a>
             {% endblock %}
-            {% view_block 'nav_toggles' %}
-            <div class="navbar-collapse collapse">
+
+
+              <div class="d-flex flex-row flex-nowrap align-items-baseline align-content-end justify-content-end pt-2">
+              {% block nav_btns_toggles %}{% endblock %}
+              {% view_block 'nav_toggles' %}
+              </div>
+
+              <div class="navbar-collapse collapse">
               <ul class="navbar-nav mr-auto">
                 {% view_block 'nav_menu' %}
               </ul>
