@@ -62,27 +62,29 @@
           </div>
         </div>
         {% endblock toolbar_column %}
-        {% block toolbar_layouts %}
-        <div class="btn-group btn-group-toggle layout-btns m-1" data-toggle="buttons">
-          <label class="btn btn-sm btn-secondary border-right-0 layout-normal active">
-            <input type="radio" autocomplete="off">
-            <i class="fa fa-th-large"></i>
-          </label>
-          <label class="btn btn-sm btn-secondary border-left-0 layout-condensed">
-            <input type="radio" autocomplete="off">
-            <i class="fa fa-th"></i>
-          </label>
-          {% view_block 'top_layout_btns' %}
+        <div class="d-flex flex-nowrap">
+          {% block toolbar_layouts %}
+          <div class="btn-group btn-group-toggle layout-btns m-1" data-toggle="buttons">
+            <label class="btn btn-sm btn-secondary border-right-0 layout-normal active">
+              <input type="radio" autocomplete="off">
+              <i class="fa fa-th-large"></i>
+            </label>
+            <label class="btn btn-sm btn-secondary border-left-0 layout-condensed">
+              <input type="radio" autocomplete="off">
+              <i class="fa fa-th"></i>
+            </label>
+            {% view_block 'top_layout_btns' %}
+          </div>
+          {% endblock toolbar_layouts %}
+          {% block toolbar_fullscreen %}
+          <div class="btn-group layout-btns m-1" data-toggle="buttons-checkbox">
+            <button type="button" class="btn btn-sm btn-secondary layout-full">
+              <i class="fa fa-expand"></i>
+            </button>
+            {% view_block 'top_check_btns' %}
+          </div>
+          {% endblock toolbar_fullscreen %}
         </div>
-        {% endblock toolbar_layouts %}
-        {% block toolbar_fullscreen %}
-        <div class="btn-group layout-btns m-1" data-toggle="buttons-checkbox">
-          <button type="button" class="btn btn-sm btn-secondary layout-full">
-            <i class="fa fa-expand"></i>
-          </button>
-          {% view_block 'top_check_btns' %}
-        </div>
-        {% endblock toolbar_fullscreen %}
         {% view_block 'top_btns' %}
       </div>
     </div>
