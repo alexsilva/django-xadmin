@@ -82,7 +82,7 @@
         overflow-x: hidden;
     }
 
-    #footer, .breadcrumb {
+    #footer, .breadcrumb:not(.always-visible) {
         display: none;
     }
 
