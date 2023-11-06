@@ -383,4 +383,12 @@
 .w-35 {
     width: 35%;
 }
+
+.mxw-200  {
+    max-width: 200px;
+}
+
+.mnw-150 {
+    min-width: 150px;
+}
 /*End Dropdown submenu plugin*/
