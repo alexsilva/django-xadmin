@@ -136,6 +136,16 @@
       $('#g-search').attr('action', $(this).data('action')).submit();
   });
 
+  $("#btn_toggles").click(function () {
+      $($(this).data('target')).toggleClass('d-flex');
+      $("#top-nav .navbar-collapse").collapse('hide');
+  });
+
+  $(".content-navbar .navbar-brand").click(function () {
+      $(".content-navbar .navbar-collapse").collapse('hide');
+      $("#nav_btns_toggles").removeClass('d-flex')
+  })
+
   // save settings
   $.save_user_settings = function(key, value, success, error){
     var csrftoken = $.getCookie('csrftoken');

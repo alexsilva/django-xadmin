@@ -77,7 +77,7 @@
         {% block content-nav %}
           <div class="mb-3">
             <nav class="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded d-none"
-                 data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-3"
+                 data-class-xs="navbar fixed-top content-navbar navbar-expand-md navbar-dark bg-dark pb-2"
                  data-class-sm="navbar content-navbar navbar-expand-sm navbar-light bg-light border rounded"
                  data-class-md="navbar content-navbar navbar-expand-md navbar-light bg-light border rounded"
                  data-toggle="breakpoint">
@@ -86,15 +86,20 @@
               {% endblock %}
 
               {% block nav_brand %}
-                <a class="navbar-brand text-truncate mr-auto ml-2 w-25 mnw-250" href="#" data-toggle="collapse"
+                <a class="navbar-brand text-truncate w-50 mr-auto m-1" href="#" data-toggle="collapse"
                    data-target="#top-nav .navbar-collapse">
                   {% block nav_title %}{% endblock %}
                 </a>
               {% endblock %}
 
-              <div class="d-flex flex-row flex-nowrap align-items-baseline align-content-end justify-content-end pt-2">
-              {% block nav_btns_toggles %}{% endblock %}
-              {% view_block 'nav_toggles' %}
+              <div class="d-flex flex-row align-items-baseline ml-auto justify-content-end">
+                  <div class="flex-row align-items-baseline align-content-end justify-content-end collapse" id="nav_btns_toggles">
+                    {% block nav_btns_toggles %}{% endblock %}
+                    {% view_block 'nav_toggles' %}
+                  </div>
+                  <button class="navbar-toggler m-1" type="button" id="btn_toggles" data-target="#nav_btns_toggles" aria-expanded="false">
+                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                  </button>
               </div>
 
               <div class="navbar-collapse collapse">
