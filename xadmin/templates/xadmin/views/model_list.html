@@ -13,12 +13,12 @@
 
 {% block nav_btns_toggles %}
   {{block.super}}
-  <button class="navbar-toggler" data-toggle="collapse" data-target=".content-navbar .navbar-collapse">
-    <span class="fa fa-filter"></span>
+  <button class="navbar-toggler m-1" data-toggle="collapse" data-target=".content-navbar .navbar-collapse">
+    <i class="fa fa-filter" aria-hidden="true"></i>
   </button>
   {% if has_add_permission %}
-    <a href="{{add_url}}" class="navbar-toggler ml-2">
-        <span class="fa fa-plus"></span>
+    <a href="{{add_url}}" class="navbar-toggler m-1" role="button">
+        <i class="fa fa-plus" aria-hidden="true"></i>
     </a>
   {% endif %}
 {% endblock %}
