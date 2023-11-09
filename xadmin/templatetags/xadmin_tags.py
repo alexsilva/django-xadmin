@@ -73,7 +73,7 @@ class BlockcaptureNode(template.Node):
 		self.safe = safe
 
 	def render(self, context):
-		output = self.nodelist.render(context)
+		output = self.nodelist.render(context).strip()
 		context[self.varname] = mark_safe(output) if self.safe else escape(output)
 		return ''
 
