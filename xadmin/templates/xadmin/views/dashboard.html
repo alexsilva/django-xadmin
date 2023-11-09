@@ -26,9 +26,11 @@
 
 {% block nav_links_toggles %}
   {{block.super}}
-  <a class="dropdown-item" title="{% trans "Add Widget" %}" href="{{ add_widget_url }}">
-    <i class="fa fa-plus"></i>{% trans "Add Widget" %}
-  </a>
+  {% if has_add_widget_permission %}
+    <a class="dropdown-item" title="{% trans "Add Widget" %}" href="{{ add_widget_url }}">
+      <i class="fa fa-plus"></i>{% trans "Add Widget" %}
+    </a>
+  {% endif %}
 {% endblock %}
 
 {% block nav_btns %}
