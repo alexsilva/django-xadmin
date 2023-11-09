@@ -92,15 +92,21 @@
                 </a>
               {% endblock %}
 
-              <div class="d-flex flex-row align-items-baseline ml-auto justify-content-end">
-                  <div class="flex-row align-items-baseline align-content-end justify-content-end collapse" id="nav_btns_toggles">
-                    {% block nav_btns_toggles %}{% endblock %}
-                    {% view_block 'nav_toggles' %}
-                  </div>
-                  <button class="navbar-toggler m-1" type="button" id="btn_toggles" data-target="#nav_btns_toggles" aria-expanded="false">
-                    <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-                  </button>
-              </div>
+              <ul class="nav ml-auto">
+                {% block nav_btns_toggles %}{% endblock %}
+                {% view_block 'nav_toggles' %}
+                {% blockcapture nav_links_toggles_html safe=True %}{% block nav_links_toggles %}{% endblock %}{% endblockcapture %}
+                {% if nav_links_toggles_html %}
+                  <li class="nav-item dropdown dropleft d-sm-none">
+                    <a class="nav-link text-white nav-toggles" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                       <i class="fa fa-th"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                      {{ nav_links_toggles_html }}
+                    </div>
+                  </li>
+                {% endif %}
+              </ul>
 
               <div class="navbar-collapse collapse">
                 <ul class="navbar-nav mr-auto">

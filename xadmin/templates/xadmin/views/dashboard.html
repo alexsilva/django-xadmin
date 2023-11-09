@@ -16,9 +16,19 @@
 {% block nav_btns_toggles %}
     {{ block.super }}
     {% if has_add_widget_permission %}
-      <a title="{% trans "Add Widget" %}" href="{{ add_widget_url }}" class="navbar-toggler">
-        <i class="fa fa-plus"></i></a>
+      <li class="nav-item d-none d-sm-block m-1">
+        <a title="{% trans "Add Widget" %}" href="{{ add_widget_url }}" class="navbar-toggler nav-link">
+          <i class="fa fa-plus"></i>
+        </a>
+      </li>
     {% endif %}
+{% endblock %}
+
+{% block nav_links_toggles %}
+  {{block.super}}
+  <a class="dropdown-item" title="{% trans "Add Widget" %}" href="{{ add_widget_url }}">
+    <i class="fa fa-plus"></i>{% trans "Add Widget" %}
+  </a>
 {% endblock %}
 
 {% block nav_btns %}
