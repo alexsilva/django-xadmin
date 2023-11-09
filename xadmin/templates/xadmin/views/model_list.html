@@ -34,7 +34,7 @@
   </a>
   <a href="{{add_url}}" class="dropdown-item" role="button">
     <i class="fa fa-plus m-1" aria-hidden="true"></i>
-    {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+    {% blocktrans with cl.opts.verbose_name|truncatechars:20 as name %}Add {{ name }}{% endblocktrans %}
   </a>
 {% endblock %}
 
