@@ -67,24 +67,32 @@ def vendor(context, *tags):
 class BlockcaptureNode(template.Node):
 	"""https://chriskief.com/2013/11/06/conditional-output-of-a-django-block/"""
 
-	def __init__(self, nodelist, varname):
+	def __init__(self, nodelist, varname, safe=False):
 		self.nodelist = nodelist
 		self.varname = varname
+		self.safe = safe
 
 	def render(self, context):
 		output = self.nodelist.render(context)
-		context[self.varname] = escape(output)
+		context[self.varname] = mark_safe(output) if self.safe else escape(output)
 		return ''
 
 
 @register.tag(name='blockcapture')
 def do_blockcapture(parser, token):
-	try:
-		tag_name, args = token.contents.split(None, 1)
-	except ValueError:
-		raise template.TemplateSyntaxError("'blockcapture' node requires a variable name.")
-
 	nodelist = parser.parse(('endblockcapture',))
 	parser.delete_first_token()
 
-	return BlockcaptureNode(nodelist, args)
+	tokens = token.split_contents()
+
+	if len(tokens) < 2:
+		raise template.TemplateSyntaxError(f"'{tokens[0]}' node requires a variable name.")
+
+	args, kwargs = [], {}
+	for token in tokens[1:]:
+		if token.find("=") != -1:
+			name, value = token.split("=")
+			kwargs[name] = parser.compile_filter(value)
+		else:
+			args.append(token)
+	return BlockcaptureNode(nodelist, *args, **kwargs)
