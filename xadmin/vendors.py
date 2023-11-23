@@ -67,12 +67,12 @@ vendors = {
 	"font-awesome": {
 		"css": {
 			'dev': [
-				'xadmin/vendor/font-awesome/css/fontawesome.css',
-				'xadmin/vendor/font-awesome/css/solid.css'
+				# fontawesome, brands, regular, solid
+				'xadmin/vendor/font-awesome/css/all.css'
 			],
 			'production': [
-				'xadmin/vendor/font-awesome/css/fontawesome.min.css',
-				'xadmin/vendor/font-awesome/css/solid.min.css'
+				# fontawesome, brands, regular, solid
+				'xadmin/vendor/font-awesome/css/all.min.css'
 			]
 		}
 	},
