@@ -70,7 +70,7 @@ class WidgetTypeSelect(forms.Widget):
 
 
 class UserWidgetAdmin:
-	model_icon = 'fa fa-dashboard'
+	model_icon = 'fa tachometer-alt'
 	list_display = ('widget_type', 'page_id', 'user')
 	list_filter = ['user', 'widget_type', 'page_id']
 	list_display_links = ('widget_type',)
@@ -251,7 +251,7 @@ class BaseWidget(forms.Form):
 @widget_manager.register
 class HtmlWidget(BaseWidget):
 	widget_type = 'html'
-	widget_icon = 'fa fa-file-o'
+	widget_icon = 'fa fa-file-alt'
 	description = _('Html Content Widget, can write any html content in widget.')
 
 	content = forms.CharField(label=_('Html Content'),
@@ -372,7 +372,7 @@ class QuickBtnWidget(BaseWidget):
 	description = _('Quick button Widget, quickly open any page.')
 	template = "xadmin/widgets/qbutton.html"
 	base_title = _("Quick Buttons")
-	widget_icon = 'fa fa-caret-square-o-right'
+	widget_icon = 'fa fa-caret-square-right'
 
 	url = forms.CharField(label=_("Target Url"), required=True)
 

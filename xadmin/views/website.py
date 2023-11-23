@@ -14,7 +14,7 @@ from xadmin.views.dashboard import Dashboard
 
 class IndexView(Dashboard):
 	title = _("Main Dashboard")
-	icon = "fa fa-dashboard"
+	icon = "fa fa-tachometer-alt"
 
 	def get_page_id(self):
 		return 'home'

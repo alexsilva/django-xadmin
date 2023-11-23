@@ -653,7 +653,7 @@ class VersionInline:
 
 
 class ReversionAdmin:
-	model_icon = 'fa fa-exchange'
+	model_icon = 'fa fa-exchange-alt'
 
 	list_display = ('__str__', 'date_created', 'user', 'comment')
 	list_display_links = ('__str__',)

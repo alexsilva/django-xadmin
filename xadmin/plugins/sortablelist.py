@@ -37,7 +37,7 @@ class SortableListPlugin(BaseAdminPlugin):
 	def result_item(self, item, obj, field_name, row):
 		if self.is_list_sortable and field_name in (self.list_order_field,
 		                                            self.list_order_display_field):
-			item.btns.append('<a><i class="fa fa-arrows"></i></a>')
+			item.btns.append('<a><i class="fas fa-arrows-alt"></i></a>')
 		return item
 
 	def get_context(self, context):
