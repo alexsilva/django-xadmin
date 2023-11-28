@@ -33,7 +33,7 @@ setup(
 	zip_safe=False,
 	keywords=['admin', 'django', 'xadmin', 'bootstrap'],
 	classifiers=[
-		'Development Status :: 5 - Beta',
+		'Development Status :: 6 - Beta',
 		'Environment :: Web Environment',
 		'Framework :: Django',
 		'Intended Audience :: Developers',
