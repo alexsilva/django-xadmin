@@ -2,7 +2,7 @@ from django import forms
 from django.db import models
 from django.utils.html import escape, format_html
 from django.utils.text import Truncator
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.sites import site
 from xadmin.util import vendor, get_limit_choices_to_url_params

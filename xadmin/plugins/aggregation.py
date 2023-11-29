@@ -2,7 +2,7 @@
 from django.core.exceptions import FieldDoesNotExist
 from django.db.models import Avg, Max, Min, Count, Sum
 from django.forms import Media
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.sites import site
 from xadmin.util import display_for_field

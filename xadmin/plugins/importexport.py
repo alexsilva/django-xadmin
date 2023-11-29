@@ -53,7 +53,7 @@ from django.template import loader
 from django.template.response import TemplateResponse
 from django.urls.base import reverse
 from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from import_export.formats.base_formats import DEFAULT_FORMATS
 from import_export.forms import (ImportForm, ConfirmImportForm, ExportForm)
 from import_export.resources import modelresource_factory

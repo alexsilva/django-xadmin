@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.template import loader
 from django.utils.encoding import force_text, smart_text
 from django.utils.http import urlencode
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.translation import gettext_lazy as _, gettext
 
 from xadmin.plugins.utils import get_context_dict
 from xadmin.sites import site
@@ -45,7 +45,7 @@ class ChartWidget(ModelBaseWidget):
 			else:
 				self.charts = model_admin.data_charts
 				if self.title is None:
-					self.title = ugettext(
+					self.title = gettext(
 						"%s Charts") % self.model._meta.verbose_name_plural
 
 	def filte_choices_model(self, model, modeladmin):

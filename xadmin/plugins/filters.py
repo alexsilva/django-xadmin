@@ -10,7 +10,7 @@ from django.db.models.constants import LOOKUP_SEP
 from django.template import loader
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_str
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin import widgets
 from xadmin.filters import manager as filter_manager, FILTER_PREFIX, SEARCH_VAR

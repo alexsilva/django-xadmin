@@ -17,7 +17,7 @@ from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape
 from django.utils.http import urlencode, urlquote
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 
 from xadmin import widgets as exwidgets

@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
-from django.utils.translation import ugettext as _, ungettext
+from django.utils.translation import gettext as _, ngettext
 
 from xadmin.plugins.utils import get_context_dict
 from xadmin.sites import site
@@ -175,7 +175,7 @@ class ActionPlugin(BaseAdminPlugin):
 	def get_context(self, context):
 		if self.actions and self.admin_view.result_count:
 			av = self.admin_view
-			selection_note_all = ungettext('%(total_count)s selected',
+			selection_note_all = ngettext('%(total_count)s selected',
 			                               'All %(total_count)s selected', av.result_count)
 
 			new_context = {

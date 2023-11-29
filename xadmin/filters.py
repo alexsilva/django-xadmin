@@ -10,7 +10,7 @@ from django.utils.encoding import smart_text
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from xadmin.util import is_related_field, is_related_field2, get_limit_choices_to_url_params
 from xadmin.views.list import EMPTY_CHANGELIST_VALUE

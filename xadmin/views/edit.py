@@ -14,7 +14,7 @@ from django.template.response import TemplateResponse
 from django.utils.encoding import force_text
 from django.utils.html import escape
 from django.utils.text import get_text_list
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.core.exceptions import FieldDoesNotExist
 
 from xadmin import widgets

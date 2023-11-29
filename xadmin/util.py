@@ -15,7 +15,7 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import get_language, to_locale
-from django.utils.translation import ungettext
+from django.utils.translation import ngettext
 from django.templatetags.static import static
 from django.core.exceptions import FieldDoesNotExist
 import json
@@ -268,7 +268,7 @@ def model_ngettext(obj, n=None):
 		obj = obj.model
 	d = model_format_dict(obj)
 	singular, plural = d["verbose_name"], d["verbose_name_plural"]
-	return ungettext(singular, plural, n or 0)
+	return ngettext(singular, plural, n or 0)
 
 
 def is_rel_field(name, model):

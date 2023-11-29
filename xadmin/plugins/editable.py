@@ -7,7 +7,7 @@ from django.http import Http404, HttpResponse
 from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.layout import FormHelper
 from xadmin.plugins.ajax import JsonErrorDict

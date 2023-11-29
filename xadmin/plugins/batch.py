@@ -7,7 +7,7 @@ from django.forms.models import modelform_factory
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _, ugettext_lazy
+from django.utils.translation import gettext as _, gettext_lazy
 
 from xadmin.layout import FormHelper, Layout, Fieldset, Container, Col
 from xadmin.plugins.actions import BaseActionView, ACTION_CHECKBOX_NAME
@@ -70,7 +70,7 @@ class ChangeFieldWidgetWrapper(forms.Widget):
 
 class BatchChangeAction(BaseActionView):
 	action_name = "change_selected"
-	description = ugettext_lazy('Batch Change selected %(verbose_name_plural)s')
+	description = gettext_lazy('Batch Change selected %(verbose_name_plural)s')
 	batch_change_form_template = None
 	model_perm = 'change'
 

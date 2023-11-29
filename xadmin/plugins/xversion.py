@@ -15,7 +15,7 @@ from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_text, smart_text
 from django.utils.text import capfirst
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from reversion import RegistrationError
 from reversion.models import Revision, Version
 from reversion.revisions import register, is_registered, create_revision, set_user, unregister, set_comment

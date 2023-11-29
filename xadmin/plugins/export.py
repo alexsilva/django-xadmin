@@ -15,7 +15,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.utils.encoding import force_text, smart_text
 from django.utils.html import escape
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.utils.xmlutils import SimplerXMLGenerator
 
 from xadmin.plugins.utils import get_context_dict
