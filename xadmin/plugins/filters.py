@@ -3,7 +3,11 @@ import operator
 import urllib.parse
 from functools import reduce
 
-from django.contrib.admin.utils import get_fields_from_path, lookup_needs_distinct
+from django.contrib.admin.utils import get_fields_from_path
+try:
+	from django.contrib.admin.utils import lookup_spawns_duplicates as lookup_needs_distinct
+except ImportError:
+	from django.contrib.admin.utils import lookup_needs_distinct
 from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured, ValidationError, FieldDoesNotExist
 from django.db import models
 from django.db.models.constants import LOOKUP_SEP
