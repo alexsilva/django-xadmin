@@ -15,7 +15,8 @@ from django.test.client import RequestFactory
 from django.urls.base import reverse, NoReverseMatch
 from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape
-from django.utils.http import urlencode, urlquote
+from django.utils.http import urlencode
+from urllib.parse import urlencode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
@@ -599,8 +600,8 @@ class Dashboard(CommAdminView):
 			'has_add_widget_permission': self.has_model_perm(UserWidget, 'add') and self.widget_customiz,
 			'add_widget_url': self.get_admin_url(
 				'%s_%s_add' % (UserWidget._meta.app_label, UserWidget._meta.model_name)) +
-			                  "?user=%s&page_id=%s&_redirect=%s" % (
-			                  self.user.id, self.get_page_id(), urlquote(self.request.get_full_path()))
+			                  urlencode({'user': self.user.id, "page_id": self.get_page_id(),
+			                             "_redirect": self.request.get_full_path()})
 		}
 		context = super(Dashboard, self).get_context()
 		context.update(new_context)
