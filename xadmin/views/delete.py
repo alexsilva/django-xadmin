@@ -2,7 +2,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import transaction, router
 from django.http import Http404, HttpResponseRedirect
 from django.template.response import TemplateResponse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import escape
 from django.utils.translation import gettext as _
 
@@ -23,7 +23,7 @@ class DeleteAdminView(ModelAdminView):
 
 		if self.obj is None:
 			raise Http404(_('%(name)s object with primary key %(key)r does not exist.') % {
-				'name': force_text(self.opts.verbose_name), 'key': escape(object_id)})
+				'name': force_str(self.opts.verbose_name), 'key': escape(object_id)})
 
 		using = router.db_for_write(self.model)
 
@@ -72,7 +72,7 @@ class DeleteAdminView(ModelAdminView):
 	def get_context(self):
 		if self.perms_needed or self.protected:
 			title = _("Cannot delete %(name)s") % {"name":
-				                                       force_text(self.opts.verbose_name)}
+				                                       force_str(self.opts.verbose_name)}
 		else:
 			title = _("Are you sure?")
 
@@ -91,7 +91,7 @@ class DeleteAdminView(ModelAdminView):
 	def get_breadcrumb(self):
 		bcs = super(DeleteAdminView, self).get_breadcrumb()
 		bcs.append({
-			'title': force_text(self.obj),
+			'title': force_str(self.obj),
 			'url': self.get_object_url(self.obj)
 		})
 		item = {'title': _('Delete')}
@@ -105,7 +105,7 @@ class DeleteAdminView(ModelAdminView):
 	def post_response(self):
 
 		self.message_user(_('The %(name)s "%(obj)s" was deleted successfully.') %
-		                  {'name': force_text(self.opts.verbose_name), 'obj': force_text(self.obj)}, 'success')
+		                  {'name': force_str(self.opts.verbose_name), 'obj': force_str(self.obj)}, 'success')
 
 		if not self.has_view_permission():
 			return self.get_admin_url('index')

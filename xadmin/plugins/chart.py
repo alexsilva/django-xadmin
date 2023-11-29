@@ -6,7 +6,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.http import HttpResponse, HttpResponseNotFound
 from django.template import loader
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_text
 from django.utils.http import urlencode
 from django.utils.translation import gettext_lazy as _, gettext
 
@@ -122,7 +122,7 @@ class ChartsView(ListAdminView):
 		self.y_fields = (
 			y_fields,) if type(y_fields) not in (list, tuple) else y_fields
 
-		datas = [{"data": [], "label": force_text(label_for_field(
+		datas = [{"data": [], "label": force_str(label_for_field(
 			i, self.model, model_admin=self))} for i in self.y_fields]
 
 		self.make_result_list()

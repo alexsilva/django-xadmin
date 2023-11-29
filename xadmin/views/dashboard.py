@@ -13,7 +13,7 @@ from django.template.context_processors import csrf
 from django.template.loader import render_to_string
 from django.test.client import RequestFactory
 from django.urls.base import reverse, NoReverseMatch
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_text
 from django.utils.html import escape
 from django.utils.http import urlencode, urlquote
 from django.utils.safestring import mark_safe
@@ -42,12 +42,12 @@ class WidgetTypeSelect(forms.Widget):
 		final_attrs = self.build_attrs(attrs, extra_attrs={'name': name})
 		final_attrs['class'] = 'nav nav-pills flex-column'
 		output = ['<ul%s>' % flatatt(final_attrs)]
-		options = self.render_options(force_text(value), final_attrs['id'])
+		options = self.render_options(force_str(value), final_attrs['id'])
 		if options:
 			output.append(options)
 		output.append('</ul>')
 		output.append('<input type="hidden" id="%s_input" name="%s" value="%s"/>' %
-		              (final_attrs['id'], name, force_text(value)))
+		              (final_attrs['id'], name, force_str(value)))
 		return mark_safe('\n'.join(output))
 
 	def render_option(self, selected_choice, widget, id):
@@ -657,7 +657,7 @@ class ModelDashboard(Dashboard, ModelAdminView):
 
 	@filter_hook
 	def get_title(self):
-		return self.title % force_text(self.obj)
+		return self.title % force_str(self.obj)
 
 	def init_request(self, object_id, *args, **kwargs):
 		self.obj = self.get_object(unquote(object_id))
@@ -667,7 +667,7 @@ class ModelDashboard(Dashboard, ModelAdminView):
 
 		if self.obj is None:
 			raise Http404(_('%(name)s object with primary key %(key)r does not exist.') %
-			              {'name': force_text(self.opts.verbose_name), 'key': escape(object_id)})
+			              {'name': force_str(self.opts.verbose_name), 'key': escape(object_id)})
 
 	@filter_hook
 	def get_context(self):

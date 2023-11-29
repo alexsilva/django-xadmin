@@ -5,7 +5,7 @@ from django.db.models.options import PROXY_PARENTS
 from django.db.models.sql.query import LOOKUP_SEP
 from django.template.loader import render_to_string
 from django.urls.base import reverse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.encoding import smart_str
 from django.utils.safestring import mark_safe
 
@@ -74,7 +74,7 @@ class RelateMenuPlugin(BaseAdminPlugin):
 			field = rel.field
 			rel_name = rel.get_related_field().name
 
-			verbose_name = force_text(opts.verbose_name)
+			verbose_name = force_str(opts.verbose_name)
 			lookup_name = '%s__%s__exact' % (field.name, rel_name)
 
 			menu = {
@@ -146,10 +146,10 @@ class RelateObject:
 		if len(self.to_objs) == 1:
 			to_model_name = str(self.to_objs[0])
 		else:
-			to_model_name = force_text(self.to_model._meta.verbose_name)
+			to_model_name = force_str(self.to_model._meta.verbose_name)
 
 		return mark_safe("<span class='rel-brand'>%s <i class='fa fa-caret-right'></i></span> %s" % (
-		to_model_name, force_text(self.opts.verbose_name_plural)))
+		to_model_name, force_str(self.opts.verbose_name_plural)))
 
 
 class BaseRelateDisplayPlugin(BaseAdminPlugin):

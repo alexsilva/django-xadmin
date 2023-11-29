@@ -3,7 +3,7 @@
 from django import forms
 from django.db.models import ManyToManyField
 from django.forms.utils import flatatt
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import escape, conditional_escape
 
 import xadmin
@@ -20,9 +20,9 @@ class SelectMultipleTransfer(forms.SelectMultiple):
 		super(SelectMultipleTransfer, self).__init__(attrs, choices)
 
 	def render_opt(self, selected_choices, option_value, option_label):
-		option_value = force_text(option_value)
+		option_value = force_str(option_value)
 		return '<option value="%s">%s</option>' % (
-			escape(option_value), conditional_escape(force_text(option_label))), bool(option_value in selected_choices)
+			escape(option_value), conditional_escape(force_str(option_label))), bool(option_value in selected_choices)
 
 	def get_context(self, name, value, attrs):
 		ctx = super(SelectMultipleTransfer, self).get_context(name, value, attrs)
@@ -35,14 +35,14 @@ class SelectMultipleTransfer(forms.SelectMultiple):
 			value = []
 		final_attrs = self.build_attrs(attrs, extra_attrs={'name': name})
 
-		selected_choices = set(force_text(v) for v in value)
+		selected_choices = set(force_str(v) for v in value)
 		available_output = []
 		chosen_output = []
 
 		for option_value, option_label in self.choices:
 			if isinstance(option_label, (list, tuple)):
 				available_output.append('<optgroup label="%s">' %
-				                        escape(force_text(option_value)))
+				                        escape(force_str(option_value)))
 				for option in option_label:
 					output, selected = self.render_opt(
 						selected_choices, *option)

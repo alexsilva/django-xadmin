@@ -18,7 +18,7 @@ from django.template import Context, Template
 from django.template.response import TemplateResponse
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator, classonlymethod
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_text
 from django.utils.functional import Promise
 from django.utils.http import urlencode
 from django.utils.itercompat import is_iterable
@@ -122,7 +122,7 @@ class JSONEncoder(DjangoJSONEncoder):
 		elif isinstance(o, decimal.Decimal):
 			return str(o)
 		elif isinstance(o, Promise):
-			return force_text(o)
+			return force_str(o)
 		else:
 			try:
 				return super(JSONEncoder, self).default(o)
@@ -244,7 +244,7 @@ class BaseAdminObject:
 			log.content_type = get_content_type_for_model(obj)
 			log.object_id = obj.pk
 			# Limits the representation to the maximum size of the field.
-			log.object_repr = Truncator(force_text(obj)).chars(log.object_repr_length)
+			log.object_repr = Truncator(force_str(obj)).chars(log.object_repr_length)
 		log.save()
 		return log
 
@@ -604,7 +604,7 @@ class ModelAdminView(CommAdminView):
 			"opts": self.opts,
 			"app_label": self.app_label,
 			"model_name": self.model_name,
-			"verbose_name": force_text(self.opts.verbose_name),
+			"verbose_name": force_str(self.opts.verbose_name),
 			'model_icon': self.get_model_icon(self.model),
 		}
 		context = super(ModelAdminView, self).get_context()

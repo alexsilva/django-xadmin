@@ -10,7 +10,7 @@ from django.db.models.sql.query import LOOKUP_SEP
 from django.forms import Media
 from django.urls import NoReverseMatch
 from django.utils import formats
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_text
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
@@ -247,8 +247,8 @@ def model_format_dict(obj):
 	else:
 		opts = obj
 	return {
-		'verbose_name': force_text(opts.verbose_name),
-		'verbose_name_plural': force_text(opts.verbose_name_plural)
+		'verbose_name': force_str(opts.verbose_name),
+		'verbose_name_plural': force_str(opts.verbose_name_plural)
 	}
 
 
