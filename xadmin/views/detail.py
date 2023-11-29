@@ -9,7 +9,7 @@ from django.forms.models import modelform_factory, modelform_defines_fields
 from django.http import Http404
 from django.template import loader
 from django.template.response import TemplateResponse
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import conditional_escape
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
@@ -102,7 +102,7 @@ class ResultField:
 					self.allow_tags = True
 					self.text = boolean_icon(value)
 				else:
-					self.text = smart_text(value)
+					self.text = smart_str(value)
 			else:
 				if isinstance(f.remote_field, models.ManyToOneRel):
 					self.text = getattr(self.obj, f.name)

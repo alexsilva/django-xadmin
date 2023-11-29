@@ -13,7 +13,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.db.models import BooleanField, NullBooleanField
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape
 from django.utils.translation import gettext as _
 from django.utils.xmlutils import SimplerXMLGenerator
@@ -229,7 +229,7 @@ class ExportPlugin(BaseAdminPlugin):
 				self._to_xml(xml, value)
 				xml.endElement(key)
 		else:
-			xml.characters(smart_text(data))
+			xml.characters(smart_str(data))
 
 	def get_xml_export(self, context):
 		results = self._get_objects(context)

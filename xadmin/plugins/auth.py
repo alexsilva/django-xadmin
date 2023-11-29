@@ -15,7 +15,7 @@ from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.template.response import TemplateResponse
 from django.utils.decorators import method_decorator
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.html import escape
 from django.utils.translation import gettext as _
 from django.views.decorators.debug import sensitive_post_parameters
@@ -227,7 +227,7 @@ class ChangePasswordView(ModelAdminView):
 		helper.include_media = False
 		self.form.helper = helper
 		context.update({
-			'title': _('Change password: %s') % escape(smart_text(self.obj)),
+			'title': _('Change password: %s') % escape(smart_str(self.obj)),
 			'form': self.form,
 			'has_delete_permission': False,
 			'has_change_permission': True,

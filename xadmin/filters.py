@@ -6,7 +6,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db import models
 from django.template.loader import get_template
 from django.utils import timezone
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.text import Truncator
@@ -207,7 +207,7 @@ class ChoicesFieldListFilter(ListFieldFilter):
 		}
 		for lookup, title in self.field.flatchoices:
 			yield {
-				'selected': smart_text(lookup) == self.lookup_exact_val,
+				'selected': smart_str(lookup) == self.lookup_exact_val,
 				'query_string': self.query_string({self.lookup_exact_name: lookup}),
 				'display': title,
 			}
@@ -439,7 +439,7 @@ class RelatedFieldListFilter(ListFieldFilter):
 		}
 		for pk_val, val in self.lookup_choices:
 			yield {
-				'selected': self.lookup_exact_val == smart_text(pk_val),
+				'selected': self.lookup_exact_val == smart_str(pk_val),
 				'query_string': self.query_string({
 					self.lookup_exact_name: pk_val,
 				}, [self.lookup_isnull_name]),
@@ -535,7 +535,7 @@ class MultiSelectFieldListFilter(ListFieldFilter):
 		}
 		for val in self.lookup_choices:
 			yield {
-				'selected': smart_text(val) in self.lookup_in_val,
+				'selected': smart_str(val) in self.lookup_in_val,
 				'query_string': self.query_string({self.lookup_in_name: ",".join([val] + self.lookup_in_val), }),
 				'remove_query_string': self.query_string(
 					{self.lookup_in_name: ",".join([v for v in self.lookup_in_val if v != val]), }),
@@ -578,7 +578,7 @@ class AllValuesFieldListFilter(ListFieldFilter):
 			if val is None:
 				include_none = True
 				continue
-			val = smart_text(val)
+			val = smart_str(val)
 			yield {
 				'selected': self.lookup_exact_val == val,
 				'query_string': self.query_string({self.lookup_exact_name: val},

@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 from django.template.loader import render_to_string
 from django.template.response import SimpleTemplateResponse, TemplateResponse
 from django.urls.base import NoReverseMatch
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
@@ -569,7 +569,7 @@ class ListAdminView(ModelAdminView):
 					item.allow_tags = True
 					item.text = boolean_icon(value)
 				else:
-					item.text = smart_text(value)
+					item.text = smart_str(value)
 			else:
 				if isinstance(f.remote_field, models.ManyToOneRel):
 					field_val = getattr(obj, f.name)

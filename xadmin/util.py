@@ -10,7 +10,7 @@ from django.db.models.sql.query import LOOKUP_SEP
 from django.forms import Media
 from django.urls import NoReverseMatch
 from django.utils import formats
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
@@ -346,9 +346,9 @@ def display_for_field(value, field):
 	elif isinstance(field, models.FloatField) and isinstance(value, float):
 		return formats.number_format(value)
 	elif isinstance(field.remote_field, models.ManyToManyRel):
-		return ', '.join([smart_text(obj) for obj in value.all()])
+		return ', '.join([smart_str(obj) for obj in value.all()])
 	else:
-		return smart_text(value)
+		return smart_str(value)
 
 
 def display_for_value(value, boolean=False):
@@ -365,7 +365,7 @@ def display_for_value(value, boolean=False):
 	elif isinstance(value, (decimal.Decimal, float)):
 		return formats.number_format(value)
 	else:
-		return smart_text(value)
+		return smart_str(value)
 
 
 class NotRelationField(Exception):

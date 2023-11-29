@@ -6,7 +6,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models
 from django.http import HttpResponse, HttpResponseNotFound
 from django.template import loader
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.http import urlencode
 from django.utils.translation import gettext_lazy as _, gettext
 
@@ -76,7 +76,7 @@ class JSONEncoder(DjangoJSONEncoder):
 			try:
 				return super(JSONEncoder, self).default(o)
 			except Exception:
-				return smart_text(o)
+				return smart_str(o)
 
 
 class ChartsPlugin(BaseAdminPlugin):

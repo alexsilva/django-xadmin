@@ -13,7 +13,7 @@ from django.forms.models import model_to_dict
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.text import capfirst
 from django.utils.translation import gettext as _
 from reversion import RegistrationError
@@ -445,7 +445,7 @@ class RevisionView(BaseRevisionView):
 	def init_request(self, object_id, version_id):
 		self.detail = self.get_model_view(DetailAdminView, self.model, object_id)
 		self.org_obj = self.detail.obj
-		self.version = get_object_or_404(Version, pk=version_id, object_id=smart_text(self.org_obj.pk))
+		self.version = get_object_or_404(Version, pk=version_id, object_id=smart_str(self.org_obj.pk))
 
 		self.prepare_form()
 
@@ -492,7 +492,7 @@ class RevisionView(BaseRevisionView):
 	@filter_hook
 	def post_response(self):
 		self.message_user(_('The %(model)s "%(name)s" was reverted successfully. You may edit it again below.') %
-		                  {"model": force_str(self.opts.verbose_name), "name": smart_text(self.new_obj)}, 'success')
+		                  {"model": force_str(self.opts.verbose_name), "name": smart_str(self.new_obj)}, 'success')
 		return HttpResponseRedirect(self.model_admin_url('change', self.new_obj.pk))
 
 
@@ -528,7 +528,7 @@ class RecoverView(BaseRevisionView):
 	@filter_hook
 	def post_response(self):
 		self.message_user(_('The %(model)s "%(name)s" was recovered successfully. You may edit it again below.') %
-		                  {"model": force_str(self.opts.verbose_name), "name": smart_text(self.new_obj)}, 'success')
+		                  {"model": force_str(self.opts.verbose_name), "name": smart_str(self.new_obj)}, 'success')
 		return HttpResponseRedirect(self.model_admin_url('change', self.new_obj.pk))
 
 
@@ -578,7 +578,7 @@ class InlineRevisionPlugin(BaseAdminPlugin):
 		for related_version in revision_versions:
 			model_class = ContentType.objects.get_for_id(related_version.content_type_id).model_class()
 			if (model_class == formset.model
-				and smart_text(related_version.field_dict[fk_name]) == smart_text(object_id)):
+				and smart_str(related_version.field_dict[fk_name]) == smart_str(object_id)):
 				related_versions[related_version.object_id] = related_version
 		return related_versions
 
@@ -590,8 +590,8 @@ class InlineRevisionPlugin(BaseAdminPlugin):
 		                                             revision_view.version, formset)
 		formset.related_versions = related_versions
 		for related_obj in formset.queryset:
-			if smart_text(related_obj.pk) in related_versions:
-				initial.append(related_versions.pop(smart_text(related_obj.pk)).field_dict)
+			if smart_str(related_obj.pk) in related_versions:
+				initial.append(related_versions.pop(smart_str(related_obj.pk)).field_dict)
 			else:
 				initial_data = model_to_dict(related_obj)
 				initial_data["DELETE"] = True

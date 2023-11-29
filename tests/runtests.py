@@ -7,7 +7,7 @@ import sys
 import tempfile
 
 import django
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 
 TEST_ROOT = os.path.realpath(os.path.dirname(__file__))
 RUNTESTS_DIR = os.path.join(TEST_ROOT, 'xtests')
@@ -112,7 +112,7 @@ def teardown(state):
 	# so that it will successfully remove temp trees containing
 	# non-ASCII filenames on Windows. (We're assuming the temp dir
 	# name itself does not contain non-ASCII characters.)
-	shutil.rmtree(smart_text(TEMP_DIR))
+	shutil.rmtree(smart_str(TEMP_DIR))
 	# Restore the old settings.
 	for key, value in state.items():
 		setattr(settings, key, value)

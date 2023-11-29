@@ -4,7 +4,7 @@ from django.db import models, transaction
 from django.forms import Media
 from django.forms.models import modelform_factory
 from django.http import Http404, HttpResponse
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape, conditional_escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
@@ -99,7 +99,7 @@ class EditPatchView(ModelFormAdminView, ListAdminView):
 					allow_tags = True
 					text = boolean_icon(value)
 				else:
-					text = smart_text(value)
+					text = smart_str(value)
 			else:
 				if isinstance(f.rel, models.ManyToOneRel):
 					field_val = getattr(self.org_obj, f.name)

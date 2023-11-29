@@ -18,7 +18,7 @@ from django.template import Context, Template
 from django.template.response import TemplateResponse
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator, classonlymethod
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.functional import Promise
 from django.utils.http import urlencode
 from django.utils.itercompat import is_iterable
@@ -127,7 +127,7 @@ class JSONEncoder(DjangoJSONEncoder):
 			try:
 				return super(JSONEncoder, self).default(o)
 			except Exception:
-				return smart_text(o)
+				return smart_str(o)
 
 
 class BaseAdminMergeView:
@@ -440,7 +440,7 @@ class CommAdminView(BaseAdminView):
 			app_label = model._meta.app_label
 			app_icon = None
 			model_dict = {
-				'title': smart_text(capfirst(model._meta.verbose_name_plural)),
+				'title': smart_str(capfirst(model._meta.verbose_name_plural)),
 				'url': self.get_model_url(model, "changelist"),
 				'icon': self.get_model_icon(model),
 				'perm': self.get_model_perm(model, 'view'),
@@ -454,11 +454,11 @@ class CommAdminView(BaseAdminView):
 				nav_menu[app_key]['menus'].append(model_dict)
 			else:
 				# Find app title
-				app_title = smart_text(app_label.title())
+				app_title = smart_str(app_label.title())
 				if app_label.lower() in self.apps_label_title:
 					app_title = self.apps_label_title[app_label.lower()]
 				else:
-					app_title = smart_text(apps.get_app_config(app_label).verbose_name)
+					app_title = smart_str(apps.get_app_config(app_label).verbose_name)
 				# find app icon
 				if app_label.lower() in self.apps_icons:
 					app_icon = self.apps_icons[app_label.lower()]

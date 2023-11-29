@@ -13,7 +13,7 @@ from django.template.context_processors import csrf
 from django.template.loader import render_to_string
 from django.test.client import RequestFactory
 from django.urls.base import reverse, NoReverseMatch
-from django.utils.encoding import force_str, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape
 from django.utils.http import urlencode, urlquote
 from django.utils.safestring import mark_safe
@@ -309,7 +309,7 @@ class ModelChoiceField(forms.ChoiceField):
 	def valid_value(self, value):
 		value = self.prepare_value(value)
 		for k, v in self.choices:
-			if value == smart_text(k):
+			if value == smart_str(k):
 				return True
 		return False
 
