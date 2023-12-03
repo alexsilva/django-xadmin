@@ -47,7 +47,7 @@
 
     $.fn.exform.renders.push(function(f){
       f.find('.input-group.date input').each(function(e){
-        var dp = $(this).datepicker({format: $.date_local.dateJSFormat, language: 'xadmin', todayBtn: "linked", autoclose: true})
+        var dp = $(this).datepicker({zIndexOffset: 1050, format: $.date_local.dateJSFormat, language: 'xadmin', todayBtn: "linked", autoclose: true})
           .data('datepicker');
         $(this).parent().find('button').click(function(e){
           dp.update(new Date());
