@@ -118,7 +118,11 @@ class UserWidgetAdmin:
 	def get_list_display(self):
 		list_display = super(UserWidgetAdmin, self).get_list_display()
 		if not self.user.is_superuser:
-			list_display.remove('user')
+			try:
+				list_display.remove('user')
+			except ValueError:
+				# It usually occurs when some plugin removes the field.
+				...
 		return list_display
 
 	def queryset(self):
