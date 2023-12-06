@@ -12,8 +12,8 @@ from django.db.models.signals import post_migrate
 from django.urls.base import reverse
 from django.utils import timezone
 from django.utils.functional import classproperty
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext_lazy as _, ugettext
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext_lazy as _, gettext
 
 AUTH_USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', 'auth.User')
 
@@ -79,7 +79,7 @@ class JSONEncoder(DjangoJSONEncoder):
 			try:
 				return super(JSONEncoder, self).default(o)
 			except Exception:
-				return smart_text(o)
+				return smart_str(o)
 
 
 class UserSettings(models.Model):
@@ -170,18 +170,18 @@ class Log(models.Model):
 		return cls._meta.get_field("object_repr").max_length
 
 	def __repr__(self):
-		return smart_text(self.action_time)
+		return smart_str(self.action_time)
 
 	def __str__(self):
 		if self.action_flag == 'create':
-			return ugettext('Added "%(object)s".') % {'object': self.object_repr}
+			return gettext('Added "%(object)s".') % {'object': self.object_repr}
 		elif self.action_flag == 'change':
-			return ugettext('Changed "%(object)s" - %(changes)s') % {
+			return gettext('Changed "%(object)s" - %(changes)s') % {
 				'object': self.object_repr,
 				'changes': self.message,
 			}
 		elif self.action_flag == 'delete' and self.object_repr:
-			return ugettext('Deleted "%(object)s."') % {'object': self.object_repr}
+			return gettext('Deleted "%(object)s."') % {'object': self.object_repr}
 
 		return self.message
 

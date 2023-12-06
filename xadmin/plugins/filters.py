@@ -3,14 +3,18 @@ import operator
 import urllib.parse
 from functools import reduce
 
-from django.contrib.admin.utils import get_fields_from_path, lookup_needs_distinct
+from django.contrib.admin.utils import get_fields_from_path
+try:
+	from django.contrib.admin.utils import lookup_spawns_duplicates as lookup_needs_distinct
+except ImportError:
+	from django.contrib.admin.utils import lookup_needs_distinct
 from django.core.exceptions import SuspiciousOperation, ImproperlyConfigured, ValidationError, FieldDoesNotExist
 from django.db import models
 from django.db.models.constants import LOOKUP_SEP
 from django.template import loader
 from django.template.loader import render_to_string
 from django.utils.encoding import smart_str
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin import widgets
 from xadmin.filters import manager as filter_manager, FILTER_PREFIX, SEARCH_VAR

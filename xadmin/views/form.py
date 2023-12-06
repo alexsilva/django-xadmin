@@ -4,7 +4,7 @@ from django import forms
 from django.db import transaction
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.layout import FormHelper, Layout, Fieldset, TabHolder, Container, Column, Col
 from xadmin.views.base import CommAdminView, filter_hook, csrf_protect_m

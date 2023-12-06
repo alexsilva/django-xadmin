@@ -13,19 +13,19 @@
 {% block nav_toggles %}
 {% include "xadmin/includes/toggle_back.html" %}
 {% if has_change_permission %}
-<a href="{% url opts|admin_urlname:'change' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-pencil"></i></a>
+<a href="{% url opts|admin_urlname:'change' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-pencil-alt"></i></a>
 {% endif %}
 {% if has_delete_permission %}
-<a href="{% url opts|admin_urlname:'delete' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-trash-o"></i></a>
+<a href="{% url opts|admin_urlname:'delete' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-trash-alt"></i></a>
 {% endif %}
 {% endblock %}
 
 {% block nav_btns %}
   {% if has_change_permission %}
-  <a href="{% url opts|admin_urlname:'change' object.pk %}" class="btn btn-primary"><i class="fa fa-pencil"></i> <span>{% trans "Edit" %}</span></a>
+  <a href="{% url opts|admin_urlname:'change' object.pk %}" class="btn btn-primary"><i class="fa fa-pencil-alt"></i> <span>{% trans "Edit" %}</span></a>
   {% endif %}
   {% if has_delete_permission %}
-  <a href="{% url opts|admin_urlname:'delete' object.pk %}" class="btn btn-danger"><i class="fa fa-trash-o"></i> <span>{% trans "Delete" %}</span></a>
+  <a href="{% url opts|admin_urlname:'delete' object.pk %}" class="btn btn-danger"><i class="fa fa-trash-alt"></i> <span>{% trans "Delete" %}</span></a>
   {% endif %}
 {% endblock %}
 

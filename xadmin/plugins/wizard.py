@@ -6,7 +6,7 @@ from django.db import models
 from django.forms import ValidationError
 from django.forms.models import modelform_factory
 from django.template import loader
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from formtools.wizard.forms import ManagementForm
 from formtools.wizard.storage import get_storage
 from formtools.wizard.views import StepsHelper
@@ -45,7 +45,7 @@ class WizardFormPlugin(BaseAdminPlugin):
 			assert len(self.wizard_form_list) > 0, 'at least one form is needed'
 
 			for i, form in enumerate(self.wizard_form_list):
-				init_form_list[smart_text(form[0])] = form[1]
+				init_form_list[smart_str(form[0])] = form[1]
 
 			self._form_list = init_form_list
 

@@ -33,7 +33,7 @@ setup(
 	zip_safe=False,
 	keywords=['admin', 'django', 'xadmin', 'bootstrap'],
 	classifiers=[
-		'Development Status :: 5 - Beta',
+		'Development Status :: 6 - Beta',
 		'Environment :: Web Environment',
 		'Framework :: Django',
 		'Intended Audience :: Developers',
@@ -43,6 +43,7 @@ setup(
 		'Programming Language :: Python',
 		"Programming Language :: Python :: 3",
 		"Programming Language :: Python :: 3.9",
+		"Programming Language :: Python :: 3.10",
 		"Topic :: Internet :: WWW/HTTP",
 		"Topic :: Internet :: WWW/HTTP :: Dynamic Content",
 		"Topic :: Software Development :: Libraries :: Python Modules",

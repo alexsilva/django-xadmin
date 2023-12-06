@@ -1,7 +1,7 @@
 from django.template.loader import render_to_string
 from django.urls.base import reverse, NoReverseMatch
 from django.utils.text import capfirst
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.filters import SEARCH_VAR
 from xadmin.sites import site

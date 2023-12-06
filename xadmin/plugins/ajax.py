@@ -2,7 +2,7 @@
 from collections import OrderedDict
 
 from django.forms.utils import ErrorDict
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import escape
 
 from xadmin.sites import site
@@ -29,7 +29,7 @@ class AjaxListPlugin(BaseAjaxPlugin):
 	def get_result_list(self, response):
 		av = self.admin_view
 		base_fields = self.get_list_display(av.base_list_display)
-		headers = dict([(c.field_name, force_text(c.text)) for c in av.result_headers(
+		headers = dict([(c.field_name, force_str(c.text)) for c in av.result_headers(
 		).cells if c.field_name in base_fields])
 
 		objects = [dict([(o.field_name, escape(str(o.value))) for i, o in

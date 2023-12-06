@@ -13,11 +13,12 @@ from django.template.context_processors import csrf
 from django.template.loader import render_to_string
 from django.test.client import RequestFactory
 from django.urls.base import reverse, NoReverseMatch
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape
-from django.utils.http import urlencode, urlquote
+from django.utils.http import urlencode
+from urllib.parse import urlencode
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 
 from xadmin import widgets as exwidgets
@@ -42,12 +43,12 @@ class WidgetTypeSelect(forms.Widget):
 		final_attrs = self.build_attrs(attrs, extra_attrs={'name': name})
 		final_attrs['class'] = 'nav nav-pills flex-column'
 		output = ['<ul%s>' % flatatt(final_attrs)]
-		options = self.render_options(force_text(value), final_attrs['id'])
+		options = self.render_options(force_str(value), final_attrs['id'])
 		if options:
 			output.append(options)
 		output.append('</ul>')
 		output.append('<input type="hidden" id="%s_input" name="%s" value="%s"/>' %
-		              (final_attrs['id'], name, force_text(value)))
+		              (final_attrs['id'], name, force_str(value)))
 		return mark_safe('\n'.join(output))
 
 	def render_option(self, selected_choice, widget, id):
@@ -70,7 +71,7 @@ class WidgetTypeSelect(forms.Widget):
 
 
 class UserWidgetAdmin:
-	model_icon = 'fa fa-dashboard'
+	model_icon = 'fa tachometer-alt'
 	list_display = ('widget_type', 'page_id', 'user')
 	list_filter = ['user', 'widget_type', 'page_id']
 	list_display_links = ('widget_type',)
@@ -255,7 +256,7 @@ class BaseWidget(forms.Form):
 @widget_manager.register
 class HtmlWidget(BaseWidget):
 	widget_type = 'html'
-	widget_icon = 'fa fa-file-o'
+	widget_icon = 'fa fa-file-alt'
 	description = _('Html Content Widget, can write any html content in widget.')
 
 	content = forms.CharField(label=_('Html Content'),
@@ -313,7 +314,7 @@ class ModelChoiceField(forms.ChoiceField):
 	def valid_value(self, value):
 		value = self.prepare_value(value)
 		for k, v in self.choices:
-			if value == smart_text(k):
+			if value == smart_str(k):
 				return True
 		return False
 
@@ -376,7 +377,7 @@ class QuickBtnWidget(BaseWidget):
 	description = _('Quick button Widget, quickly open any page.')
 	template = "xadmin/widgets/qbutton.html"
 	base_title = _("Quick Buttons")
-	widget_icon = 'fa fa-caret-square-o-right'
+	widget_icon = 'fa fa-caret-square-right'
 
 	url = forms.CharField(label=_("Target Url"), required=True)
 
@@ -603,8 +604,8 @@ class Dashboard(CommAdminView):
 			'has_add_widget_permission': self.has_model_perm(UserWidget, 'add') and self.widget_customiz,
 			'add_widget_url': self.get_admin_url(
 				'%s_%s_add' % (UserWidget._meta.app_label, UserWidget._meta.model_name)) +
-			                  "?user=%s&page_id=%s&_redirect=%s" % (
-			                  self.user.id, self.get_page_id(), urlquote(self.request.get_full_path()))
+			                  urlencode({'user': self.user.id, "page_id": self.get_page_id(),
+			                             "_redirect": self.request.get_full_path()})
 		}
 		context = super(Dashboard, self).get_context()
 		context.update(new_context)
@@ -661,7 +662,7 @@ class ModelDashboard(Dashboard, ModelAdminView):
 
 	@filter_hook
 	def get_title(self):
-		return self.title % force_text(self.obj)
+		return self.title % force_str(self.obj)
 
 	def init_request(self, object_id, *args, **kwargs):
 		self.obj = self.get_object(unquote(object_id))
@@ -671,7 +672,7 @@ class ModelDashboard(Dashboard, ModelAdminView):
 
 		if self.obj is None:
 			raise Http404(_('%(name)s object with primary key %(key)r does not exist.') %
-			              {'name': force_text(self.opts.verbose_name), 'key': escape(object_id)})
+			              {'name': force_str(self.opts.verbose_name), 'key': escape(object_id)})
 
 	@filter_hook
 	def get_context(self):

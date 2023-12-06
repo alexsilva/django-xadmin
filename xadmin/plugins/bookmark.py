@@ -6,8 +6,8 @@ from django.http import QueryDict
 from django.template import loader
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator
-from django.utils.encoding import smart_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import smart_str
+from django.utils.translation import gettext_lazy as _
 from django.views.decorators.csrf import csrf_protect
 
 from xadmin.filters import FILTER_PREFIX, SEARCH_VAR
@@ -200,7 +200,7 @@ class BookmarkWidget(PartialBaseWidget):
 		self.bookmark = bookmark
 
 		if not self.title:
-			self.title = smart_text(bookmark)
+			self.title = smart_str(bookmark)
 
 		req = self.make_get_request("", data.items())
 		self.list_view = self.get_view_class(

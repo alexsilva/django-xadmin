@@ -10,7 +10,7 @@ from django.forms.formsets import all_valid, DELETION_FIELD_NAME
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.template import loader
 from django.template.loader import render_to_string
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 
@@ -329,7 +329,7 @@ class InlineModelAdmin(ModelFormAdminView):
 						label = None
 						if readonly_field in instance_fields:
 							label = instance_fields[readonly_field].verbose_name
-							value = smart_text(getattr(form_instance, readonly_field, None))
+							value = smart_str(getattr(form_instance, readonly_field, None))
 						elif inspect.ismethod(getattr(form_instance, readonly_field, None)):
 							value = getattr(form_instance, readonly_field)()
 							label = getattr(getattr(form_instance, readonly_field), 'short_description', readonly_field)

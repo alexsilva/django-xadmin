@@ -7,7 +7,7 @@ from django.core.cache import cache, DEFAULT_CACHE_ALIAS, caches
 from django.core.cache.backends.dummy import DummyCache
 from django.template import loader
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.models import UserSettings
 from xadmin.sites import site

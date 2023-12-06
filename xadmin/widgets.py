@@ -7,7 +7,7 @@ from itertools import chain
 from django import forms
 from django.forms.widgets import ChoiceWidget as RadioChoiceInput
 from django.template.loader import render_to_string
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.html import conditional_escape
 from django.utils.safestring import mark_safe
 
@@ -93,7 +93,7 @@ class AdminRadioInput(RadioChoiceInput):
 			label_for = ' for="%s_%s"' % (self.attrs['id'], self.index)
 		else:
 			label_for = ''
-		choice_label = conditional_escape(force_text(self.choice_label))
+		choice_label = conditional_escape(force_str(self.choice_label))
 		if attrs.get('inline', False):
 			return mark_safe('<label%s class="radio-inline">%s %s</label>' % (label_for, self.tag(), choice_label))
 		else:
@@ -111,7 +111,7 @@ class AdminRadioFieldRenderer(forms.RadioSelect):
 		return AdminRadioInput(self.name, self.value, self.attrs.copy(), choice, idx)
 
 	def render(self, *args, **kwargs):
-		return mark_safe('\n'.join([force_text(w) for w in self]))
+		return mark_safe('\n'.join([force_str(w) for w in self]))
 
 
 class AdminRadioSelect(forms.RadioSelect):
@@ -127,7 +127,7 @@ class AdminCheckboxSelect(forms.CheckboxSelectMultiple):
 		final_attrs = self.build_attrs(attrs, extra_attrs={'name': name})
 		output = []
 		# Normalize to strings
-		str_values = set([force_text(v) for v in value])
+		str_values = set([force_str(v) for v in value])
 		for i, (option_value, option_label) in enumerate(chain(self.choices, choices)):
 			# If an ID attribute was given, add a numeric index as a suffix,
 			# so that the checkboxes don't all have the same ID attribute.
@@ -139,9 +139,9 @@ class AdminCheckboxSelect(forms.CheckboxSelectMultiple):
 
 			cb = forms.CheckboxInput(
 				final_attrs, check_test=lambda value: value in str_values)
-			option_value = force_text(option_value)
+			option_value = force_str(option_value)
 			rendered_cb = cb.render(name, option_value)
-			option_label = conditional_escape(force_text(option_label))
+			option_label = conditional_escape(force_str(option_label))
 
 			if final_attrs.get('inline', False):
 				output.append(

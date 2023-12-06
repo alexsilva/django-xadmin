@@ -7,15 +7,16 @@ from django.contrib.admin.widgets import url_params_from_lookup_dict
 from django.db import models, router
 from django.db.models.fields.related import ForeignObjectRel
 from django.db.models.sql.query import LOOKUP_SEP
+from django.forms.utils import flatatt
 from django.forms import Media
 from django.urls import NoReverseMatch
 from django.utils import formats
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
 from django.utils.translation import get_language, to_locale
-from django.utils.translation import ungettext
+from django.utils.translation import ngettext
 from django.templatetags.static import static
 from django.core.exceptions import FieldDoesNotExist
 import json
@@ -247,8 +248,8 @@ def model_format_dict(obj):
 	else:
 		opts = obj
 	return {
-		'verbose_name': force_text(opts.verbose_name),
-		'verbose_name_plural': force_text(opts.verbose_name_plural)
+		'verbose_name': force_str(opts.verbose_name),
+		'verbose_name_plural': force_str(opts.verbose_name_plural)
 	}
 
 
@@ -268,7 +269,7 @@ def model_ngettext(obj, n=None):
 		obj = obj.model
 	d = model_format_dict(obj)
 	singular, plural = d["verbose_name"], d["verbose_name_plural"]
-	return ungettext(singular, plural, n or 0)
+	return ngettext(singular, plural, n or 0)
 
 
 def is_rel_field(name, model):
@@ -346,9 +347,9 @@ def display_for_field(value, field):
 	elif isinstance(field, models.FloatField) and isinstance(value, float):
 		return formats.number_format(value)
 	elif isinstance(field.remote_field, models.ManyToManyRel):
-		return ', '.join([smart_text(obj) for obj in value.all()])
+		return ', '.join([smart_str(obj) for obj in value.all()])
 	else:
-		return smart_text(value)
+		return smart_str(value)
 
 
 def display_for_value(value, boolean=False):
@@ -365,7 +366,7 @@ def display_for_value(value, boolean=False):
 	elif isinstance(value, (decimal.Decimal, float)):
 		return formats.number_format(value)
 	else:
-		return smart_text(value)
+		return smart_str(value)
 
 
 class NotRelationField(Exception):
@@ -508,3 +509,49 @@ def is_related_remote_field(field):
 
 def is_related_field2(field):
 	return is_related_remote_field(field) or is_related_field(field)
+
+
+class HtmlFlatData:
+	def __init__(self, **attrs):
+		self.prefix = None
+		self.attrs = attrs
+
+	def flatval(self, v):
+		if isinstance(v, bool):
+			v = str(v).lower()
+		elif callable(v):
+			v = v()
+		return v
+
+	def _get_prefix(self, prefix=None):
+		if prefix is None:
+			prefix = "" if self.prefix is None else self.prefix + "_"
+		else:
+			prefix = prefix + "_"
+		return prefix
+
+	def flatlist(self, prefix=None):
+		prefix = self._get_prefix(prefix=prefix)
+		attrs = []
+		for k, v in self.attrs.items():
+			if not isinstance(v, dict):
+				attrs.append((f"data-{prefix}{k}", self.flatval(v)))
+			else:
+				att = type(self)(**v)
+				attrs.extend(att.flatlist(prefix=k))
+		return attrs
+
+	def flatattrs(self):
+		return flatatt(dict(self.flatlist()))
+
+	def __html__(self):
+		return self.flatattrs()
+
+	def __str__(self):
+		return self.flatattrs()
+
+
+class DataWidget(HtmlFlatData):
+	def __init__(self, **attrs):
+		super().__init__(**attrs)
+		self.prefix = 'widget'

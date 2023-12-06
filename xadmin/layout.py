@@ -26,6 +26,10 @@ class Row(layout.Div):
 
 	def __init__(self, *fields, **kwargs):
 		css_class = 'form-row'
+		try:
+			css_class = kwargs.pop('css_class')
+		except KeyError:
+			pass
 
 		new_fields = [self.convert_field(f, len(fields)) for f in fields]
 		super(Row, self).__init__(css_class=css_class, *new_fields, **kwargs)

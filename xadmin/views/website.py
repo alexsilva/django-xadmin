@@ -2,7 +2,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import LoginView as AuthLoginView
 from django.contrib.auth.views import LogoutView as logout
 from django.http import HttpResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 
 from xadmin.forms import AdminAuthenticationForm
@@ -14,7 +14,7 @@ from xadmin.views.dashboard import Dashboard
 
 class IndexView(Dashboard):
 	title = _("Main Dashboard")
-	icon = "fa fa-dashboard"
+	icon = "fa fa-tachometer-alt"
 
 	def get_page_id(self):
 		return 'home'
@@ -96,6 +96,10 @@ class LoginView(BaseAdminView, AuthLoginView):
 	@filter_hook
 	def get_redirect_url(self):
 		return super().get_redirect_url()
+
+	@filter_hook
+	def get_form(self, **kwargs):
+		return super().get_form(**kwargs)
 
 	@never_cache
 	@filter_hook

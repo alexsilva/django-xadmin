@@ -4,7 +4,7 @@ Created on Mar 26, 2014
 
 @author: LAB_ADM
 """
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from xadmin.filters import manager, MultiSelectFieldListFilter
 from xadmin.plugins.filters import *

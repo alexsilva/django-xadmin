@@ -3,7 +3,7 @@ from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordResetConfirmView as password_reset_confirm
 from django.template.response import TemplateResponse
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from xadmin.sites import site
 from xadmin.views.base import BaseAdminPlugin, BaseAdminView, csrf_protect_m
@@ -60,7 +60,7 @@ class ResetLinkPlugin(BaseAdminPlugin):
 
 	def block_form_bottom(self, context, nodes):
 		reset_link = self.get_admin_url('xadmin_password_reset')
-		return '<div class="text-info" style="margin-top:15px;"><a href="%s"><i class="fa fa-question-sign"></i> %s</a></div>' % (
+		return '<div class="text-info" style="margin-top:15px;"><a href="%s"><i class="fa fa-question"></i> %s</a></div>' % (
 		reset_link, _('Forgotten your password or username?'))
 
 

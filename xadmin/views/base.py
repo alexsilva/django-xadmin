@@ -13,23 +13,24 @@ from django.contrib import messages
 from django.contrib.auth import get_permission_codename
 from django.core.exceptions import ValidationError
 from django.core.serializers.json import DjangoJSONEncoder
-from django.http import HttpResponse
+from django.http import HttpResponse, QueryDict
 from django.template import Context, Template
 from django.template.response import TemplateResponse
 from django.urls.base import reverse
 from django.utils.decorators import method_decorator, classonlymethod
-from django.utils.encoding import force_text, smart_text
+from django.utils.encoding import force_str, smart_str
 from django.utils.functional import Promise
+from django.utils.html import escape
 from django.utils.http import urlencode
 from django.utils.itercompat import is_iterable
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst, Truncator
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic import View
 
 from xadmin.models import Log
-from xadmin.util import static, json, vendor, sortkeypicker
+from xadmin.util import static, json, vendor, sortkeypicker, HtmlFlatData
 
 csrf_protect_m = method_decorator(csrf_protect)
 
@@ -122,12 +123,12 @@ class JSONEncoder(DjangoJSONEncoder):
 		elif isinstance(o, decimal.Decimal):
 			return str(o)
 		elif isinstance(o, Promise):
-			return force_text(o)
+			return force_str(o)
 		else:
 			try:
 				return super(JSONEncoder, self).default(o)
 			except Exception:
-				return smart_text(o)
+				return smart_str(o)
 
 
 class BaseAdminMergeView:
@@ -169,44 +170,78 @@ class BaseAdminObject:
 		return user.has_perm(self.get_model_perm(model, name), obj) or (
 					name == 'view' and self.has_object_perm(model, 'change', user=user, obj=obj))
 
-	def get_query_string(self, new_params=None, remove=None):
-		if new_params is None:
-			new_params = {}
-		if remove is None:
-			remove = []
-		p = dict(self.request.GET.items()).copy()
-		arr_keys = list(p.keys())
-		for r in remove:
-			for k in arr_keys:
-				if k.startswith(r):
-					del p[k]
-		for k, v in new_params.items():
-			if v is None:
-				if k in p:
-					del p[k]
-			else:
-				p[k] = v
-		return '?%s' % urlencode(p)
+	def get_query_params(self):
+		"""Parameter data passed in the GET request"""
+		return copy.deepcopy(self.request.GET)
 
-	def get_form_params(self, new_params=None, remove=None):
+	def _get_query_dict(self, new_params=None, remove=None):
 		if new_params is None:
 			new_params = {}
 		if remove is None:
 			remove = []
-		p = dict(self.request.GET.items()).copy()
-		arr_keys = list(p.keys())
+		params = dict(self.get_query_params())
+		arr_keys = list(params.keys())
 		for r in remove:
 			for k in arr_keys:
 				if k.startswith(r):
-					del p[k]
+					del params[k]
 		for k, v in new_params.items():
 			if v is None:
-				if k in p:
-					del p[k]
+				if k in params:
+					del params[k]
 			else:
-				p[k] = v
-		return mark_safe(''.join(
-			'<input type="hidden" name="%s" value="%s"/>' % (k, v) for k, v in p.items() if v))
+				params[k] = v
+		return params
+
+	def get_query_string(self, new_params=None, remove=None):
+		"""Returns a string with the request.GET parameters
+		@type new_params: dict Add new parameters.
+		@type remove: list Remove existing parameters.
+		"""
+		q = self._get_query_dict(new_params=new_params, remove=remove)
+		query_dict = QueryDict(mutable=True)
+		for k, v in q.items():
+			# parâmetros sem chaves não será permitido
+			if not k.strip():
+				continue
+			if isinstance(v, (list, tuple)):
+				query_dict.setlist(k, v)
+			else:
+				query_dict[k] = v
+		return '?%s' % query_dict.urlencode()
+
+	def get_form_params(self, new_params=None, remove=None, **options):
+		"""The method extracts the parameters sent in the url and creates hidden components in the form.
+		?a=1&b=2 ->
+		field_data={'a': {'form-option': 1}, 'b': {'form-option': 1}}
+		<input type="hidden" name="a" value="1" data-form-option="1">
+		<input type="hidden" name="b" value="2" data-form-option="1">
+		"""
+		query_dict = self._get_query_dict(new_params=new_params, remove=remove)
+		attrs, html = {}, []
+		field_data = options.get("field_data", {})
+		# Sets an arbitrary limit for the hidden field number
+		count, limit = 0, options.get('limit', 350)
+		for key in query_dict:
+			if count > limit:
+				break
+			# parâmetros sem chaves não será permitido
+			if not key.strip():
+				continue
+			value = query_dict[key]
+			if not isinstance(value, (list, tuple)):
+				value = [value]
+			field_attrs = attrs.copy()
+			# assume sempre que é uma lista para facilitar no uso
+			if extra_attrs := field_data.get(key):
+				field_attrs.update(HtmlFlatData(**extra_attrs).flatlist())
+			for hidden_val in value:
+				hidden_val = escape(hidden_val)  # avoid xss
+				hidden_input = forms.HiddenInput(attrs=field_attrs)
+				html.append(hidden_input.render(key, hidden_val))
+			count += 1
+		# Value fields must always be escaped.
+		return mark_safe('\n'.join(html))
 
 	def render_response(self, content, response_type='json'):
 		if response_type == 'json':
@@ -244,7 +279,7 @@ class BaseAdminObject:
 			log.content_type = get_content_type_for_model(obj)
 			log.object_id = obj.pk
 			# Limits the representation to the maximum size of the field.
-			log.object_repr = Truncator(force_text(obj)).chars(log.object_repr_length)
+			log.object_repr = Truncator(force_str(obj)).chars(log.object_repr_length)
 		log.save()
 		return log
 
@@ -440,7 +475,7 @@ class CommAdminView(BaseAdminView):
 			app_label = model._meta.app_label
 			app_icon = None
 			model_dict = {
-				'title': smart_text(capfirst(model._meta.verbose_name_plural)),
+				'title': smart_str(capfirst(model._meta.verbose_name_plural)),
 				'url': self.get_model_url(model, "changelist"),
 				'icon': self.get_model_icon(model),
 				'perm': self.get_model_perm(model, 'view'),
@@ -454,11 +489,11 @@ class CommAdminView(BaseAdminView):
 				nav_menu[app_key]['menus'].append(model_dict)
 			else:
 				# Find app title
-				app_title = smart_text(app_label.title())
+				app_title = smart_str(app_label.title())
 				if app_label.lower() in self.apps_label_title:
 					app_title = self.apps_label_title[app_label.lower()]
 				else:
-					app_title = smart_text(apps.get_app_config(app_label).verbose_name)
+					app_title = smart_str(apps.get_app_config(app_label).verbose_name)
 				# find app icon
 				if app_label.lower() in self.apps_icons:
 					app_icon = self.apps_icons[app_label.lower()]
@@ -604,7 +639,7 @@ class ModelAdminView(CommAdminView):
 			"opts": self.opts,
 			"app_label": self.app_label,
 			"model_name": self.model_name,
-			"verbose_name": force_text(self.opts.verbose_name),
+			"verbose_name": force_str(self.opts.verbose_name),
 			'model_icon': self.get_model_icon(self.model),
 		}
 		context = super(ModelAdminView, self).get_context()
