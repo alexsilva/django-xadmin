@@ -97,6 +97,10 @@ class LoginView(BaseAdminView, AuthLoginView):
 	def get_redirect_url(self):
 		return super().get_redirect_url()
 
+	@filter_hook
+	def get_form(self, **kwargs):
+		return super().get_form(**kwargs)
+
 	@never_cache
 	@filter_hook
 	def get(self, request, *args, **kwargs):
