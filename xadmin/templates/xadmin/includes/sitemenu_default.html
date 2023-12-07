@@ -19,7 +19,7 @@
           </li>
           {% for sitem in item.menus %}
             <li class="nav-item">
-              <a class="nav-link px-4{% if sitem.selected %} active{% endif %}"
+              <a class="nav-link{% if sitem.selected %} active{% endif %}"
                  href="{% if sitem.url %}{{ sitem.url }}{% else %}#{% endif %}">
               {% if sitem.icon %}
                   <i class="fa-fw {{sitem.icon}}"></i>
