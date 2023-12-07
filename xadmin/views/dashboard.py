@@ -602,10 +602,11 @@ class Dashboard(CommAdminView):
 			'portal_key': self.get_portal_key(),
 			'columns': [('col-sm-%d' % int(12 / len(self.widgets)), ws) for ws in self.widgets],
 			'has_add_widget_permission': self.has_model_perm(UserWidget, 'add') and self.widget_customiz,
-			'add_widget_url': self.get_admin_url(
-				'%s_%s_add' % (UserWidget._meta.app_label, UserWidget._meta.model_name)) +
-			                  urlencode({'user': self.user.id, "page_id": self.get_page_id(),
-			                             "_redirect": self.request.get_full_path()})
+			'add_widget_url': self.get_model_url(UserWidget, 'add') + "?" + urlencode({
+				'user': self.user.pk,
+				"page_id": self.get_page_id(),
+				"_redirect": self.request.get_full_path()
+			})
 		}
 		context = super(Dashboard, self).get_context()
 		context.update(new_context)
