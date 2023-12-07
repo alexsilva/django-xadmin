@@ -13,6 +13,7 @@ from django.template import loader
 from django.template.response import TemplateResponse
 from django.utils.encoding import force_str
 from django.utils.html import escape
+from django.utils.safestring import mark_safe
 from django.utils.text import get_text_list
 from django.utils.translation import gettext as _
 from django.core.exceptions import FieldDoesNotExist
@@ -467,26 +468,27 @@ class CreateAdminView(ModelFormAdminView):
 		request = self.request
 
 		msg = _('The %(name)s "%(obj)s" was added successfully.') % {
-			'name': force_str(self.opts.verbose_name),
+			'name': escape(force_str(self.opts.verbose_name)),
 			'obj': "<a class='alert-link' href='%s'>%s</a>" % (
 				self.model_admin_url('change', self.new_obj._get_pk_val()),
-				force_str(self.new_obj)
+				escape(force_str(self.new_obj))
 			)
 		}
 
 		if "_continue" in request.POST:
 			if self.has_change_permission(self.new_obj):
-				self.message_user(msg + ' ' + _("You may edit it again below."), 'success')
+				self.message_user(mark_safe(msg + ' ' + _("You may edit it again below.")), 'success')
 				return self.model_admin_url('change', self.new_obj._get_pk_val())
 			else:
 				# when the user cannot continue editing, they will only see the details screen.
 				return self.model_admin_url("detail", self.new_obj.pk)
 		if "_addanother" in request.POST:
-			self.message_user(msg + ' ' + (_("You may add another %s below.") % force_str(self.opts.verbose_name)),
+			self.message_user(mark_safe(msg + ' ' + (_("You may add another %s below.") %
+			                                         escape(force_str(self.opts.verbose_name)))),
 			                  'success')
 			return request.path
 		else:
-			self.message_user(msg, 'success')
+			self.message_user(mark_safe(msg), 'success')
 
 			# Figure out where to redirect. If the user has change permission,
 			# redirect to the change-list page for this object. Otherwise,
