@@ -131,11 +131,9 @@
                 window_resize_mode = mode;
             }
         };
+    window_resize();
     $(window).bind('resize', window_resize);
     $(function () {
-        // handler
-        window_resize();
-        $("nav.content-navbar").removeClass('d-none');
         var $nav = $('[data-toggle=breakpoint]');
         // the navbar when fixed to the top makes the browser lose its relative positioning.
         $(document).scrollTop($(document).scrollTop() - $nav.outerHeight());
