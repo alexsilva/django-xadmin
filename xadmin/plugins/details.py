@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls.base import reverse, NoReverseMatch
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 
 from xadmin.sites import site
@@ -46,9 +48,14 @@ class DetailsPlugin(BaseAdminPlugin):
 								args=(getattr(rel_obj, opts.pk.attname),))
 						else:
 							edit_url = ''
-						item.btns.append(
-							'<a data-res-uri="%s" href="" data-edit-uri="%s" class="details-handler" rel="tooltip" title="%s"><i class="fa fa-info-circle"></i></a>'
-							% (item_res_uri, edit_url, _('Details of %s') % str(rel_obj)))
+
+						detail_title = _('Details of %s') % escape(str(rel_obj))
+						detail_btn = mark_safe(f'''
+						<a data-res-uri="{item_res_uri}" href="#" data-edit-uri="{edit_url}" class="details-handler" 
+							rel="tooltip" title="{detail_title}"><i class="fa fa-info-circle"></i>
+						</a>
+		                ''')
+						item.btns.append(detail_btn)
 				except NoReverseMatch:
 					pass
 		return item

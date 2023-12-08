@@ -30,7 +30,7 @@
             },
           }).appendTo('body');
         }
-        modal.find('.modal-title').html(el.attr('title'));
+        modal.find('.modal-title').text(el.attr('title'));
         var edit_btn = modal.find('.edit-btn');
         if(this.edit_uri !== ""){
           edit_btn.attr('href', this.edit_uri);
