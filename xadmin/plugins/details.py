@@ -35,17 +35,13 @@ class DetailsPlugin(BaseAdminPlugin):
 			else:
 				has_view_perm = has_change_perm = False
 			if rel_obj and has_view_perm:
-				opts = rel_obj._meta
+				model = type(rel_obj)
+				opts = model._meta
 				try:
-					item_res_uri = reverse(
-						'%s:%s_%s_detail' % (self.admin_site.app_name,
-						                     opts.app_label, opts.model_name),
-						args=(getattr(rel_obj, opts.pk.attname),))
+					item_res_uri = self.get_model_url(model, 'detail', getattr(rel_obj, opts.pk.attname))
 					if item_res_uri:
 						if has_change_perm:
-							edit_url = reverse(
-								'%s:%s_%s_change' % (self.admin_site.app_name, opts.app_label, opts.model_name),
-								args=(getattr(rel_obj, opts.pk.attname),))
+							edit_url = self.get_model_url(model, 'change', getattr(rel_obj, opts.pk.attname))
 						else:
 							edit_url = ''
 
