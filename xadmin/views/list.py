@@ -606,9 +606,8 @@ class ListAdminView(ModelAdminView):
 						'<a data-res-uri="%s" href="" data-edit-uri="%s" class="details-handler" rel="tooltip" title="%s">%%s</a>'
 						% (item_res_uri, edit_url, _('Details of %s') % str(obj)))
 			else:
-				url = self.url_for_result(obj)
-				item.wraps.append('<a href="%s">%%s</a>' % url)
-
+				if url := self.url_for_result(obj):
+					item.wraps.append('<a href="%s">%%s</a>' % url)
 		return item
 
 	@filter_hook
