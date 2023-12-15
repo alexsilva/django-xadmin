@@ -29,6 +29,14 @@
 
               var $select = $el.selectize(options);
               $el.data('selectize', $select[0].selectize);
+
+              // bug fix: placeholder calculates the wrong width
+              if (window.parent && window.parent.document) {
+                window.setTimeout(function () {
+                    $select[0].selectize.$control_input.trigger("update");
+                }, 500);
+              }
+
           });
 
         f.find('.select-search').each(function(){
@@ -84,6 +92,14 @@
             $el.trigger( "selectize_pre_init", [ options, placeholder ] );
             var $select = $el.selectize(options);
             $el.data('selectize', $select[0].selectize);
+
+            // bug fix: placeholder calculates the wrong width
+            if (window.parent && window.parent.document) {
+                window.setTimeout(function () {
+                    $select[0].selectize.$control_input.trigger("update");
+                }, 500);
+            }
+
         })
 
     }});
