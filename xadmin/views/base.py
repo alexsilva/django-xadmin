@@ -417,6 +417,10 @@ class BaseAdminView(BaseAdminObject, View):
 	def get_media(self):
 		return forms.Media()
 
+	@filter_hook
+	def dispatch(self, request, *args, **kwargs):
+		return super().dispatch(request, *args, **kwargs)
+
 	@classonlymethod
 	def as_view(cls, *initargs, **initkwargs):
 		view = super().as_view(*initargs, **initkwargs)
