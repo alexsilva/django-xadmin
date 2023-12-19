@@ -244,14 +244,14 @@ class ModelFormAdminView(ModelAdminView):
 		helper.disable_csrf = True
 		helper.form_tag = False
 		helper.html5_required = True
-		helper.label_class = 'font-weight-bold'
 
 		# Lets you add the inline label to the input.
 		if self.horizontal_form_layout:
 			helper.form_class = 'form-horizontal'
 			helper.field_class = 'controls col-sm-8'
-			helper.label_class = 'col-sm-4'
+			helper.label_class = 'font-weight-bold col-sm-4'
 		else:
+			helper.label_class = 'font-weight-bold'
 			helper.field_class = 'controls'
 
 		helper.include_media = False
