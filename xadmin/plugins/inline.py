@@ -202,6 +202,7 @@ class InlineModelAdmin(ModelFormAdminView):
 	can_delete = True
 	fields = []
 	admin_view = None
+	horizontal_form_layout = False
 	style = 'stacked'
 
 	def init(self, admin_view):
@@ -275,9 +276,15 @@ class InlineModelAdmin(ModelFormAdminView):
 		helper.form_tag = False
 		helper.include_media = False
 		helper.use_custom_control = False
-		helper.label_class = 'col-12 font-weight-bold'
-		helper.form_class = 'form-horizontal'
-		helper.field_class = 'col-12 controls'
+
+		if self.horizontal_form_layout:
+			helper.label_class = 'font-weight-bold col-sm-4'
+			helper.field_class = 'controls col-sm-8'
+			helper.form_class = 'form-horizontal'
+		else:
+			helper.label_class = 'font-weight-bold col-12'
+			helper.field_class = 'controls col-12'
+
 		# override form method to prevent render csrf_token in
 		# inline forms, see template 'bootstrap/whole_uni_form.html'
 		helper.form_method = 'get'
