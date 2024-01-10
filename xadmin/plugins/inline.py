@@ -215,6 +215,11 @@ class InlineModelAdmin(ModelFormAdminView):
 	def get_formset_mixin(self):
 		return type(f"{self.formset.__name__}PermsMixin", (InlineFormSetMixin, self.formset), {})
 
+	@cached_property
+	def has_inline_delete_permission(self):
+		"""Whether inline is allowed to delete objects (depends on can_delete and model permission)"""
+		return self.can_delete and self.has_delete_permission()
+
 	@filter_hook
 	def get_formset(self, **kwargs):
 		"""Returns a BaseInlineFormSet class for use in admin add/change views."""
@@ -255,7 +260,7 @@ class InlineModelAdmin(ModelFormAdminView):
 			'queryset': self.queryset(),
 			'can_add': self.has_add_permission(),
 			'can_change': self.has_change_permission(),
-			'can_delete': self.has_delete_permission()
+			'can_delete': self.can_delete and self.has_delete_permission()
 		}
 		if self.request_method == 'post':
 			attrs.update({
