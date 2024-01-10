@@ -235,7 +235,7 @@ class InlineModelAdmin(ModelFormAdminView):
 		# if exclude is an empty list we use None, since that's the actual
 		# default
 		exclude = exclude or None
-		can_delete = self.can_delete and self.has_delete_permission()
+		can_delete = self.has_inline_delete_permission
 		formset = self.get_formset_mixin()
 		defaults = {
 			"form": self.form,
@@ -260,7 +260,7 @@ class InlineModelAdmin(ModelFormAdminView):
 			'queryset': self.queryset(),
 			'can_add': self.has_add_permission(),
 			'can_change': self.has_change_permission(),
-			'can_delete': self.can_delete and self.has_delete_permission()
+			'can_delete': self.has_inline_delete_permission
 		}
 		if self.request_method == 'post':
 			attrs.update({
@@ -403,7 +403,7 @@ class GenericInlineModelAdmin(InlineModelAdmin):
 			# GenericInlineModelAdmin doesn't define its own.
 			exclude.extend(self.form._meta.exclude)
 		exclude = exclude or None
-		can_delete = self.can_delete and self.has_delete_permission()
+		can_delete = self.has_inline_delete_permission
 		formset = self.get_formset_mixin()
 		defaults = {
 			"ct_field": self.ct_field,
