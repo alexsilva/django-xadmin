@@ -54,11 +54,18 @@ class ReadOnlyField(Field):
 
 	def render(self, form, context, **kwargs):
 		html = ''
+		from xadmin.plugins.utils import get_context_dict
+		context = get_context_dict(context)
 		for field in self.fields:
 			result = self.detail.get_field_result(field)
-			field = {'auto_id': field}
-			html += loader.render_to_string(
-				self.template, {'field': field, 'result': result})
+			field = {'auto_id': field, 'field': self}
+			if self.wrapper_class:
+				field["wrapper_class"] = self.wrapper_class
+			context.update({
+				'field': field,
+				'result': result
+			})
+			html += loader.render_to_string(self.template, context)
 		return html
 
 
@@ -83,8 +90,6 @@ class ModelFormAdminView(ModelAdminView):
 	add_form_template = None
 	change_form_template = None
 
-	# If enabled, it allows adding the inline label to the input.
-	horizontal_form_layout = False
 	form_layout = None
 
 	def __init__(self, *args, **kwargs):

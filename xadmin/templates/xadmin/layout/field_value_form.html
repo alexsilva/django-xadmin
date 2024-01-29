@@ -1,4 +1,8 @@
-<div id="div_{{ field.auto_id }}" class="form-group {% if field.wrapper_class %} {{ field.wrapper_class }}{% endif %}{% if field.css_classes %} {{ field.css_classes }}{% endif %}">
-    <label class="font-weight-bold">{{ result.label|safe }}</label>
-    <div class="{{input_class}}">{{ result.val }}</div>
+<div id="div_{{ field.auto_id }}"
+     class="form-group
+      {% if field.field.detail.horizontal_form_layout %} row {% endif %}
+      {% if field.wrapper_class %} {{ field.wrapper_class }}{% endif %}
+      {% if field.css_classes %} {{ field.css_classes }}{% endif %}">
+    <label class="{{ label_class }}">{{ result.label|safe }}</label>
+    <div class="{{field_class}}">{{ result.val }}</div>
 </div>

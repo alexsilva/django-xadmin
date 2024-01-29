@@ -621,6 +621,9 @@ class ModelAdminView(CommAdminView):
 	model = None
 	remove_permissions = []
 
+	# If enabled, it allows adding the inline label to the input.
+	horizontal_form_layout = False
+
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
 		# model options
