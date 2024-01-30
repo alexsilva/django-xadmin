@@ -40,7 +40,7 @@
 
   {% crispy form %}
 
-  <div class="form-actions d-flex justify-content-start align-items-center bg-light border rounded p-2 my-2">
+  <div class="form-actions d-flex justify-content-start align-items-center bg-light border rounded p-2 my-md-1">
     <input type="submit" value="{% trans 'Change Multiple' %}" class="btn btn-primary mr-2" name="_save"/>
     <a href="{% url opts|admin_urlname:'changelist' %}" class="btn btn-danger ml-auto">{% trans 'Cancel' %}</a>
   </div>

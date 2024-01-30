@@ -1,6 +1,6 @@
 {% load i18n %}
 {% load xadmin_tags %}
-<div class="d-flex flex-column flex-md-row form-actions bg-light shadow rounded border p-2 my-2">
+<div class="form-actions d-flex flex-column flex-md-row bg-light shadow rounded border p-2 my-md-1">
   {% if show_save %}
   <button type="submit" class="btn btn-success d-none d-md-block m-1" name="_save" data-loading-text="{% trans 'Saving..' %}" {{ onclick_attrib }}>
     <i class="fa fa-save"></i> {% trans 'Save' %}
