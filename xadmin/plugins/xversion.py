@@ -127,6 +127,10 @@ class ReversionPlugin(ReversionRegisterPlugin):
 	def init_request(self, *args, **kwargs):
 		return self.reversion_enable
 
+	def setup(self, *args, **kwargs):
+		super().setup(*args, **kwargs)
+		self._cache = {}
+
 	def save_models(self, __):
 		# fix: DatabaseError: Save with update_fields did not affect any rows
 		if hasattr(self.admin_view, "new_obj") and self.admin_view.new_obj.pk:
@@ -165,7 +169,9 @@ class ReversionPlugin(ReversionRegisterPlugin):
 
 	def _check_object_recover(self, obj):
 		"""Checks if the object is being recovered (does not exist yet in db)"""
-		return self.admin_view.queryset().filter(pk=obj.pk).exists()
+		if (has_recover := self._cache.get(obj, None)) is None:
+			has_recover = self._cache[obj] = len(self.admin_view.queryset().filter(pk=obj.pk)) > 0
+		return has_recover
 
 	# Block Views
 	def block_top_toolbar(self, context, nodes):
