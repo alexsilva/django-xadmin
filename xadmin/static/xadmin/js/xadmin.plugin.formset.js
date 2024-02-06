@@ -68,8 +68,11 @@
                 });
             };
 
-        $$.find(".formset-row").each(function(i) {
-            insertDeleteLink($(this));
+        $$.find(".formset-row").each(function(index) {
+            var row = $(this);
+            insertDeleteLink(row);
+            // updates existing formsets template (created by the backend)
+            updateRowIndex(row, index);
         });
 
         if ($$.length) {
