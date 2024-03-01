@@ -3,17 +3,18 @@
     $.fn.actions = function(opts) {
         var self = this
         var options = $.extend({}, $.fn.actions.defaults, opts);
-        var actionCheckboxes = $(this).filter(":not(:disabled)");
+        var actionCheckboxes = $(this).not(":disabled");
 
         updateCounter = function() {
-            var sel = $(actionCheckboxes).filter(":checked").length;
+            var checks = $(actionCheckboxes),
+                sel = checks.filter(":checked").length;
             $(options.counterContainer).html(interpolate(
             ngettext('%(sel)s of %(cnt)s selected', '%(sel)s of %(cnt)s selected', sel), {
                 sel: sel,
                 cnt: _actions_icnt
             }, true));
 
-            if (sel && sel == actionCheckboxes.length) {
+            if (sel && sel === checks.not(":disabled").length) {
                 showQuestion();
                 $(options.allToggle).prop('checked', true);
             } else {
@@ -22,8 +23,11 @@
             }
         }
         var checker = function(e, checked){
-            $(this).prop("checked", checked)
-                .parentsUntil('.grid-item').parent().toggleClass(options.selectedClass, checked);
+            var $el = $(this);
+            if (!$el.is(":disabled")) {
+                $el.prop("checked", checked)
+                    .parentsUntil('.grid-item').parent().toggleClass(options.selectedClass, checked);
+            }
             updateCounter();
         }
 
