@@ -27,27 +27,27 @@
             updateCounter();
         }
 
-        lastChecked = null;
-        var actionLastChecked = function(event) {
-            if (!event) { var event = window.event; }
-            var target = event.target ? event.target : event.srcElement;
+        var lastChecked = null,
+            actionLastChecked = function(event) {
+                if (!event) { var event = window.event; }
+                var target = event.target ? event.target : event.srcElement;
 
-            if (lastChecked && $.data(lastChecked) != $.data(target) && event.shiftKey == true) {
-                var inrange = false;
-                $(lastChecked).trigger('checker', target.checked);
-                $(actionCheckboxes).each(function() {
-                    if ($.data(this) == $.data(lastChecked) || $.data(this) == $.data(target)) {
-                        inrange = (inrange) ? false : true;
-                    }
-                    if (inrange) {
-                        $(this).trigger('checker', target.checked);
-                    }
-                });
+                if (lastChecked && $.data(lastChecked) != $.data(target) && event.shiftKey == true) {
+                    var inrange = false;
+                    $(lastChecked).trigger('checker', target.checked);
+                    $(actionCheckboxes).each(function() {
+                        if ($.data(this) == $.data(lastChecked) || $.data(this) == $.data(target)) {
+                            inrange = (inrange) ? false : true;
+                        }
+                        if (inrange) {
+                            $(this).trigger('checker', target.checked);
+                        }
+                    });
+                }
+
+                $(target).trigger('checker', target.checked);
+                lastChecked = target;
             }
-
-            $(target).trigger('checker', target.checked);
-            lastChecked = target;
-        }
         showQuestion = function() {
             $(options.acrossClears).hide();
             $(options.acrossQuestions).show();
