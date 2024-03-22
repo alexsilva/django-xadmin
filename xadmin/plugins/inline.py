@@ -37,6 +37,8 @@ class ShowField(Field):
 		html = ''
 		if hasattr(form, 'detail'):
 			detail = form.detail
+			context = get_context_dict(context)
+			context['layout_field'] = self
 			# When it allows inline add but can not change.
 			show_hidden_detail = getattr(form, "show_hidden_detail", False)
 			for field_name in self.fields:
@@ -44,8 +46,8 @@ class ShowField(Field):
 				form_field_widget = form_field.widget
 				if not isinstance(form_field_widget, forms.HiddenInput):
 					result = detail.get_field_result(field_name)
-					html += loader.render_to_string(self.field_template,
-					                                context={'field': form[field_name], 'result': result})
+					context.update({'field': form[field_name], 'result': result})
+					html += loader.render_to_string(self.field_template, context=context)
 					# When it allows inline add but can not change.
 					if show_hidden_detail:
 						form_field.widget = forms.HiddenInput(attrs=form_field_widget.attrs)
