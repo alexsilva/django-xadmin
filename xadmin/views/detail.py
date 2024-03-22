@@ -31,28 +31,28 @@ class ShowField(Field):
 		self.results = [(field, callback(field)) for field in self.fields]
 
 	def render(self, form, context, template_pack=TEMPLATE_PACK, extra_context=None, **kwargs):
-		super(ShowField, self).render(form, context, template_pack, extra_context, **kwargs)
-		if extra_context is None:
-			extra_context = {}
-		if hasattr(self, 'wrapper_class'):
-			extra_context['wrapper_class'] = self.wrapper_class
+		from xadmin.plugins.utils import get_context_dict
+		context = get_context_dict(context)
+		if extra_context:
+			context.update(extra_context)
 
 		if self.attrs:
 			if 'detail-class' in self.attrs:
-				extra_context['input_class'] = self.attrs['detail-class']
+				context['input_class'] = self.attrs['detail-class']
 			elif 'class' in self.attrs:
-				extra_context['input_class'] = self.attrs['class']
+				context['input_class'] = self.attrs['class']
 
 		html = ''
-		for field, result in self.results:
-			extra_context['result'] = result
-			if field in form.fields:
-				if form.fields[field].widget != forms.HiddenInput:
-					extra_context['field'] = form[field]
-					html += loader.render_to_string(self.template, extra_context)
+		context['layout_field'] = self
+		for field_name, result in self.results:
+			context['result'] = result
+			if field_name in form.fields:
+				if not isinstance(form.fields[field_name].widget, forms.HiddenInput):
+					context['field'] = form[field_name]
+					html += loader.render_to_string(self.template, context)
 			else:
-				extra_context['field'] = field
-				html += loader.render_to_string(self.template, extra_context)
+				context['field'] = field_name
+				html += loader.render_to_string(self.template, context)
 		return html
 
 
@@ -255,6 +255,16 @@ class DetailAdminView(ModelAdminView):
 		helper.form_tag = False
 		helper.use_custom_control = False
 		helper.include_media = False
+
+		# Lets you add the inline label to the input.
+		if self.horizontal_form_layout:
+			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3'
+			helper.field_class = 'controls col-sm-8 col-xl-9'
+			helper.form_class = 'form-horizontal'
+		else:
+			helper.label_class = 'font-weight-bold'
+			helper.field_class = 'controls'
+
 		layout = self.get_form_layout()
 		replace_field_to_value(layout, self.get_field_result)
 		helper.add_layout(layout)
