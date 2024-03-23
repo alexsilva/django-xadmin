@@ -258,12 +258,12 @@ class DetailAdminView(ModelAdminView):
 
 		# Lets you add the inline label to the input.
 		if self.horizontal_form_layout:
-			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3'
-			helper.field_class = 'controls col-sm-8 col-xl-9'
+			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3 border-left px-3 py-sm-3 pt-0 mb-0'
+			helper.field_class = 'controls col-sm-8 col-xl-9 border-left px-3 py-sm-3 pt-0'
 			helper.form_class = 'form-horizontal'
 		else:
-			helper.label_class = 'font-weight-bold'
-			helper.field_class = 'controls'
+			helper.label_class = 'font-weight-bold border-left px-3 pt-0 pt-sm-2 mb-0'
+			helper.field_class = 'controls border-left px-3 pt-0 pt-sm-2'
 
 		layout = self.get_form_layout()
 		replace_field_to_value(layout, self.get_field_result)

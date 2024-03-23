@@ -1,6 +1,6 @@
 <div id="div_{{ field.auto_id }}"
-     class="no-gutters border border-left-0 mb-2 mb-sm-0
-      {% if result.admin_view.horizontal_form_layout %} row {% endif %}
+     class="px-0 border border-left-0
+      {% if result.admin_view.horizontal_form_layout %} row mb-2 mb-sm-0 {% else %} col {% endif %}
       {% if field.wrapper_class %} {{ field.wrapper_class }}{% endif %}
       {% if field.css_classes %} {{ field.css_classes }}{% endif %}
       {% if layout_field.wrapper_class %} {{ layout_field.wrapper_class }}{% endif %}
