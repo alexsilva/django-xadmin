@@ -96,7 +96,7 @@ class UserAdmin:
 					         ),
 					Fieldset(_('Personal info'),
 					         Row('first_name', 'last_name'),
-					         'email'
+					         Row('email')
 					         ),
 					Fieldset(_('Permissions'),
 					         'groups', 'user_permissions'
