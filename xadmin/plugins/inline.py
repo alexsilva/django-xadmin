@@ -285,12 +285,12 @@ class InlineModelAdmin(ModelFormAdminView):
 		helper.use_custom_control = False
 
 		if self.horizontal_form_layout:
-			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3 border-left px-3 py-sm-2 pt-0 mb-0'
-			helper.field_class = 'controls col-sm-8 col-xl-9 border-left px-3 py-sm-2 pt-0'
+			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3'
+			helper.field_class = 'controls col-sm-8 col-xl-9'
 			helper.form_class = 'form-horizontal'
 		else:
-			helper.label_class = 'font-weight-bold col-12 border-left px-3 pt-0 pt-sm-2 mb-0'
-			helper.field_class = 'controls col-12 border-left px-3 pt-0 pt-sm-2'
+			helper.label_class = 'font-weight-bold col-12'
+			helper.field_class = 'controls col-12'
 
 		# override form method to prevent render csrf_token in
 		# inline forms, see template 'bootstrap/whole_uni_form.html'
@@ -582,6 +582,11 @@ class InlineFormsetPlugin(BaseAdminPlugin):
 		                               max_num=0 if detail_page else inline.max_num,
 		                               can_delete=False if detail_page else inline.has_delete_permission())
 		formset.detail_page = detail_page
+
+		if detail_page:
+			formset.helper.label_class += " border-left px-3 pt-0 py-sm-1 mb-0"
+			formset.helper.field_class += " border-left px-3 pt-0 py-sm-1"
+
 		if formset.helper.layout:
 			replace_field_to_value(formset.helper.layout, inline)
 			model = inline.model
