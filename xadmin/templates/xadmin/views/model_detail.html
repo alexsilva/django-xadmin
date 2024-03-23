@@ -12,12 +12,16 @@
 
 {% block nav_toggles %}
 {% include "xadmin/includes/toggle_back.html" %}
-{% if has_change_permission %}
-<a href="{% url opts|admin_urlname:'change' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-pencil-alt"></i></a>
-{% endif %}
-{% if has_delete_permission %}
-<a href="{% url opts|admin_urlname:'delete' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-trash-alt"></i></a>
-{% endif %}
+{% endblock %}
+
+{% block nav_btns_toggles %}
+  {{block.super}}
+  {% if has_change_permission %}
+  <a href="{% url opts|admin_urlname:'change' object.pk %}" class="navbar-toggler float-right"><i class="fa fa-pencil-alt"></i></a>
+  {% endif %}
+  {% if has_delete_permission %}
+  <a href="{% url opts|admin_urlname:'delete' object.pk %}" class="navbar-toggler float-right text-danger"><i class="fa fa-trash-alt"></i></a>
+  {% endif %}
 {% endblock %}
 
 {% block nav_btns %}
