@@ -285,12 +285,12 @@ class InlineModelAdmin(ModelFormAdminView):
 		helper.use_custom_control = False
 
 		if self.horizontal_form_layout:
-			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3'
-			helper.field_class = 'controls col-sm-8 col-xl-9'
+			helper.label_class = 'font-weight-bold col-sm-4 col-xl-3 border-left px-3 py-sm-2 pt-0 mb-0'
+			helper.field_class = 'controls col-sm-8 col-xl-9 border-left px-3 py-sm-2 pt-0'
 			helper.form_class = 'form-horizontal'
 		else:
-			helper.label_class = 'font-weight-bold col-12'
-			helper.field_class = 'controls col-12'
+			helper.label_class = 'font-weight-bold col-12 border-left px-3 pt-0 pt-sm-2 mb-0'
+			helper.field_class = 'controls col-12 border-left px-3 pt-0 pt-sm-2'
 
 		# override form method to prevent render csrf_token in
 		# inline forms, see template 'bootstrap/whole_uni_form.html'
