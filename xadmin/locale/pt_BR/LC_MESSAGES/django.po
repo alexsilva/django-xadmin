@@ -1410,8 +1410,7 @@ msgid "Press the recover button below to recover this version of the object."
 msgstr "Clique no botão recuperar abaixo para recuperar esta versão do objeto."
 
 #: xadmin/templates/xadmin/views/recover_list.html:11
-#, fuzzy, python-format
-#| msgid "Recover deleted %(name)s"
+#, python-format
 msgid ""
 "Recover deleted\n"
 "            %(name)s"
@@ -1643,9 +1642,3 @@ msgstr "Cancelar Classificação"
 #: xadmin/views/website.py:16
 msgid "Main Dashboard"
 msgstr "Painel Principal"
-
-#, python-format
-#~ msgid "Your e-mail address is not your username. Try '%s' instead."
-#~ msgstr ""
-#~ "O seu endereço de e-mail não é seu nome de usuário. Tente '% s' em seu "
-#~ "lugar."
