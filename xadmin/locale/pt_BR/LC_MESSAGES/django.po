@@ -24,7 +24,7 @@ msgstr ""
 
 #: xadmin/adminx.py:22
 msgid "Admin Object"
-msgstr "Adminstrar objeto"
+msgstr "Administrar objeto"
 
 #: xadmin/apps.py:11
 msgid "Administration"
