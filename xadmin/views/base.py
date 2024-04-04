@@ -44,7 +44,8 @@ def get_content_type_for_model(obj):
 	return ContentType.objects.get_for_model(obj, for_concrete_model=False)
 
 
-def filter_chain(filters, token, func, *args, **kwargs):
+def filter_chain(filters, token, func, args, kwargs):
+	"""args / kwargs : These are the arguments passed to view"""
 	if token == -1:
 		return func()
 	else:
@@ -61,7 +62,7 @@ def filter_chain(filters, token, func, *args, **kwargs):
 			else:
 				return fm(func if fargs[1] == '__' else func(), *args, **kwargs)
 
-		return filter_chain(filters, token - 1, _inner_method, *args, **kwargs)
+		return filter_chain(filters, token - 1, _inner_method, args, kwargs)
 
 
 def filter_hook(func):
@@ -78,7 +79,7 @@ def filter_hook(func):
 			filters = [(getattr(getattr(p, tag), 'priority', 10), getattr(p, tag))
 			           for p in self.plugins if callable(getattr(p, tag, None))]
 			filters = [f for p, f in sorted(filters, key=lambda x: x[0])]
-			return filter_chain(filters, len(filters) - 1, _inner_method, *args, **kwargs)
+			return filter_chain(filters, len(filters) - 1, _inner_method, args, kwargs)
 		else:
 			return _inner_method()
 
