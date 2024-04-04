@@ -149,7 +149,7 @@ class ReversionPlugin(ReversionRegisterPlugin):
 			elif isinstance(admin_view, RevisionView):
 				comment = _("Revert version.")
 			elif isinstance(admin_view, RecoverView):
-				comment = _("Rercover version.")
+				comment = _("Recover version.")
 			elif isinstance(admin_view, DeleteAdminView):
 				comment = _("Deleted %(verbose_name)s.") % {
 					"verbose_name": self.opts.verbose_name}
