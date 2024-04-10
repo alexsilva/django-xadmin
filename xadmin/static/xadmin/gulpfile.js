@@ -133,6 +133,7 @@ function bootstrapTask() {
 exports.select2 = select2Task;
 exports.selectize = selectizeTask;
 exports.jquery = jqueryTask;
+exports.nunjunks = nunjunksTask;
 exports.default = gulp.series(
     genericTask,
     jqueryTask,
