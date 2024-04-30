@@ -2,6 +2,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import LoginView as AuthLoginView
 from django.contrib.auth.views import LogoutView as logout
 from django.http import HttpResponse
+from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.views.decorators.cache import never_cache
 
@@ -22,7 +23,7 @@ class IndexView(Dashboard):
 
 class UserSettingView(BaseAdminView):
 
-	@never_cache
+	@method_decorator(never_cache)
 	def post(self, request):
 		key = request.POST['key']
 		val = request.POST['value']
@@ -101,12 +102,12 @@ class LoginView(BaseAdminView, AuthLoginView):
 	def get_form(self, **kwargs):
 		return super().get_form(**kwargs)
 
-	@never_cache
+	@method_decorator(never_cache)
 	@filter_hook
 	def get(self, request, *args, **kwargs):
 		return super().get(request, *args, **kwargs)
 
-	@never_cache
+	@method_decorator(never_cache)
 	@filter_hook
 	def post(self, request, *args, **kwargs):
 		return super().post(request, *args, **kwargs)
@@ -120,7 +121,7 @@ class LogoutView(BaseAdminView):
 	def update_params(self, defaults):
 		pass
 
-	@never_cache
+	@method_decorator(never_cache)
 	def get(self, request, *args, **kwargs):
 		context = self.get_context()
 		defaults = {
@@ -135,6 +136,6 @@ class LogoutView(BaseAdminView):
 		# return logout(request, **defaults)
 		return logout.as_view(**defaults)(request)
 
-	@never_cache
+	@method_decorator(never_cache)
 	def post(self, request, *args, **kwargs):
 		return self.get(request)

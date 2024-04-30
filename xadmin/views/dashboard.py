@@ -13,6 +13,7 @@ from django.template.context_processors import csrf
 from django.template.loader import render_to_string
 from django.test.client import RequestFactory
 from django.urls.base import reverse, NoReverseMatch
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str, smart_str
 from django.utils.html import escape
 from django.utils.http import urlencode
@@ -607,7 +608,7 @@ class Dashboard(CommAdminView):
 		context.update(new_context)
 		return context
 
-	@never_cache
+	@method_decorator(never_cache)
 	def get(self, request, *args, **kwargs):
 		self.widgets = self.get_widgets()
 		return self.template_response('xadmin/views/dashboard.html', self.get_context())
@@ -681,7 +682,7 @@ class ModelDashboard(Dashboard, ModelAdminView):
 		context.update(new_context)
 		return context
 
-	@never_cache
+	@method_decorator(never_cache)
 	def get(self, request, *args, **kwargs):
 		self.widgets = self.get_widgets()
 		return self.template_response(self.get_template_list('views/model_dashboard.html'), self.get_context())
