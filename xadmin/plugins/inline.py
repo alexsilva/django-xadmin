@@ -488,10 +488,18 @@ class InlineFormsetPlugin(BaseAdminPlugin):
 	def init_request(self, *args, **kwargs):
 		return not isinstance(self.admin_view, InlineModelAdmin)
 
+	def get_form_inlines(self, inlines):
+		# The plugin's inline configuration always takes precedence in the list.
+		items = list(self.inlines)
+		items.extend(inlines)
+		return items
+
 	@cached_property
 	def inline_instances(self):
 		inline_instances = []
-		for inline_class in self.inlines:
+		if (inlines := getattr(self.admin_view, "form_inlines", None)) is None:
+			inlines = self.inlines
+		for inline_class in inlines:
 			inline = self.admin_view.get_view((getattr(inline_class, 'generic_inline', False) and
 			                                   GenericInlineModelAdmin or InlineModelAdmin),
 			                                  inline_class).init(self.admin_view)
