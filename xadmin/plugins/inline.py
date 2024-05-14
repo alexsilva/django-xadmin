@@ -494,12 +494,16 @@ class InlineFormsetPlugin(BaseAdminPlugin):
 		items.extend(inlines)
 		return items
 
+	def _get_inline_classes(self) -> list:
+		inlines = getattr(self.admin_view, "get_form_inlines", None)
+		if not callable(inlines) or (inlines := inlines()) is None:
+			inlines = self.inlines
+		return inlines
+
 	@cached_property
 	def inline_instances(self):
 		inline_instances = []
-		if (inlines := getattr(self.admin_view, "form_inlines", None)) is None:
-			inlines = self.inlines
-		for inline_class in inlines:
+		for inline_class in self._get_inline_classes():
 			inline = self.admin_view.get_view((getattr(inline_class, 'generic_inline', False) and
 			                                   GenericInlineModelAdmin or InlineModelAdmin),
 			                                  inline_class).init(self.admin_view)

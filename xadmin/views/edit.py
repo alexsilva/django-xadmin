@@ -89,11 +89,6 @@ class ModelFormAdminView(ModelAdminView):
 		self.formfield_overrides = overrides
 
 	@filter_hook
-	def setup_view(self, *args, **kwargs):
-		# configuration used by the inline plugin.
-		self.form_inlines: list = self.get_form_inlines()
-
-	@filter_hook
 	def get_form_inlines(self) -> list:
 		"""Allows additional inline configuration"""
 		return list(self.form_inlines)
