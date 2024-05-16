@@ -64,6 +64,12 @@
       return cookieValue;
   }
 
+  // Cross Site Request Forgery protection
+  $.getCSRFToken = function() {
+    var $input = $('[name=csrfmiddlewaretoken]');
+    return $input.length && $input.val() || $.getCookie('csrftoken');
+  }
+
   //dropdown submenu plugin
   $(document)
     .on('click.xa.dropdown.data-api touchstart.xa.dropdown.data-api', '.dropdown-submenu', function (e) { e.stopPropagation(); })

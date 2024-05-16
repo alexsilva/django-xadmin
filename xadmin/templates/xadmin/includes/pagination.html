@@ -3,10 +3,10 @@
       <a class="page-link text-truncate" href="#" tabindex="-1">
           <span class="text-success page-result-count">{{ cl.result_count }}</span>
           <span>
-              {% ifequal cl.result_count 1 %}
+              {% if cl.result_count == 1 %}
                   {{ cl.opts.verbose_name }}{% else %}
                   {{ cl.opts.verbose_name_plural }}
-              {% endifequal %}
+              {% endif %}
           </span>
       </a>
   </li>

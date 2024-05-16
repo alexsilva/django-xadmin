@@ -1,0 +1,37 @@
+{
+  "name": "xadmin",
+  "version": "1.0.0",
+  "description": "Drop-in replacement of Django admin comes with lots of goodies, fully extensible with plugin support, pretty UI based on Twitter Bootstrap.",
+  "homepage": "https://github.com/alexsilva/django-xadmin",
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.4.1",
+    "jquery-ui": ">=1.12.1",
+    "bootstrap": "^4.6.0",
+    "popper.js": ">=1.16.1",
+    "bootstrap-datepicker": ">=1.9.0",
+    "bootstrap-modal": "^2.2.1",
+    "bootstrap-multiselect": ">=0.9.13",
+    "bootstrap-timepicker": ">=0.5.2",
+    "select2": ">=4.0.10",
+    "blueimp-gallery": ">=2.35.0",
+    "blueimp-load-image": ">=2.24.0",
+    "clockpicker": ">=0.0.7",
+    "flot": ">=3.2.9",
+    "datejs": "datejs/Datejs",
+    "nunjucks": ">=3.1.2",
+    "html5sortable": "lukasoppermann/html5sortable"
+  },
+  "keywords": [],
+  "main": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "gulp": "latest"
+  }
+}

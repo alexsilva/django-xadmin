@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xadmin-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-26 11:10-0300\n"
+"POT-Creation-Date: 2024-04-04 11:46-0300\n"
 "PO-Revision-Date: 2013-11-20 10:21+0000\n"
 "Last-Translator: gladson <gladson@immensa.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: xadmin/adminx.py:22
 msgid "Admin Object"
-msgstr "Adminstrar objeto"
+msgstr "Administrar objeto"
 
 #: xadmin/apps.py:11
 msgid "Administration"
@@ -558,57 +558,57 @@ msgstr "Tema Bootstrap 4.x"
 msgid "Add %s"
 msgstr "Adicionar %s"
 
-#: xadmin/plugins/xversion.py:142
+#: xadmin/plugins/xversion.py:146
 msgid "Initial version."
 msgstr "Versão inicial."
 
-#: xadmin/plugins/xversion.py:144
+#: xadmin/plugins/xversion.py:148
 msgid "Change version."
 msgstr "Alterar versão."
 
-#: xadmin/plugins/xversion.py:146
+#: xadmin/plugins/xversion.py:150
 msgid "Revert version."
 msgstr "Reverter versão."
 
-#: xadmin/plugins/xversion.py:148
-msgid "Rercover version."
+#: xadmin/plugins/xversion.py:152
+msgid "Recover version."
 msgstr "Recuperar versão."
 
-#: xadmin/plugins/xversion.py:150
+#: xadmin/plugins/xversion.py:154
 #, python-format
 msgid "Deleted %(verbose_name)s."
 msgstr "Excluídos %(verbose_name)s."
 
-#: xadmin/plugins/xversion.py:241
+#: xadmin/plugins/xversion.py:247
 #: xadmin/templates/xadmin/views/recover_form.html:21
 #, python-format
 msgid "Recover deleted %(name)s"
 msgstr "Recuperar %(name)s removido"
 
-#: xadmin/plugins/xversion.py:284
+#: xadmin/plugins/xversion.py:290
 #, python-format
 msgid "Change history: %s"
 msgstr "Alterar histórico: %s"
 
-#: xadmin/plugins/xversion.py:334
+#: xadmin/plugins/xversion.py:340
 msgid "Must select two versions."
 msgstr "É necessário selecionar 2 versões"
 
-#: xadmin/plugins/xversion.py:342
+#: xadmin/plugins/xversion.py:348
 msgid "Please select two different versions."
 msgstr "Por favor selecione duas versões diferentes."
 
-#: xadmin/plugins/xversion.py:437 xadmin/plugins/xversion.py:555
+#: xadmin/plugins/xversion.py:443 xadmin/plugins/xversion.py:561
 #, python-format
 msgid "Current: %s"
 msgstr "Atual: %s"
 
-#: xadmin/plugins/xversion.py:478
+#: xadmin/plugins/xversion.py:484
 #, python-format
 msgid "Revert %s"
 msgstr "Revertido: %s"
 
-#: xadmin/plugins/xversion.py:494
+#: xadmin/plugins/xversion.py:500
 #, python-format
 msgid ""
 "The %(model)s \"%(name)s\" was reverted successfully. You may edit it again "
@@ -617,12 +617,12 @@ msgstr ""
 "%(model)s \"%(name)s\" foi revertido(a) com sucesso. Você pode editá-lo(a) "
 "novamente abaixo."
 
-#: xadmin/plugins/xversion.py:514
+#: xadmin/plugins/xversion.py:520
 #, python-format
 msgid "Recover %s"
 msgstr "Recuperar %s"
 
-#: xadmin/plugins/xversion.py:530
+#: xadmin/plugins/xversion.py:536
 #, python-format
 msgid ""
 "The %(model)s \"%(name)s\" was recovered successfully. You may edit it again "
@@ -655,7 +655,8 @@ msgstr "Pedimos desculpas, mas a página solicitada não foi encontrada."
 #: xadmin/templates/xadmin/views/recover_form.html:10
 #: xadmin/templates/xadmin/views/recover_list.html:9
 #: xadmin/templates/xadmin/views/revision_diff.html:10
-#: xadmin/templates/xadmin/views/revision_form.html:10 xadmin/views/base.py:613
+#: xadmin/templates/xadmin/views/revision_form.html:10
+#: xadmin/views/base.py:614
 msgid "Home"
 msgstr "Início"
 
@@ -680,7 +681,6 @@ msgstr ""
 "deve ser corrigido em breve. Obrigado por sua paciência."
 
 #: xadmin/templates/xadmin/auth/password_reset/complete.html:13
-#: xadmin/templates/xadmin/auth/password_reset/done.html:13
 msgid "Password reset successful"
 msgstr "Redefinição de senha completada."
 
@@ -719,6 +719,10 @@ msgid ""
 msgstr ""
 "O link de redefinição de senha era inválida, possivelmente porque ele já foi "
 "usado. Por favor, solicite uma nova redefinição de senha."
+
+#: xadmin/templates/xadmin/auth/password_reset/done.html:13
+msgid "Password reset by email"
+msgstr "Redefinição de senha por email"
 
 #: xadmin/templates/xadmin/auth/password_reset/done.html:16
 msgid ""
@@ -1410,8 +1414,7 @@ msgid "Press the recover button below to recover this version of the object."
 msgstr "Clique no botão recuperar abaixo para recuperar esta versão do objeto."
 
 #: xadmin/templates/xadmin/views/recover_list.html:11
-#, fuzzy, python-format
-#| msgid "Recover deleted %(name)s"
+#, python-format
 msgid ""
 "Recover deleted\n"
 "            %(name)s"
@@ -1503,11 +1506,11 @@ msgstr "Escolher arquivo"
 msgid "Now"
 msgstr "Agora"
 
-#: xadmin/views/base.py:435
+#: xadmin/views/base.py:436
 msgid "Django Xadmin"
 msgstr "Django Xadmin"
 
-#: xadmin/views/base.py:436
+#: xadmin/views/base.py:437
 msgid "my-company.inc"
 msgstr "my-company.inc"
 
@@ -1643,9 +1646,3 @@ msgstr "Cancelar Classificação"
 #: xadmin/views/website.py:16
 msgid "Main Dashboard"
 msgstr "Painel Principal"
-
-#, python-format
-#~ msgid "Your e-mail address is not your username. Try '%s' instead."
-#~ msgstr ""
-#~ "O seu endereço de e-mail não é seu nome de usuário. Tente '% s' em seu "
-#~ "lugar."

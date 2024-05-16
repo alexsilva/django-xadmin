@@ -12,6 +12,7 @@ from django.forms import Media
 from django.urls import NoReverseMatch
 from django.utils import formats
 from django.utils.encoding import force_str, smart_str
+from django.utils.functional import Promise
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.text import capfirst
@@ -521,6 +522,8 @@ class HtmlFlatData:
 			v = str(v).lower()
 		elif callable(v):
 			v = v()
+		elif isinstance(v, Promise):
+			v = str(v)
 		return v
 
 	def _get_prefix(self, prefix=None):
@@ -543,6 +546,9 @@ class HtmlFlatData:
 
 	def flatattrs(self):
 		return flatatt(dict(self.flatlist()))
+
+	def __iter__(self):
+		return iter(self.flatlist())
 
 	def __html__(self):
 		return self.flatattrs()

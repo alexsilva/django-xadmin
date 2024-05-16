@@ -1,61 +1,38 @@
-var gulp = require('gulp');
+var gulp = require('gulp'),
+    node_modules = "node_modules";
 
 function genericTask() {
     var srcs = [
-        "bower_components/**/css/*.css",
-        "bower_components/**/css/*.less",
-        "bower_components/**/js/*.js",
-        "bower_components/**/dist/*.css",
-        "bower_components/**/dist/*.less",
-        "bower_components/**/dist/*.js",
-        "bower_components/**/locales/*.js",
-        "bower_components/**/LICENSE",
-        "bower_components/**/img/**",
-        "!bower_components/select2/**",
-        "!bower_components/popper.js/**",
-        "!bower_components/font-awesome/**",
-        "!bower_components/nunjucks/**",
-        "!bower_components/html5sortable/**",
-        "!bower_components/flot/**",
-        "!bower_components/datejs/**",
-        "!bower_components/bootstrap-datepicker/js/**",
-        "!bower_components/selectize/**",
-        "!bower_components/sifter/**",
-        "!bower_components/bootstrap/**",
-        "!bower_components/**/src/**",
-        "!bower_components/**/jquery/**",
-        "!bower_components/**/jquery.js",
-        "!bower_components/**/docs/**",
     ];
     return gulp.src(srcs)
         .pipe(gulp.dest('vendor'));
 }
 
 function jqueryTask() {
-    return gulp.src("bower_components/jquery/dist/**")
+    return gulp.src(`${node_modules}/jquery/dist/**`)
         .pipe(gulp.dest('vendor/jquery'));
 }
 
 function nunjunksTask() {
-    return gulp.src(["bower_components/nunjucks/browser/**/*.js"])
+    return gulp.src(`${node_modules}/nunjucks/browser/*.js`)
         .pipe(gulp.dest('vendor/nunjucks'));
 }
 
 
 function flotTask() {
-    return gulp.src("bower_components/flot/source/*.js")
+    return gulp.src(`${node_modules}/flot/source/*.js`)
         .pipe(gulp.dest('vendor/flot/js'));
 
 }
 
 function micropluginTask() {
-    return gulp.src("bower_components/microplugin/src/*.js")
+    return gulp.src(`${node_modules}/microplugin/src/*.js`)
         .pipe(gulp.dest('vendor/microplugin/js'));
 
 }
 
 function sifterTask() {
-    return gulp.src("bower_components/sifter/*.js")
+    return gulp.src(`${node_modules}/sifter/*.js`)
         .pipe(gulp.dest('vendor/sifter/js'));
 }
 
@@ -68,30 +45,29 @@ function selectizeTask() {
 }
 
 function select2Task() {
-    return gulp.src(["bower_components/select2/dist/**/*.js",
-                     "bower_components/select2/dist/**/*.css",
-                     "bower_components/select2/dist/**/i18n/*.js",
-                     "!bower_components/select2/dist/**/select2.full*"])
+    return gulp.src([`${node_modules}/select2/dist/**/*.js`,
+                     `${node_modules}/select2/dist/**/*.css`,
+                     `${node_modules}/select2/dist/**/i18n/*.js`,
+                     `!${node_modules}/select2/dist/**/select2.full*`])
         .pipe(gulp.dest('vendor/select2'));
 }
 
 function datejsTask() {
-    return gulp.src("bower_components/datejs/src/**")
+    return gulp.src(`${node_modules}/datejs/src/**`)
         .pipe(gulp.dest('vendor/datejs/js'));
 }
 
 function popperjsTask() {
-    return gulp.src("bower_components/popper.js/dist/umd/**")
+    return gulp.src(`${node_modules}/popper.js/dist/umd/**`)
         .pipe(gulp.dest('vendor/popper'));
 }
 
 function jqueryUITask() {
     var srcs = [
-        "bower_components/jquery-ui/**/core.js",
-        "bower_components/jquery-ui/**/effect.js",
-        "bower_components/jquery-ui/**/widget.js",
-        "bower_components/jquery-ui/**/**/mouse.js",
-        //"bower_components/jquery-ui/**/**/sortable.js",
+        `${node_modules}/jquery-ui/**/core.js`,
+        `${node_modules}/jquery-ui/**/effect.js`,
+        `${node_modules}/jquery-ui/**/widget.js`,
+        `${node_modules}/jquery-ui/**/**/mouse.js`
     ];
     return gulp.src(srcs)
         .pipe(gulp.dest('vendor/jquery-ui'));
@@ -99,8 +75,8 @@ function jqueryUITask() {
 
 function html5SortableTask() {
     var srcs = [
-        "bower_components/html5sortable/dist/html5sortable.js",
-        "bower_components/html5sortable/dist/html5sortable.min.js"
+        `${node_modules}/html5sortable/dist/html5sortable.js`,
+        `${node_modules}/html5sortable/dist/html5sortable.min.js`
     ];
     return gulp.src(srcs)
         .pipe(gulp.dest('vendor/html5sortable'));
@@ -121,10 +97,8 @@ function fontAwesomeTask() {
 
 function bootstrapTask() {
     var srcs = [
-        "bower_components/bootstrap/dist/**/*.css",
-        "bower_components/bootstrap/dist/**/*.js",
-        "bower_components/bootstrap/js/dist/**",
-        "!bower_components/bootstrap/build/**",
+        `${node_modules}/bootstrap/dist/**/*.css`,
+        `${node_modules}/bootstrap/dist/**/*.js`
     ];
     return gulp.src(srcs)
         .pipe(gulp.dest('vendor/bootstrap'));
@@ -133,14 +107,15 @@ function bootstrapTask() {
 exports.select2 = select2Task;
 exports.selectize = selectizeTask;
 exports.jquery = jqueryTask;
+exports.nunjunks = nunjunksTask;
 exports.default = gulp.series(
-    genericTask,
+    //genericTask,
     jqueryTask,
     popperjsTask,
     nunjunksTask,
     flotTask,
-    sifterTask,
-    micropluginTask,
+    //sifterTask,
+    //micropluginTask,
     fontAwesomeTask,
     selectizeTask,
     select2Task,

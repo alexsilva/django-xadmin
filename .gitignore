@@ -46,7 +46,6 @@ xadmin/static/xadmin/components/
 xadmin/static/xadmin/node_modules
 xadmin/static/xadmin/bower_components/
 xadmin/static/xadmin/package-lock.json
-xadmin/static/xadmin/package.json
 
 .idea
 *~

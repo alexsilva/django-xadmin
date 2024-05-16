@@ -67,7 +67,7 @@ class ResetLinkPlugin(BaseAdminPlugin):
 site.register_plugin(ResetLinkPlugin, LoginView)
 
 
-class ResetPasswordComfirmView(BaseAdminView):
+class ResetPasswordConfirmView(BaseAdminView):
 	need_site_permission = False
 
 	password_reset_set_form = SetPasswordForm
@@ -81,7 +81,7 @@ class ResetPasswordComfirmView(BaseAdminView):
 		return view
 
 	def do_view(self, request, uidb64, token, *args, **kwargs):
-		context = super(ResetPasswordComfirmView, self).get_context()
+		context = super().get_context()
 		view = self.get_password_reset_view(
 			request,
 			template_name=self.password_reset_confirm_template,
@@ -100,13 +100,13 @@ class ResetPasswordComfirmView(BaseAdminView):
 		return self.do_view(request, uidb64, token)
 
 	def get_media(self):
-		return super(ResetPasswordComfirmView, self).get_media() + \
+		return super().get_media() + \
 		       self.vendor('xadmin.page.form.js', 'xadmin.form.css')
 
 
 site.register_view(
 	r'^xadmin/password_reset/(?P<uidb64>[0-9A-Za-z]{1,13})-(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,32})/$',
-	ResetPasswordComfirmView, name='xadmin_password_reset_confirm')
+	ResetPasswordConfirmView, name='xadmin_password_reset_confirm')
 
 
 class ResetPasswordCompleteView(BaseAdminView):

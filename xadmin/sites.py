@@ -192,9 +192,9 @@ class AdminSite:
 		The default implementation checks that LogEntry, ContentType and the
 		auth context processor are installed.
 		"""
-		from django.contrib.contenttypes.models import ContentType
+		from django.apps import apps
 
-		if not ContentType._meta.installed:
+		if not apps.is_installed("django.contrib.contenttypes"):
 			raise ImproperlyConfigured("Put 'django.contrib.contenttypes' in "
 			                           "your INSTALLED_APPS setting in order to use the admin application.")
 
