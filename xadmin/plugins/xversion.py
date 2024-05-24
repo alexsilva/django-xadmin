@@ -626,8 +626,13 @@ class InlineRevisionPlugin(BaseAdminPlugin):
 		def get_changed_data(form):
 			return [field.name for field in form.fields]
 
-		for form in formset.forms:
-			form.has_changed = lambda: True
+		for index, form in enumerate(formset.forms):
+			# The initial data is the inline creation data.
+			try:
+				has_changed = bool(formset.initial[index])
+			except IndexError:
+				has_changed = False
+			form.has_changed = lambda: has_changed
 			form._get_changed_data = partial(get_changed_data, form=form)
 
 		def total_form_count_hack(count):
