@@ -85,6 +85,26 @@ class AdminPath(AdminUrl):
 	path = dj_path
 
 
+class AdminOptionClass:
+	def __init__(self, model):
+		self.model = model
+		self.opts = model._meta
+		self.items = []
+
+	def __iter__(self):
+		return iter(self.items)
+
+	def append(self, admin_class):
+		self.items.insert(0, admin_class)
+
+	def __getattr__(self, name):
+		return getattr(self.resolve(), name)
+
+	def resolve(self):
+		return type(str("%s%sAdmin" % (self.opts.app_label, self.opts.model_name)),
+		            tuple(self.items), {})
+
+
 class AdminSite:
 	"""
 	Website administration
@@ -107,6 +127,7 @@ class AdminSite:
 		self._registry_plugins = {}  # admin_class class -> plugin_class class
 
 		self._admin_view_cache = {}
+		self._admin_view_opts_cache = {}
 		self._admin_plugins_cache = {}
 
 		self.model_admins_order = 0
@@ -235,24 +256,28 @@ class AdminSite:
 				if model_opts.abstract:
 					raise ImproperlyConfigured('The model %s is abstract, so it '
 					                           'cannot be registered with admin.' % model.__name__)
+				if (registry := self._registry.get(model)) is None:
+					# If we got **options then dynamically construct a subclass of
+					# admin_class with those **options.
+					if options:
+						# For reasons I don't quite understand, without a __module__
+						# the created class appears to "live" in the wrong place,
+						# which causes issues later on.
+						options['__module__'] = __name__
 
-				if model in self._registry:
-					raise AlreadyRegistered('The model %s is already registered' % model.__name__)
+					admin_class = type(str("%s%sAdmin" % (model_opts.app_label, model_opts.model_name)), (admin_class,),
+					                   options or {})
 
-				# If we got **options then dynamically construct a subclass of
-				# admin_class with those **options.
-				if options:
-					# For reasons I don't quite understand, without a __module__
-					# the created class appears to "live" in the wrong place,
-					# which causes issues later on.
-					options['__module__'] = __name__
+					admin_class.model = model
+					admin_class.order = self.model_admins_order
+					self.model_admins_order += 1
 
-				admin_class = type(str("%s%sAdmin" % (model_opts.app_label, model_opts.model_name)), (admin_class,),
-				                   options or {})
-				admin_class.model = model
-				admin_class.order = self.model_admins_order
-				self.model_admins_order += 1
-				self._registry[model] = admin_class
+					self._registry[model] = registry = AdminOptionClass(model)
+				elif admin_class in self._registry[model]:
+					raise AlreadyRegistered(f"Admin class '{admin_class.__name__}' "
+					                        f"already registered for the model '{model.__name__}'")
+
+				registry.append(admin_class)
 			else:
 				if options:
 					options['__module__'] = __name__
@@ -573,6 +598,13 @@ class AdminSite:
 			raise ImproperlyConfigured('Expected list type as attribute '
 			                           'in "XADMIN_I18N_JAVASCRIPT_PACKAGES"')
 		return JavaScriptCatalog.as_view(packages=packages)(request)
+
+	def init(self):
+		if site.ready:
+			raise ImproperlyConfigured(f"Admin site already configured!")
+		# convert lists of options into a single class.
+		for model in list(self._registry):
+			self._registry[model] = self._registry[model].resolve()
 
 	# Disables login to script translations.
 	i18n_javascript.need_site_permission = False
