@@ -451,24 +451,22 @@ class AdminSite:
 						plugins.append(merge_func(plugin_class))
 		return plugins
 
-	def get_view_class(self, view_class, option_class=None, nocache=False, **opts):
-		view_class_name = f'{view_class.__module__}.{view_class.__name__}'
-		view_class_merge = None if nocache else self._admin_view_cache.get(view_class_name)
+	def get_view_class(self, view_class, option_class=None, **opts):
 		plugins_options = [option_class] if option_class else []
-		if view_class_merge is None:
-			merges = [option_class] if option_class else []
-			for klass in view_class.mro()[:-1]:  # exclude object
-				reg_avs_class = self._registry_avs.get(klass)
-				if reg_avs_class:
-					plugins_options.extend(reg_avs_class)
-					merges.extend(reg_avs_class)
-				settings_class = self._get_settings_class(klass)
-				if settings_class:
-					merges.append(settings_class)
-				merges.append(klass)
-			merge_class_name = ''.join([c.__name__ for c in merges])
+		merges = [option_class] if option_class else []
+		for klass in view_class.mro()[:-1]:  # exclude object
+			reg_avs_class = self._registry_avs.get(klass)
+			if reg_avs_class:
+				plugins_options.extend(reg_avs_class)
+				merges.extend(reg_avs_class)
+			settings_class = self._get_settings_class(klass)
+			if settings_class:
+				merges.append(settings_class)
+			merges.append(klass)
+		merge_class_name = ''.join([c.__name__ for c in merges])
+		if (view_class_merge := self._admin_view_cache.get(merge_class_name)) is None:
 			plugins = self.get_plugins(view_class, *plugins_options)
-			self._admin_view_cache[view_class_name] = view_class_merge = MergeAdminMetaclass(
+			self._admin_view_cache[merge_class_name] = view_class_merge = MergeAdminMetaclass(
 				f"{view_class.__name__}Merge{len(merges)}", tuple(merges),
 				dict({'admin_site': self,
 				      'plugin_classes': plugins,
@@ -484,7 +482,7 @@ class AdminSite:
 		return view_class.as_view(*(initargs or ()), **(initkwargs or {}))
 
 	def create_model_admin_view(self, admin_view_class, model, option_class, initargs=None, initkwargs=None):
-		view_class = self.get_view_class(admin_view_class, option_class, nocache=True)
+		view_class = self.get_view_class(admin_view_class, option_class)
 		return view_class.as_view(*(initargs or ()), **(initkwargs or {}))
 
 	def wrap_view(self, view, cacheable=False):
