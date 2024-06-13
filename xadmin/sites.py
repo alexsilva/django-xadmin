@@ -256,7 +256,10 @@ class AdminSite:
 				if model_opts.abstract:
 					raise ImproperlyConfigured('The model %s is abstract, so it '
 					                           'cannot be registered with admin.' % model.__name__)
-				if (registry := self._registry.get(model)) is None:
+				elif self.ready:
+					raise ImproperlyConfigured("It is not possible to register model and options"
+					                           " when the admin site is ready.")
+				elif (registry := self._registry.get(model)) is None:
 					# If we got **options then dynamically construct a subclass of
 					# admin_class with those **options.
 					if options:
