@@ -454,18 +454,20 @@ class AdminSite:
 	def get_view_class(self, view_class, option_class=None, nocache=False, **opts):
 		view_class_name = f'{view_class.__module__}.{view_class.__name__}'
 		view_class_merge = None if nocache else self._admin_view_cache.get(view_class_name)
+		plugins_options = [option_class] if option_class else []
 		if view_class_merge is None:
 			merges = [option_class] if option_class else []
 			for klass in view_class.mro()[:-1]:  # exclude object
 				reg_avs_class = self._registry_avs.get(klass)
 				if reg_avs_class:
+					plugins_options.extend(reg_avs_class)
 					merges.extend(reg_avs_class)
 				settings_class = self._get_settings_class(klass)
 				if settings_class:
 					merges.append(settings_class)
 				merges.append(klass)
 			merge_class_name = ''.join([c.__name__ for c in merges])
-			plugins = self.get_plugins(view_class, option_class)
+			plugins = self.get_plugins(view_class, *plugins_options)
 			self._admin_view_cache[view_class_name] = view_class_merge = MergeAdminMetaclass(
 				f"{view_class.__name__}Merge{len(merges)}", tuple(merges),
 				dict({'admin_site': self,
