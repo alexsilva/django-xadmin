@@ -571,7 +571,7 @@ class AdminSite:
 				urlpatterns.append(
 					re_path(r'^%s/%s/' % (opts.app_label, opts.model_name), include(model_urlpatterns))
 				)
-			else:
+			elif isinstance(route, AdminRoute):
 				urlpatterns += [route(model_urlpatterns)]
 		# remove optimization cache from building plugins
 		self._admin_plugins_cache.clear()
