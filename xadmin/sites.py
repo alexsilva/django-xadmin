@@ -85,20 +85,39 @@ class AdminPath(AdminUrl):
 	path = dj_path
 
 
-class AdminOptionClass:
-	def __init__(self, model):
-		self.model = model
-		self.opts = model._meta
+class AdminOptionClassMixin:
+	def __init__(self):
 		self.items = []
+
+	def insert(self, index, admin_class):
+		self.items.insert(index, admin_class)
 
 	def __iter__(self):
 		return iter(self.items)
 
-	def append(self, admin_class):
-		self.items.insert(0, admin_class)
-
 	def __getattr__(self, name):
 		return getattr(self.resolve(), name)
+
+	def resolve(self):
+		raise NotImplementedError
+
+
+class AdminOptionClass(AdminOptionClassMixin):
+
+	def __init__(self, view):
+		super().__init__()
+		self.view = view
+
+	def resolve(self):
+		return type(f"{self.view.__name__}MergeViewOptions{len(self.items)}Admin",
+		            tuple(self.items), {})
+
+
+class AdminModelOptionClass(AdminOptionClassMixin):
+	def __init__(self, model):
+		super().__init__()
+		self.model = model
+		self.opts = model._meta
 
 	def resolve(self):
 		return type(str("%s%sAdmin" % (self.opts.app_label, self.opts.model_name)),
@@ -275,19 +294,22 @@ class AdminSite:
 					admin_class.order = self.model_admins_order
 					self.model_admins_order += 1
 
-					self._registry[model] = registry = AdminOptionClass(model)
+					self._registry[model] = registry = AdminModelOptionClass(model)
 				elif admin_class in self._registry[model]:
 					raise AlreadyRegistered(f"Admin class '{admin_class.__name__}' "
 					                        f"already registered for the model '{model.__name__}'")
 
-				registry.append(admin_class)
+				registry.insert(0, admin_class)
 			else:
+				if (registry_avs := self._registry_avs.get(model)) is None:
+					self._registry_avs[model] = registry_avs = AdminOptionClass(model)
+
 				if options:
 					options['__module__'] = __name__
 					admin_class = type(str("%sAdmin" % model.__name__), (admin_class,), options)
 
 				# Instantiate the admin class to save in the registry
-				self._registry_avs.setdefault(model, []).insert(0, admin_class)
+				registry_avs.insert(0, admin_class)
 
 	def unregister(self, model_or_iterable):
 		"""
@@ -436,7 +458,7 @@ class AdminSite:
 			if klass == BaseAdminView or issubclass(klass, BaseAdminView):
 				reg_avs_class = self._registry_avs.get(klass)
 				if reg_avs_class:
-					klass_options.extend(reg_avs_class)
+					klass_options.append(reg_avs_class)
 				settings_class = self._get_settings_class(klass)
 				if settings_class:
 					klass_options.append(settings_class)
@@ -457,8 +479,8 @@ class AdminSite:
 		for klass in view_class.mro()[:-1]:  # exclude object
 			reg_avs_class = self._registry_avs.get(klass)
 			if reg_avs_class:
-				plugins_options.extend(reg_avs_class)
-				merges.extend(reg_avs_class)
+				plugins_options.append(reg_avs_class)
+				merges.append(reg_avs_class)
 			settings_class = self._get_settings_class(klass)
 			if settings_class:
 				merges.append(settings_class)
@@ -609,6 +631,10 @@ class AdminSite:
 		# convert lists of options into a single class.
 		for model in list(self._registry):
 			self._registry[model] = self._registry[model].resolve()
+
+		# convert lists of options into a single class.
+		for model in list(self._registry_avs):
+			self._registry_avs[model] = self._registry_avs[model].resolve()
 
 		# A ready site does not allow new registrations of views and models.
 		self.ready = True
