@@ -603,11 +603,15 @@ class AdminSite:
 		return JavaScriptCatalog.as_view(packages=packages)(request)
 
 	def init(self):
-		if site.ready:
+		if self.ready:
 			raise ImproperlyConfigured(f"Admin site already configured!")
+
 		# convert lists of options into a single class.
 		for model in list(self._registry):
 			self._registry[model] = self._registry[model].resolve()
+
+		# A ready site does not allow new registrations of views and models.
+		self.ready = True
 
 	# Disables login to script translations.
 	i18n_javascript.need_site_permission = False

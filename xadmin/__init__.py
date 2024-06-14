@@ -71,4 +71,3 @@ def autodiscover():
 
 	# initialize data conversion
 	site.init()
-	site.ready = True
