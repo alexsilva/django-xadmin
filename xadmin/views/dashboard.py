@@ -11,7 +11,6 @@ from django.http import Http404
 from django.template import loader
 from django.template.context_processors import csrf
 from django.template.loader import render_to_string
-from django.test.client import RequestFactory
 from django.urls.base import reverse, NoReverseMatch
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str, smart_str
@@ -30,6 +29,7 @@ from xadmin.util import unquote
 from xadmin.views.base import CommAdminView, ModelAdminView, filter_hook, csrf_protect_m
 from xadmin.views.edit import CreateAdminView
 from xadmin.views.list import ListAdminView
+from xadmin.views.util import RequestAdminFactory
 
 
 class WidgetTypeSelect(forms.Widget):
@@ -356,7 +356,7 @@ class PartialBaseWidget(BaseWidget):
 		return self.admin_site.get_view_class(view_class, admin_class, **opts)
 
 	def get_factory(self):
-		return RequestFactory()
+		return RequestAdminFactory()
 
 	def setup_request(self, request):
 		request.user = self.user
