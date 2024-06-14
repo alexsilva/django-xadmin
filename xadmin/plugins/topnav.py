@@ -12,11 +12,16 @@ class TopNavPlugin(BaseAdminPlugin):
 	global_search_models = None
 	global_add_models = None
 
+	has_global_search_models = True
+	has_global_models_add = True
+
 	def get_context(self, context):
 		return context
 
 	# Block Views
 	def block_top_navbar(self, context, nodes):
+		if not self.has_global_search_models:
+			return
 		search_models = []
 
 		site_name = self.admin_site.name
@@ -44,6 +49,8 @@ class TopNavPlugin(BaseAdminPlugin):
 		                                              'search_name': SEARCH_VAR}))
 
 	def block_top_navmenu(self, context, nodes):
+		if not self.has_global_models_add:
+			return
 		add_models = []
 
 		site_name = self.admin_site.name
