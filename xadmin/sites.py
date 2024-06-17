@@ -270,14 +270,14 @@ class AdminSite:
 		if isinstance(model_or_iterable, ModelBase) or issubclass(model_or_iterable, BaseAdminView):
 			model_or_iterable = [model_or_iterable]
 		for model in model_or_iterable:
-			if isinstance(model, ModelBase):
+			if self.ready:
+				raise ImproperlyConfigured("It is not possible to register view/model with options"
+				                           " when the admin site is ready.")
+			elif isinstance(model, ModelBase):
 				model_opts = model._meta
 				if model_opts.abstract:
 					raise ImproperlyConfigured('The model %s is abstract, so it '
 					                           'cannot be registered with admin.' % model.__name__)
-				elif self.ready:
-					raise ImproperlyConfigured("It is not possible to register model and options"
-					                           " when the admin site is ready.")
 				elif (registry := self._registry.get(model)) is None:
 					# If we got **options then dynamically construct a subclass of
 					# admin_class with those **options.
