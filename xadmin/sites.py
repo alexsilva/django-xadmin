@@ -278,17 +278,17 @@ class AdminSite:
 				if model_opts.abstract:
 					raise ImproperlyConfigured('The model %s is abstract, so it '
 					                           'cannot be registered with admin.' % model.__name__)
-				elif (registry := self._registry.get(model)) is None:
-					# If we got **options then dynamically construct a subclass of
-					# admin_class with those **options.
-					if options:
-						# For reasons I don't quite understand, without a __module__
-						# the created class appears to "live" in the wrong place,
-						# which causes issues later on.
-						options['__module__'] = __name__
 
-					admin_class = type(str("%s%sAdmin" % (model_opts.app_label, model_opts.model_name)), (admin_class,),
-					                   options or {})
+				# If we got **options then dynamically construct a subclass of admin_class with those **options.
+				if options:
+					# For reason, I don't quite understand, without a __module__
+					# the created class appears to "live" in the wrong place,
+					# which causes issues later on.
+					options['__module__'] = __name__
+
+				if (registry := self._registry.get(model)) is None:
+					admin_class = type(str("%s%sAdmin" % (model_opts.app_label, model_opts.model_name)),
+					                   (admin_class,), options)
 
 					admin_class.model = model
 					admin_class.order = self.model_admins_order
@@ -298,7 +298,9 @@ class AdminSite:
 				elif admin_class in self._registry[model]:
 					raise AlreadyRegistered(f"Admin class '{admin_class.__name__}' "
 					                        f"already registered for the model '{model.__name__}'")
-
+				elif options:
+					admin_class = type(str("%s%sAdmin" % (model_opts.app_label, model_opts.model_name)),
+					                   (admin_class,), options)
 				registry.insert(0, admin_class)
 			else:
 				if (registry_avs := self._registry_avs.get(model)) is None:
