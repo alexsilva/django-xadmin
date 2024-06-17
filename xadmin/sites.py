@@ -301,17 +301,21 @@ class AdminSite:
 				elif options:
 					admin_class = type(str("%s%sAdmin" % (model_opts.app_label, model_opts.model_name)),
 					                   (admin_class,), options)
-				registry.insert(0, admin_class)
+				# registration with object is only allowed once (to avoid resolution failures).
+				if admin_class is not object:
+					registry.insert(0, admin_class)
 			else:
-				if (registry_avs := self._registry_avs.get(model)) is None:
-					self._registry_avs[model] = registry_avs = AdminOptionClass(model)
-
 				if options:
 					options['__module__'] = __name__
 					admin_class = type(str("%sAdmin" % model.__name__), (admin_class,), options)
 
-				# Instantiate the admin class to save in the registry
-				registry_avs.insert(0, admin_class)
+				if (registry_avs := self._registry_avs.get(model)) is None:
+					self._registry_avs[model] = registry_avs = AdminOptionClass(model)
+					# Instantiate the admin class to save in the registry
+					registry_avs.insert(0, admin_class)
+				elif admin_class is not object:
+					# registration with object is only allowed once (to avoid resolution failures).
+					registry_avs.insert(0, admin_class)
 
 	def unregister(self, model_or_iterable):
 		"""
