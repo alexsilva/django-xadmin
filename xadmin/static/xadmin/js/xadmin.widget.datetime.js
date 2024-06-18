@@ -62,10 +62,12 @@
           });
 
           $(this).find('button').click(function(e){
-            var now = new Date()
-              , value = now.getHours() + ':' + now.getMinutes();
-            el.attr('value', value);
-          })
+            var now = new Date(),
+                hours = String(now.getHours()).padStart(2, '0'),
+                minutes = String(now.getMinutes()).padStart(2, '0'),
+                value = hours + ':' + minutes;
+            el.attr('value', value).val(value);
+          });
         })
       }
       if($.fn.timepicker){
