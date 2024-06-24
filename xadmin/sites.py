@@ -88,7 +88,7 @@ class AdminPath(AdminUrl):
 class AdminOptionBase:
 	def __init__(self):
 		self.items = []
-		self.cls_opts = {'__module__': __name__}
+		self.opts = {'__module__': __name__}
 
 	def append(self, admin_class):
 		self.items.append(admin_class)
@@ -101,6 +101,17 @@ class AdminOptionBase:
 
 	def __getattr__(self, name):
 		return getattr(self.resolve(), name)
+
+	def get_cls_opts(self) -> dict:
+		"""Returns the attributes of the base classes."""
+		opts = {}
+		for cls in self.items[::-1]:
+			cls_dc, cls_opts = vars(cls), []
+			for n in cls_dc:
+				if not (n.startswith('_') or callable(cls_dc[n]) and not inspect.isclass(cls_dc[n])):
+					opts[n] = cls_dc[n]
+		opts.update(self.opts)
+		return opts
 
 	def resolve(self):
 		raise NotImplementedError
@@ -115,21 +126,23 @@ class AdminOptionClass(AdminOptionBase):
 	def resolve(self):
 		if len(self.items) == 1:
 			return self.items[0]
+		opts = self.get_cls_opts()
 		return type(self.view.__name__ + ''.join([c.__name__ for c in self.items]),
-		            tuple(self.items), self.cls_opts)
+		            tuple(self.items), opts)
 
 
 class AdminModelOptionClass(AdminOptionBase):
 	def __init__(self, model):
 		super().__init__()
 		self.model = model
-		self.opts = model._meta
+		self.model_opts = model._meta
 
 	def resolve(self):
 		if len(self.items) == 1:
 			return self.items[0]
-		return type(str("%s%sAdmin" % (self.opts.app_label, self.opts.model_name)),
-		            tuple(self.items), self.cls_opts)
+		opts = self.get_cls_opts()
+		return type(str("%s%sAdmin" % (self.model_opts.app_label, self.model_opts.model_name)),
+		            tuple(self.items), opts)
 
 
 class AdminSite:
