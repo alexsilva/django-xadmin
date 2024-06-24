@@ -85,7 +85,7 @@ class AdminPath(AdminUrl):
 	path = dj_path
 
 
-class AdminOptionBase:
+class BaseAdminOption:
 	def __init__(self):
 		self.items = []
 		self.opts = {'__module__': __name__}
@@ -117,7 +117,7 @@ class AdminOptionBase:
 		raise NotImplementedError
 
 
-class AdminOptionClass(AdminOptionBase):
+class AdminViewOption(BaseAdminOption):
 
 	def __init__(self, view):
 		super().__init__()
@@ -131,7 +131,7 @@ class AdminOptionClass(AdminOptionBase):
 		            tuple(self.items), opts)
 
 
-class AdminModelOptionClass(AdminOptionBase):
+class AdminModelOption(BaseAdminOption):
 	def __init__(self, model):
 		super().__init__()
 		self.model = model
@@ -315,7 +315,7 @@ class AdminSite:
 					admin_class.order = self.model_admins_order
 					self.model_admins_order += 1
 
-					self._registry[model] = registry = AdminModelOptionClass(model)
+					self._registry[model] = registry = AdminModelOption(model)
 				elif admin_class in self._registry[model]:
 					raise AlreadyRegistered(f"Admin class '{admin_class.__name__}' "
 					                        f"already registered for the model '{model.__name__}'")
@@ -331,7 +331,7 @@ class AdminSite:
 					admin_class = type(str("%sAdmin" % model.__name__), (admin_class,), options)
 
 				if (registry_avs := self._registry_avs.get(model)) is None:
-					self._registry_avs[model] = registry_avs = AdminOptionClass(model)
+					self._registry_avs[model] = registry_avs = AdminViewOption(model)
 					# Instantiate the admin class to save in the registry
 					registry_avs.insert(0, admin_class)
 				elif admin_class is not object:
