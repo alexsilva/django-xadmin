@@ -90,6 +90,9 @@ class AdminOptionBase:
 		self.items = []
 		self.cls_opts = {'__module__': __name__}
 
+	def append(self, admin_class):
+		self.items.append(admin_class)
+
 	def insert(self, index, admin_class):
 		self.items.insert(index, admin_class)
 
