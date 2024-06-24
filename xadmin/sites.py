@@ -88,6 +88,7 @@ class AdminPath(AdminUrl):
 class AdminOptionClassMixin:
 	def __init__(self):
 		self.items = []
+		self.cls_opts = {'__module__': __name__}
 
 	def insert(self, index, admin_class):
 		self.items.insert(index, admin_class)
@@ -109,8 +110,10 @@ class AdminOptionClass(AdminOptionClassMixin):
 		self.view = view
 
 	def resolve(self):
-		return type(f"{self.view.__name__}MergeViewOptions{len(self.items)}Admin",
-		            tuple(self.items), {})
+		if len(self.items) == 1:
+			return self.items[0]
+		return type(f"{self.view.__name__}Merge{len(self.items)}ViewOptionsAdmin",
+		            tuple(self.items), self.cls_opts)
 
 
 class AdminModelOptionClass(AdminOptionClassMixin):
@@ -120,8 +123,10 @@ class AdminModelOptionClass(AdminOptionClassMixin):
 		self.opts = model._meta
 
 	def resolve(self):
+		if len(self.items) == 1:
+			return self.items[0]
 		return type(str("%s%sAdmin" % (self.opts.app_label, self.opts.model_name)),
-		            tuple(self.items), {})
+		            tuple(self.items), self.cls_opts)
 
 
 class AdminSite:
