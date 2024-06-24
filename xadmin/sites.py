@@ -85,7 +85,7 @@ class AdminPath(AdminUrl):
 	path = dj_path
 
 
-class AdminOptionClassMixin:
+class AdminOptionBase:
 	def __init__(self):
 		self.items = []
 		self.cls_opts = {'__module__': __name__}
@@ -103,7 +103,7 @@ class AdminOptionClassMixin:
 		raise NotImplementedError
 
 
-class AdminOptionClass(AdminOptionClassMixin):
+class AdminOptionClass(AdminOptionBase):
 
 	def __init__(self, view):
 		super().__init__()
@@ -116,7 +116,7 @@ class AdminOptionClass(AdminOptionClassMixin):
 		            tuple(self.items), self.cls_opts)
 
 
-class AdminModelOptionClass(AdminOptionClassMixin):
+class AdminModelOptionClass(AdminOptionBase):
 	def __init__(self, model):
 		super().__init__()
 		self.model = model
