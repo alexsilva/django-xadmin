@@ -112,7 +112,7 @@ class AdminOptionClass(AdminOptionClassMixin):
 	def resolve(self):
 		if len(self.items) == 1:
 			return self.items[0]
-		return type(f"{self.view.__name__}Merge{len(self.items)}ViewOptionsAdmin",
+		return type(self.view.__name__ + ''.join([c.__name__ for c in self.items]),
 		            tuple(self.items), self.cls_opts)
 
 
