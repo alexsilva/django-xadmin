@@ -105,13 +105,19 @@ class BatchChangeAction(BaseActionView):
 
 		if n:
 			for obj in queryset:
+				changed_fields_name = []
 				for field, v in data.items():
 					validate = getattr(self, f"dbfield_{field.name}_validate", None)
 					if callable(validate) and not validate(obj, v):
 						# if field_validate returns False the object is not changed.
 						continue
 					field.save_form_data(obj, v)
+					changed_fields_name.append(getattr(field, 'verbose_name', None) or field.name)
 				obj.save()
+				if changed_fields_name:
+					self.edit_view.log("change", _("fields ") + ",".join(
+						[f'"{n}"' for n in changed_fields_name]
+					), obj=obj)
 			self.message_user(_("Successfully change %(count)d %(items)s.") % {
 				"count": n, "items": model_ngettext(self.opts, n)
 			}, 'success')
