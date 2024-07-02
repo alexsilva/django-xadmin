@@ -115,7 +115,7 @@ class BatchChangeAction(BaseActionView):
 					changed_fields_name.append(getattr(field, 'verbose_name', None) or field.name)
 				obj.save()
 				if changed_fields_name:
-					self.edit_view.log("change", _("fields ") + ",".join(
+					self.log("change", _("fields ") + ",".join(
 						[f'"{n}"' for n in changed_fields_name]
 					), obj=obj)
 			self.message_user(_("Successfully change %(count)d %(items)s.") % {
