@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xadmin-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-04 11:46-0300\n"
+"POT-Creation-Date: 2024-07-02 11:41-0300\n"
 "PO-Revision-Date: 2013-11-20 10:21+0000\n"
 "Last-Translator: gladson <gladson@immensa.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -137,12 +137,12 @@ msgstr "Configurações do Usuário"
 msgid "Page"
 msgstr "Página"
 
-#: xadmin/models.py:107 xadmin/views/dashboard.py:82
-#: xadmin/views/dashboard.py:97
+#: xadmin/models.py:107 xadmin/views/dashboard.py:83
+#: xadmin/views/dashboard.py:98
 msgid "Widget Type"
 msgstr "Tipo de Widget"
 
-#: xadmin/models.py:108 xadmin/views/dashboard.py:83
+#: xadmin/models.py:108 xadmin/views/dashboard.py:84
 msgid "Widget Params"
 msgstr "Parâmetros do Widget"
 
@@ -339,12 +339,16 @@ msgstr "Alterar este campo"
 msgid "Batch Change selected %(verbose_name_plural)s"
 msgstr "Alterar %(verbose_name_plural)s selecionados em lote"
 
-#: xadmin/plugins/batch.py:115
+#: xadmin/plugins/batch.py:118
+msgid "fields "
+msgstr "campos "
+
+#: xadmin/plugins/batch.py:121
 #, python-format
 msgid "Successfully change %(count)d %(items)s."
 msgstr "Alterado com sucesso %(count)d %(items)s."
 
-#: xadmin/plugins/batch.py:197
+#: xadmin/plugins/batch.py:203
 #, python-format
 msgid "Batch change %s"
 msgstr "Lote alterado %s"
@@ -418,9 +422,9 @@ msgstr "Detalhes de %s"
 msgid "Enter %s"
 msgstr "Entrar %s"
 
-#: xadmin/plugins/editable.py:80 xadmin/views/dashboard.py:670
+#: xadmin/plugins/editable.py:80 xadmin/views/dashboard.py:671
 #: xadmin/views/delete.py:25 xadmin/views/detail.py:169
-#: xadmin/views/edit.py:515
+#: xadmin/views/edit.py:521
 #, python-format
 msgid "%(name)s object with primary key %(key)r does not exist."
 msgstr "%(name)s objeto com chave primária %(key)r não existe."
@@ -516,7 +520,7 @@ msgstr "Miniaturas"
 msgid "Forgotten your password or username?"
 msgstr "Esqueci minha senha ou nome de usuário"
 
-#: xadmin/plugins/quickform.py:215 xadmin/views/edit.py:531
+#: xadmin/plugins/quickform.py:215 xadmin/views/edit.py:537
 #, python-format
 msgid "Change %s"
 msgstr "Alterar %s"
@@ -552,8 +556,8 @@ msgstr "Bootstrap4"
 msgid "Bootstrap 4.x theme"
 msgstr "Tema Bootstrap 4.x"
 
-#: xadmin/plugins/topnav.py:61 xadmin/views/dashboard.py:476
-#: xadmin/views/edit.py:438 xadmin/views/edit.py:447
+#: xadmin/plugins/topnav.py:61 xadmin/views/dashboard.py:477
+#: xadmin/views/edit.py:444 xadmin/views/edit.py:453
 #, python-format
 msgid "Add %s"
 msgstr "Adicionar %s"
@@ -655,8 +659,7 @@ msgstr "Pedimos desculpas, mas a página solicitada não foi encontrada."
 #: xadmin/templates/xadmin/views/recover_form.html:10
 #: xadmin/templates/xadmin/views/recover_list.html:9
 #: xadmin/templates/xadmin/views/revision_diff.html:10
-#: xadmin/templates/xadmin/views/revision_form.html:10
-#: xadmin/views/base.py:614
+#: xadmin/templates/xadmin/views/revision_form.html:10 xadmin/views/base.py:614
 msgid "Home"
 msgstr "Início"
 
@@ -1029,7 +1032,7 @@ msgstr ""
 "            "
 
 #: xadmin/templates/xadmin/edit_inline/blank.html:5 xadmin/views/detail.py:23
-#: xadmin/views/edit.py:108 xadmin/views/list.py:31
+#: xadmin/views/edit.py:114 xadmin/views/list.py:31
 msgid "Null"
 msgstr "Nulo"
 
@@ -1274,7 +1277,7 @@ msgstr "Fechar Janela"
 msgid "Log in again"
 msgstr "Entrar novamente"
 
-#: xadmin/templates/xadmin/views/login.html:19 xadmin/views/website.py:37
+#: xadmin/templates/xadmin/views/login.html:19 xadmin/views/website.py:38
 msgid "Please Login"
 msgstr "Por Favor Autentique-se"
 
@@ -1514,54 +1517,54 @@ msgstr "Django Xadmin"
 msgid "my-company.inc"
 msgstr "my-company.inc"
 
-#: xadmin/views/dashboard.py:190
+#: xadmin/views/dashboard.py:191
 msgid "Widget ID"
 msgstr "ID do Widget"
 
-#: xadmin/views/dashboard.py:191
+#: xadmin/views/dashboard.py:192
 msgid "Widget Title"
 msgstr "Título do Widget"
 
-#: xadmin/views/dashboard.py:256
+#: xadmin/views/dashboard.py:257
 msgid "Html Content Widget, can write any html content in widget."
 msgstr ""
 "Widget de Conteúdo HTML, pode-se escrever qualquer conteúdo html no widget."
 
-#: xadmin/views/dashboard.py:258
+#: xadmin/views/dashboard.py:259
 msgid "Html Content"
 msgstr "Conteúdo HTML"
 
-#: xadmin/views/dashboard.py:322
+#: xadmin/views/dashboard.py:323
 msgid "Target Model"
 msgstr "Modelo Alvo"
 
-#: xadmin/views/dashboard.py:373
+#: xadmin/views/dashboard.py:374
 msgid "Quick button Widget, quickly open any page."
 msgstr "Widget de Botão Rápido, abre rapidamente qualquer página."
 
-#: xadmin/views/dashboard.py:375
+#: xadmin/views/dashboard.py:376
 msgid "Quick Buttons"
 msgstr "Botões Rápidos"
 
-#: xadmin/views/dashboard.py:378
+#: xadmin/views/dashboard.py:379
 #, fuzzy
 #| msgid "Target Model"
 msgid "Target Url"
 msgstr "Modelo Alvo"
 
-#: xadmin/views/dashboard.py:424
+#: xadmin/views/dashboard.py:425
 msgid "Any Objects list Widget."
 msgstr "Widget de listagem de Qualquer Objeto"
 
-#: xadmin/views/dashboard.py:467
+#: xadmin/views/dashboard.py:468
 msgid "Add any model object Widget."
 msgstr "Widget de adição de qualquer objeto."
 
-#: xadmin/views/dashboard.py:503
+#: xadmin/views/dashboard.py:504
 msgid "Dashboard"
 msgstr "Painel"
 
-#: xadmin/views/dashboard.py:654
+#: xadmin/views/dashboard.py:655
 #, python-format
 msgid "%s Dashboard"
 msgstr "%s Painel"
@@ -1572,7 +1575,7 @@ msgid "The %(name)s \"%(obj)s\" was deleted successfully."
 msgstr "%(name)s \"%(obj)s\" excluído(a) com sucesso."
 
 #: xadmin/views/detail.py:197 xadmin/views/detail.py:203
-#: xadmin/views/edit.py:219 xadmin/views/edit.py:225 xadmin/views/form.py:64
+#: xadmin/views/edit.py:225 xadmin/views/edit.py:231 xadmin/views/form.py:64
 msgid "Other Fields"
 msgstr "Outros Campos"
 
@@ -1581,38 +1584,38 @@ msgstr "Outros Campos"
 msgid "%s Detail"
 msgstr "%s Detalhes"
 
-#: xadmin/views/edit.py:292
+#: xadmin/views/edit.py:298
 msgid "Added."
 msgstr "Adicionado."
 
-#: xadmin/views/edit.py:294
+#: xadmin/views/edit.py:300
 #, python-format
 msgid "Changed %s."
 msgstr "Alterado %s"
 
-#: xadmin/views/edit.py:294
+#: xadmin/views/edit.py:300
 msgid "and"
 msgstr "e"
 
-#: xadmin/views/edit.py:297
+#: xadmin/views/edit.py:303
 msgid "No fields changed."
 msgstr "Nenhum campo alterado."
 
-#: xadmin/views/edit.py:470
+#: xadmin/views/edit.py:476
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was added successfully."
 msgstr "%(name)s \"%(obj)s\" adicionado(a) com sucesso."
 
-#: xadmin/views/edit.py:480 xadmin/views/edit.py:589
+#: xadmin/views/edit.py:486 xadmin/views/edit.py:595
 msgid "You may edit it again below."
 msgstr "Você pode editar novamente abaixo."
 
-#: xadmin/views/edit.py:486 xadmin/views/edit.py:595
+#: xadmin/views/edit.py:492 xadmin/views/edit.py:601
 #, python-format
 msgid "You may add another %s below."
 msgstr "Você pode adicionar outro(a) %s abaixo."
 
-#: xadmin/views/edit.py:583
+#: xadmin/views/edit.py:589
 #, python-format
 msgid "The %(name)s \"%(obj)s\" was changed successfully."
 msgstr "%(name)s \"%(obj)s\" alterado(a) com sucesso."
@@ -1643,6 +1646,6 @@ msgstr "Classificação Descendente"
 msgid "Cancel Sort"
 msgstr "Cancelar Classificação"
 
-#: xadmin/views/website.py:16
+#: xadmin/views/website.py:17
 msgid "Main Dashboard"
 msgstr "Painel Principal"
