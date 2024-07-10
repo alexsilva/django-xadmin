@@ -223,8 +223,12 @@ class BaseReversionView(ModelAdminView):
 	reversion_enable = False
 
 	def init_request(self, *args, **kwargs):
-		if not self.has_change_permission() and not self.has_add_permission():
+		if not self.has_reversion_permission():
 			raise PermissionDenied
+
+	def has_reversion_permission(self) -> bool:
+		"""Validates view access permissions."""
+		return bool(self.has_change_permission() and self.has_add_permission())
 
 	def _order_version_queryset(self, queryset):
 		"""Applies the correct ordering to the given version queryset."""
