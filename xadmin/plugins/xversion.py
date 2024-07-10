@@ -175,10 +175,11 @@ class ReversionPlugin(ReversionRegisterPlugin):
 
 	# Block Views
 	def block_top_toolbar(self, context, nodes):
-		recoverlist_url = self.admin_view.model_admin_url('recoverlist')
-		nodes.append(render_to_string('xadmin/blocks/model_list.top_toobar.xversion.recover.html', context={
-			'revision_list_url': recoverlist_url
-		}))
+		if self.admin_view.has_change_permission() and self.admin_view.has_add_permission():
+			recoverlist_url = self.admin_view.model_admin_url('recoverlist')
+			nodes.append(render_to_string('xadmin/blocks/model_list.top_toobar.xversion.recover.html', context={
+				'revision_list_url': recoverlist_url
+			}))
 
 	def block_nav_toggles(self, context, nodes):
 		obj = getattr(self.admin_view, 'org_obj', getattr(self.admin_view, 'obj', None))
