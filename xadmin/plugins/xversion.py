@@ -124,6 +124,9 @@ class ReversionPlugin(ReversionRegisterPlugin):
 
 	reversion_enable = False
 
+	# Used to validate permission to recover object
+	recover_list_view_class = None
+
 	def init_request(self, *args, **kwargs):
 		return self.reversion_enable
 
@@ -173,9 +176,22 @@ class ReversionPlugin(ReversionRegisterPlugin):
 			has_recover = self._cache[obj] = len(self.admin_view.queryset().filter(pk=obj.pk)) > 0
 		return has_recover
 
+	def _has_recover_list_permission(self) -> bool:
+		"""Validates whether the user has permission to view the list of recoverable objects"""
+		view_class = (RecoverListView if self.recover_list_view_class is None else
+		              self.recover_list_view_class)
+		try:
+			recover_view = self.get_model_view(view_class, self.model)
+		except PermissionDenied:  # init_request
+			has_permission = False
+		else:
+			has_permission = recover_view.has_reversion_permission()
+		return has_permission
+
 	# Block Views
 	def block_top_toolbar(self, context, nodes):
-		if self.admin_view.has_change_permission() and self.admin_view.has_add_permission():
+		# Only displays the object list button when it has permission.
+		if self._has_recover_list_permission():
 			recoverlist_url = self.admin_view.model_admin_url('recoverlist')
 			nodes.append(render_to_string('xadmin/blocks/model_list.top_toobar.xversion.recover.html', context={
 				'revision_list_url': recoverlist_url
