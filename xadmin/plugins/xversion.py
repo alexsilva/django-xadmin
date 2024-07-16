@@ -125,7 +125,7 @@ class ReversionPlugin(ReversionRegisterPlugin):
 	reversion_enable = False
 
 	# Used to validate permission to recover object
-	recover_list_view_class = None
+	revision_recover_list_view_class = None
 
 	def init_request(self, *args, **kwargs):
 		return self.reversion_enable
@@ -178,8 +178,8 @@ class ReversionPlugin(ReversionRegisterPlugin):
 
 	def _has_recover_list_permission(self) -> bool:
 		"""Validates whether the user has permission to view the list of recoverable objects"""
-		view_class = (RecoverListView if self.recover_list_view_class is None else
-		              self.recover_list_view_class)
+		view_class = (RecoverListView if self.revision_recover_list_view_class is None else
+		              self.revision_recover_list_view_class)
 		try:
 			recover_view = self.get_model_view(view_class, self.model)
 		except PermissionDenied:  # init_request
