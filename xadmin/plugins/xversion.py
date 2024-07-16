@@ -431,6 +431,12 @@ class RevisionListView(BaseReversionView):
 
 class BaseRevisionView(ModelFormAdminView):
 
+	def has_revision_permission(self) -> bool:
+		"""Validates view access permissions."""
+		return bool(self.has_add_permission() and
+		            self.has_change_permission() and
+		            self.has_delete_permission())
+
 	@filter_hook
 	def get_revision(self):
 		return self.version.field_dict
@@ -472,6 +478,9 @@ class RevisionView(BaseRevisionView):
 	revision_form_template = None
 
 	def init_request(self, object_id, version_id):
+		if not self.has_revision_permission():
+			raise PermissionDenied
+
 		self.detail = self.get_model_view(DetailAdminView, self.model, object_id)
 		self.org_obj = self.detail.obj
 		self.version = get_object_or_404(Version, pk=version_id, object_id=smart_str(self.org_obj.pk))
@@ -529,7 +538,7 @@ class RecoverView(BaseRevisionView):
 	recover_form_template = None
 
 	def init_request(self, version_id):
-		if not self.has_change_permission() and not self.has_add_permission():
+		if not self.has_revision_permission():
 			raise PermissionDenied
 
 		self.version = get_object_or_404(Version, pk=version_id)
