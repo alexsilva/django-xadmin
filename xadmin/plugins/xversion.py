@@ -229,7 +229,9 @@ class BaseReversionView(ModelAdminView):
 
 	def has_reversion_permission(self) -> bool:
 		"""Validates view access permissions."""
-		return bool(self.has_change_permission() and self.has_add_permission())
+		return bool(self.has_add_permission() and
+		            self.has_change_permission() and
+		            self.has_delete_permission())
 
 	def _order_version_queryset(self, queryset):
 		"""Applies the correct ordering to the given version queryset."""
