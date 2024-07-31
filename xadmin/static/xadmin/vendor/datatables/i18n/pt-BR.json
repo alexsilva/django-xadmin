@@ -31,6 +31,11 @@
         }
     },
     "buttons": {
+        "selected": "Selecionado",
+        "selectedSingle": "Único selecionado",
+        "selectAll": "Selecionar todos",
+        "selectNone": "Desmarcar todos",
+        "showSelected": "Mostrar apenas selecionados",
         "copySuccess": {
             "1": "Uma linha copiada com sucesso",
             "_": "%d linhas copiadas com sucesso"
