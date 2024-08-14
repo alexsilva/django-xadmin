@@ -133,6 +133,22 @@ vendors = {
 			               'xadmin/vendor/blueimp-gallery/js/blueimp-gallery.min.js']
 		}
 	},
+	"select2": {
+		"css": {
+			'dev': ['xadmin/vendor/select2/css/select2.css'],
+			'production': ['xadmin/vendor/select2/css/select2.min.css']
+		},
+		"js": {
+			'dev': [
+				'xadmin/vendor/select2/js/select2.js',
+				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
+			],
+			'production': [
+				'xadmin/vendor/select2/js/select2.min.js',
+				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
+			]
+		}
+	},
 	"select": {
 		"css": {
 			'dev': ['xadmin/vendor/select2/css/select2.css',
