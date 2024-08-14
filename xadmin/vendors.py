@@ -149,6 +149,27 @@ vendors = {
 			]
 		}
 	},
+	"selectize": {
+		"css": {
+			'dev': ['xadmin/vendor/selectize/css/selectize.css',
+			        'xadmin/vendor/selectize/css/selectize.bootstrap4.css'],
+			'production': ['xadmin/vendor/selectize/css/selectize.css',
+			               'xadmin/vendor/selectize/css/selectize.bootstrap4.css'],
+		},
+		"js": {
+			'dev': [
+				# required by selectize
+				'xadmin/vendor/sifter/js/sifter.js',
+				'xadmin/vendor/microplugin/js/microplugin.js',
+				'xadmin/vendor/selectize/js/selectize.js'],
+			'production': [
+				# required by selectize
+				'xadmin/vendor/sifter/js/sifter.min.js',
+				'xadmin/vendor/microplugin/js/microplugin.js',
+				'xadmin/vendor/selectize/js/selectize.min.js'
+			]
+		}
+	},
 	"select": {
 		"css": {
 			'dev': ['xadmin/vendor/select2/css/select2.css',
