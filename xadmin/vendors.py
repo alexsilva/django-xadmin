@@ -157,17 +157,8 @@ vendors = {
 			               'xadmin/vendor/selectize/css/selectize.bootstrap4.css'],
 		},
 		"js": {
-			'dev': [
-				# required by selectize
-				'xadmin/vendor/sifter/js/sifter.js',
-				'xadmin/vendor/microplugin/js/microplugin.js',
-				'xadmin/vendor/selectize/js/selectize.js'],
-			'production': [
-				# required by selectize
-				'xadmin/vendor/sifter/js/sifter.min.js',
-				'xadmin/vendor/microplugin/js/microplugin.js',
-				'xadmin/vendor/selectize/js/selectize.min.js'
-			]
+			'dev': ['xadmin/vendor/selectize/js/selectize.js'],
+			'production': ['xadmin/vendor/selectize/js/selectize.min.js']
 		}
 	},
 	"select": {
@@ -181,16 +172,10 @@ vendors = {
 		},
 		"js": {
 			'dev': [
-				# required by selectize
-				'xadmin/vendor/sifter/js/sifter.js',
-				'xadmin/vendor/microplugin/js/microplugin.js',
 				'xadmin/vendor/selectize/js/selectize.js',
 				'xadmin/vendor/select2/js/select2.js',
 				'xadmin/vendor/select2/js/i18n/%(lang)s.js'],
 			'production': [
-				# required by selectize
-				'xadmin/vendor/sifter/js/sifter.min.js',
-				'xadmin/vendor/microplugin/js/microplugin.js',
 				'xadmin/vendor/selectize/js/selectize.min.js',
 				'xadmin/vendor/select2/js/select2.min.js',
 				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
