@@ -133,6 +133,34 @@ vendors = {
 			               'xadmin/vendor/blueimp-gallery/js/blueimp-gallery.min.js']
 		}
 	},
+	"select2": {
+		"css": {
+			'dev': ['xadmin/vendor/select2/css/select2.css'],
+			'production': ['xadmin/vendor/select2/css/select2.min.css']
+		},
+		"js": {
+			'dev': [
+				'xadmin/vendor/select2/js/select2.js',
+				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
+			],
+			'production': [
+				'xadmin/vendor/select2/js/select2.min.js',
+				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
+			]
+		}
+	},
+	"selectize": {
+		"css": {
+			'dev': ['xadmin/vendor/selectize/css/selectize.css',
+			        'xadmin/vendor/selectize/css/selectize.bootstrap4.css'],
+			'production': ['xadmin/vendor/selectize/css/selectize.css',
+			               'xadmin/vendor/selectize/css/selectize.bootstrap4.css'],
+		},
+		"js": {
+			'dev': ['xadmin/vendor/selectize/js/selectize.js'],
+			'production': ['xadmin/vendor/selectize/js/selectize.min.js']
+		}
+	},
 	"select": {
 		"css": {
 			'dev': ['xadmin/vendor/select2/css/select2.css',
@@ -144,16 +172,10 @@ vendors = {
 		},
 		"js": {
 			'dev': [
-				# required by selectize
-				'xadmin/vendor/sifter/js/sifter.js',
-				'xadmin/vendor/microplugin/js/microplugin.js',
 				'xadmin/vendor/selectize/js/selectize.js',
 				'xadmin/vendor/select2/js/select2.js',
 				'xadmin/vendor/select2/js/i18n/%(lang)s.js'],
 			'production': [
-				# required by selectize
-				'xadmin/vendor/sifter/js/sifter.min.js',
-				'xadmin/vendor/microplugin/js/microplugin.js',
 				'xadmin/vendor/selectize/js/selectize.min.js',
 				'xadmin/vendor/select2/js/select2.min.js',
 				'xadmin/vendor/select2/js/i18n/%(lang)s.js'
