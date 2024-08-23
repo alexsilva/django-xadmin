@@ -214,6 +214,14 @@ class ChangePasswordView(ModelAdminView):
 		self.form = self.get_form(self.obj)
 		return self.get_response()
 
+	@method_decorator(sensitive_post_parameters())
+	@csrf_protect_m
+	def post(self, request, object_id):
+		self.obj = self.get_object(unquote(object_id))
+		if not self.has_change_permission(self.obj):
+			raise PermissionDenied
+		return self.post_response()
+
 	def get_media(self):
 		media = super(ChangePasswordView, self).get_media()
 		media = media + self.vendor('xadmin.form.css', 'xadmin.page.form.js') + self.form.media
@@ -237,18 +245,15 @@ class ChangePasswordView(ModelAdminView):
 		return context
 
 	def get_response(self):
+		"""Response to get method"""
 		return TemplateResponse(self.request, [
 			self.change_user_password_template or
 			'xadmin/auth/user/change_password.html'
 		], self.get_context())
 
-	@method_decorator(sensitive_post_parameters())
-	@csrf_protect_m
-	def post(self, request, object_id):
-		self.obj = self.get_object(unquote(object_id))
-		if not self.has_change_permission(self.obj):
-			raise PermissionDenied
-		self.form = self.get_form(self.obj, request.POST)
+	def post_response(self):
+		"""Response to post method"""
+		self.form = self.get_form(self.obj, self.request.POST)
 		if self.form.is_valid():
 			response = self.form_valid(self.form)
 		else:
