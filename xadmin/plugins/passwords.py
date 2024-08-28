@@ -86,7 +86,7 @@ class ResetPasswordConfirmView(BaseAdminView):
 			request,
 			template_name=self.password_reset_confirm_template,
 			token_generator=self.password_reset_token_generator,
-			set_password_form=self.password_reset_set_form,
+			form_class=self.password_reset_set_form,
 			success_url=self.get_admin_url('xadmin_password_reset_complete'),
 			current_app=self.admin_site.name,
 			extra_context=context
