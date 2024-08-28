@@ -720,7 +720,7 @@ msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
-"O link de redefinição de senha era inválida, possivelmente porque ele já foi "
+"O link de redefinição de senha era inválido, possivelmente porque ele já foi "
 "usado. Por favor, solicite uma nova redefinição de senha."
 
 #: xadmin/templates/xadmin/auth/password_reset/done.html:13
