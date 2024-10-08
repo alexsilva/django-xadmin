@@ -2,6 +2,7 @@
 {% load i18n xadmin_tags %}
 
 {% load crispy_forms_tags %}
+{% block title %}{{ title }} {% endblock %}
 
 {% block body %}
 <div class="container">
@@ -12,7 +13,7 @@
         <div class="card shadow-lg mt-5">
           {% csrf_token %}
           <div class="card-header">
-            <h3 class="form-signin-heading">{% trans "Password reset" %}</h3>
+            <h3 class="form-signin-heading">{% if title %}{{title}}{% else %}{% trans "Password reset" %}{% endif %}</h3>
           </div>
           <div class="card-body">
             <p>{% trans "Forgotten your password? Enter your e-mail address below, and we'll e-mail instructions for setting a new one." %}</p>

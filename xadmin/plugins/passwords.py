@@ -10,7 +10,22 @@ from xadmin.views.base import BaseAdminPlugin, BaseAdminView, csrf_protect_m
 from xadmin.views.website import LoginView
 
 
-class ResetPasswordSendView(BaseAdminView):
+class ResetPasswordBaseAdminView(BaseAdminView):
+	title = None
+
+	def get_context(self):
+		context = super().get_context()
+		context['title'] = self.title
+		return context
+
+
+class ResetPasswordSendView(ResetPasswordBaseAdminView):
+	# title for form.html
+	title = _("Password reset")
+
+	# title for done.html
+	title_done = _("Password reset by email")
+
 	need_site_permission = False
 
 	password_reset_form = PasswordResetForm
@@ -23,7 +38,7 @@ class ResetPasswordSendView(BaseAdminView):
 	password_reset_subject_template = None
 
 	def get(self, request, *args, **kwargs):
-		context = super(ResetPasswordSendView, self).get_context()
+		context = self.get_context()
 		context['form'] = kwargs.get('form', self.password_reset_form())
 
 		return TemplateResponse(request, self.password_reset_template, context)
@@ -47,7 +62,8 @@ class ResetPasswordSendView(BaseAdminView):
 				opts['subject_template_name'] = self.password_reset_subject_template
 
 			form.save(**opts)
-			context = super(ResetPasswordSendView, self).get_context()
+			context = self.get_context()
+			context['title'] = self.title_done
 			return TemplateResponse(request, self.password_reset_done_template, context)
 		else:
 			return self.get(request, form=form)
@@ -67,7 +83,8 @@ class ResetLinkPlugin(BaseAdminPlugin):
 site.register_plugin(ResetLinkPlugin, LoginView)
 
 
-class ResetPasswordConfirmView(BaseAdminView):
+class ResetPasswordConfirmView(ResetPasswordBaseAdminView):
+	title = _("Enter new password")
 	need_site_permission = False
 
 	password_reset_set_form = SetPasswordForm
@@ -109,7 +126,9 @@ site.register_view(
 	ResetPasswordConfirmView, name='xadmin_password_reset_confirm')
 
 
-class ResetPasswordCompleteView(BaseAdminView):
+class ResetPasswordCompleteView(ResetPasswordBaseAdminView):
+	title = _('Password reset successful')
+
 	need_site_permission = False
 
 	password_reset_complete_template = 'xadmin/auth/password_reset/complete.html'

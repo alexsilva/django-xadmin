@@ -34,7 +34,16 @@ class UserSettingView(BaseAdminView):
 		return HttpResponse('')
 
 
-class LoginView(BaseAdminView, AuthLoginView):
+class AuthBaseAdminView(BaseAdminView):
+	title = None
+
+	def get_context(self):
+		context = super().get_context()
+		context['title'] = self.title
+		return context
+
+
+class LoginView(AuthBaseAdminView, AuthLoginView):
 	title = _("Please Login")
 	login_form = AdminAuthenticationForm
 	authentication_form = None
@@ -113,7 +122,9 @@ class LoginView(BaseAdminView, AuthLoginView):
 		return super().post(request, *args, **kwargs)
 
 
-class LogoutView(BaseAdminView):
+class LogoutView(AuthBaseAdminView):
+	title = _("Logout Success")
+
 	logout_template = None
 	need_site_permission = False
 

@@ -2,6 +2,7 @@
 {% load i18n xadmin_tags %}
 
 {% load crispy_forms_tags %}
+{% block title %}{{ title }} {% endblock %}
 
 {% block body %}
 <div class="container">
@@ -10,7 +11,7 @@
         <div class="col-12 col-sm-9 col-md-9 col-lg-7 col-xl-6">
             <div class="card shadow-lg mt-5">
                 <div class="card-header">
-                    <h3 class="form-signin-heading">{% trans 'Password reset successful' %}</h3>
+                    <h3 class="form-signin-heading">{% if title %}{{title}}{% else %}{% trans 'Password reset successful' %}{% endif %}</h3>
                 </div>
                 <div class="card-body">
                     <p class="text-success lead">{% trans "Your password has been set.  You may go ahead and log in now." %}</p>
