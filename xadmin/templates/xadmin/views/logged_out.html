@@ -1,6 +1,7 @@
 {% extends base_template %}
 {% load i18n %}
 
+{% block title %}{{ title }} {% endblock %}
 
 {% block body %}
 <div class="container">
@@ -9,7 +10,7 @@
 
       <div class="card shadow-lg mt-5">
         <div class="card-body">
-          <h2 class="text-success mb-3">{% trans "Logout Success" %}</h2>
+          <h2 class="text-success mb-3">{% if title %}{{title}}{% else %}{% trans "Logout Success" %}{% endif %}</h2>
           <p>{% trans "Thanks for spending some quality time with the Web site today." %}</p>
           <p class="btn-group">
             <a href="#" onclick="javascript:window.location.href='about:blank';window.close();" class="btn btn-primary">{% trans 'Close Window' %}</a>
