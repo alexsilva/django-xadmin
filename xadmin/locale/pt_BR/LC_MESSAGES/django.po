@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xadmin-core\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-07-02 11:41-0300\n"
+"POT-Creation-Date: 2024-10-09 10:43-0300\n"
 "PO-Revision-Date: 2013-11-20 10:21+0000\n"
 "Last-Translator: gladson <gladson@immensa.com.br>\n"
 "Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/"
@@ -314,16 +314,16 @@ msgstr "Estado"
 msgid "Permission Name"
 msgstr "Nome da permissão"
 
-#: xadmin/plugins/auth.py:202 xadmin/plugins/auth.py:279
+#: xadmin/plugins/auth.py:202 xadmin/plugins/auth.py:284
 msgid "Password changed successfully."
 msgstr "Senha alterada com sucesso."
 
-#: xadmin/plugins/auth.py:230
+#: xadmin/plugins/auth.py:238
 #, python-format
 msgid "Change password: %s"
 msgstr "Alterar senha: %s"
 
-#: xadmin/plugins/auth.py:271
+#: xadmin/plugins/auth.py:276
 #: xadmin/templates/xadmin/auth/user/change_password.html:14
 #: xadmin/templates/xadmin/auth/user/change_password.html:31
 #: xadmin/templates/xadmin/auth/user/change_password.html:61
@@ -516,9 +516,29 @@ msgstr "Tabela"
 msgid "Thumbnails"
 msgstr "Miniaturas"
 
-#: xadmin/plugins/passwords.py:64
+#: xadmin/plugins/passwords.py:24
+#: xadmin/templates/xadmin/auth/password_reset/form.html:16
+msgid "Password reset"
+msgstr "Redefinição de senha"
+
+#: xadmin/plugins/passwords.py:27
+#: xadmin/templates/xadmin/auth/password_reset/done.html:14
+msgid "Password reset by email"
+msgstr "Redefinição de senha por email"
+
+#: xadmin/plugins/passwords.py:80
 msgid "Forgotten your password or username?"
 msgstr "Esqueci minha senha ou nome de usuário"
+
+#: xadmin/plugins/passwords.py:87
+#: xadmin/templates/xadmin/auth/password_reset/confirm.html:15
+msgid "Enter new password"
+msgstr "Digite a nova senha"
+
+#: xadmin/plugins/passwords.py:130
+#: xadmin/templates/xadmin/auth/password_reset/complete.html:14
+msgid "Password reset successful"
+msgstr "Redefinição de senha completada."
 
 #: xadmin/plugins/quickform.py:215 xadmin/views/edit.py:537
 #, python-format
@@ -562,57 +582,57 @@ msgstr "Tema Bootstrap 4.x"
 msgid "Add %s"
 msgstr "Adicionar %s"
 
-#: xadmin/plugins/xversion.py:146
+#: xadmin/plugins/xversion.py:149
 msgid "Initial version."
 msgstr "Versão inicial."
 
-#: xadmin/plugins/xversion.py:148
+#: xadmin/plugins/xversion.py:151
 msgid "Change version."
 msgstr "Alterar versão."
 
-#: xadmin/plugins/xversion.py:150
+#: xadmin/plugins/xversion.py:153
 msgid "Revert version."
 msgstr "Reverter versão."
 
-#: xadmin/plugins/xversion.py:152
+#: xadmin/plugins/xversion.py:155
 msgid "Recover version."
 msgstr "Recuperar versão."
 
-#: xadmin/plugins/xversion.py:154
+#: xadmin/plugins/xversion.py:157
 #, python-format
 msgid "Deleted %(verbose_name)s."
 msgstr "Excluídos %(verbose_name)s."
 
-#: xadmin/plugins/xversion.py:247
+#: xadmin/plugins/xversion.py:270
 #: xadmin/templates/xadmin/views/recover_form.html:21
 #, python-format
 msgid "Recover deleted %(name)s"
 msgstr "Recuperar %(name)s removido"
 
-#: xadmin/plugins/xversion.py:290
+#: xadmin/plugins/xversion.py:313
 #, python-format
 msgid "Change history: %s"
 msgstr "Alterar histórico: %s"
 
-#: xadmin/plugins/xversion.py:340
+#: xadmin/plugins/xversion.py:363
 msgid "Must select two versions."
 msgstr "É necessário selecionar 2 versões"
 
-#: xadmin/plugins/xversion.py:348
+#: xadmin/plugins/xversion.py:371
 msgid "Please select two different versions."
 msgstr "Por favor selecione duas versões diferentes."
 
-#: xadmin/plugins/xversion.py:443 xadmin/plugins/xversion.py:561
+#: xadmin/plugins/xversion.py:472 xadmin/plugins/xversion.py:593
 #, python-format
 msgid "Current: %s"
 msgstr "Atual: %s"
 
-#: xadmin/plugins/xversion.py:484
+#: xadmin/plugins/xversion.py:516
 #, python-format
 msgid "Revert %s"
 msgstr "Revertido: %s"
 
-#: xadmin/plugins/xversion.py:500
+#: xadmin/plugins/xversion.py:532
 #, python-format
 msgid ""
 "The %(model)s \"%(name)s\" was reverted successfully. You may edit it again "
@@ -621,12 +641,12 @@ msgstr ""
 "%(model)s \"%(name)s\" foi revertido(a) com sucesso. Você pode editá-lo(a) "
 "novamente abaixo."
 
-#: xadmin/plugins/xversion.py:520
+#: xadmin/plugins/xversion.py:552
 #, python-format
 msgid "Recover %s"
 msgstr "Recuperar %s"
 
-#: xadmin/plugins/xversion.py:536
+#: xadmin/plugins/xversion.py:568
 #, python-format
 msgid ""
 "The %(model)s \"%(name)s\" was recovered successfully. You may edit it again "
@@ -683,23 +703,15 @@ msgstr ""
 "Ocorreu um erro. E foi relatado aos administradores do site via e-mail e "
 "deve ser corrigido em breve. Obrigado por sua paciência."
 
-#: xadmin/templates/xadmin/auth/password_reset/complete.html:13
-msgid "Password reset successful"
-msgstr "Redefinição de senha completada."
-
-#: xadmin/templates/xadmin/auth/password_reset/complete.html:16
+#: xadmin/templates/xadmin/auth/password_reset/complete.html:17
 msgid "Your password has been set.  You may go ahead and log in now."
 msgstr "Sua senha foi definida. Você pode seguir e entrar agora."
 
-#: xadmin/templates/xadmin/auth/password_reset/complete.html:17
+#: xadmin/templates/xadmin/auth/password_reset/complete.html:18
 msgid "Log in"
 msgstr "Entrar"
 
-#: xadmin/templates/xadmin/auth/password_reset/confirm.html:14
-msgid "Enter new password"
-msgstr "Digite a nova senha"
-
-#: xadmin/templates/xadmin/auth/password_reset/confirm.html:19
+#: xadmin/templates/xadmin/auth/password_reset/confirm.html:20
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
@@ -707,15 +719,15 @@ msgstr ""
 "Por favor forneça sua nova senha 2 vezes para que possamos verificar se a "
 "mesma foi digitada corretamente."
 
-#: xadmin/templates/xadmin/auth/password_reset/confirm.html:21
+#: xadmin/templates/xadmin/auth/password_reset/confirm.html:22
 msgid "Change my password"
 msgstr "Alterar minha senha"
 
-#: xadmin/templates/xadmin/auth/password_reset/confirm.html:26
+#: xadmin/templates/xadmin/auth/password_reset/confirm.html:27
 msgid "Password reset unsuccessful"
 msgstr "A senha foi redefinida com sucesso"
 
-#: xadmin/templates/xadmin/auth/password_reset/confirm.html:29
+#: xadmin/templates/xadmin/auth/password_reset/confirm.html:30
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
@@ -723,11 +735,7 @@ msgstr ""
 "O link de redefinição de senha era inválido, possivelmente porque ele já foi "
 "usado. Por favor, solicite uma nova redefinição de senha."
 
-#: xadmin/templates/xadmin/auth/password_reset/done.html:13
-msgid "Password reset by email"
-msgstr "Redefinição de senha por email"
-
-#: xadmin/templates/xadmin/auth/password_reset/done.html:16
+#: xadmin/templates/xadmin/auth/password_reset/done.html:17
 msgid ""
 "We've e-mailed you instructions for setting your password to the e-mail "
 "address you submitted. You should be receiving it shortly."
@@ -761,11 +769,7 @@ msgstr "Obrigado por utilizar o nosso site!"
 msgid "The %(site_name)s team"
 msgstr "A equipe %(site_name)s"
 
-#: xadmin/templates/xadmin/auth/password_reset/form.html:15
-msgid "Password reset"
-msgstr "Redefinição de senha"
-
-#: xadmin/templates/xadmin/auth/password_reset/form.html:18
+#: xadmin/templates/xadmin/auth/password_reset/form.html:19
 msgid ""
 "Forgotten your password? Enter your e-mail address below, and we'll e-mail "
 "instructions for setting a new one."
@@ -773,11 +777,11 @@ msgstr ""
 "Esqueceu sua senha? Forneça seu endereço de e-mail abaixo, e nós lhe "
 "enviaremos instruções para definir uma nova."
 
-#: xadmin/templates/xadmin/auth/password_reset/form.html:30
+#: xadmin/templates/xadmin/auth/password_reset/form.html:31
 msgid "E-mail address:"
 msgstr "Endereço de e-mail:"
 
-#: xadmin/templates/xadmin/auth/password_reset/form.html:36
+#: xadmin/templates/xadmin/auth/password_reset/form.html:37
 msgid "Reset my password"
 msgstr "Redefinir minha senha"
 
@@ -1261,35 +1265,35 @@ msgstr ""
 "tabelas foram criadas apropriadamente, e certifique-se que o banco de dados "
 "pode ser lido pelo usuário apropriado."
 
-#: xadmin/templates/xadmin/views/logged_out.html:12
+#: xadmin/templates/xadmin/views/logged_out.html:13 xadmin/views/website.py:126
 msgid "Logout Success"
 msgstr "Saída com Sucesso"
 
-#: xadmin/templates/xadmin/views/logged_out.html:13
+#: xadmin/templates/xadmin/views/logged_out.html:14
 msgid "Thanks for spending some quality time with the Web site today."
 msgstr "Obrigado por gastar algum tempo de qualidade com o site hoje."
 
-#: xadmin/templates/xadmin/views/logged_out.html:15
+#: xadmin/templates/xadmin/views/logged_out.html:16
 msgid "Close Window"
 msgstr "Fechar Janela"
 
-#: xadmin/templates/xadmin/views/logged_out.html:16
+#: xadmin/templates/xadmin/views/logged_out.html:17
 msgid "Log in again"
 msgstr "Entrar novamente"
 
-#: xadmin/templates/xadmin/views/login.html:19 xadmin/views/website.py:38
+#: xadmin/templates/xadmin/views/login.html:21 xadmin/views/website.py:47
 msgid "Please Login"
 msgstr "Por Favor Autentique-se"
 
-#: xadmin/templates/xadmin/views/login.html:36
+#: xadmin/templates/xadmin/views/login.html:38
 msgid "Username"
 msgstr "Nome de Usuário"
 
-#: xadmin/templates/xadmin/views/login.html:50
+#: xadmin/templates/xadmin/views/login.html:52
 msgid "Password"
 msgstr "Senha"
 
-#: xadmin/templates/xadmin/views/login.html:59
+#: xadmin/templates/xadmin/views/login.html:61
 msgid "log in"
 msgstr "Entrar"
 
@@ -1370,7 +1374,7 @@ msgid "Diff"
 msgstr "Comparar"
 
 #: xadmin/templates/xadmin/views/model_history.html:30
-#: xadmin/templates/xadmin/views/recover_list.html:31
+#: xadmin/templates/xadmin/views/recover_list.html:33
 msgid "Date/time"
 msgstr "Data/Hora"
 
@@ -1424,13 +1428,15 @@ msgid ""
 msgstr "Recuperar %(name)s removido"
 
 #: xadmin/templates/xadmin/views/recover_list.html:24
+#, python-format
 msgid ""
-"Choose a date from the list below to recover a deleted version of an object."
+"According to the date and name information, select a deleted "
+"%(verbose_name)s from the list below to recover."
 msgstr ""
-"Escolha a data a partir da lista abaixo para recuperar a versão excluída do "
-"objeto."
+"Segundo as informações de data e nome, escolha um %(verbose_name)s "
+"excluído  na lista abaixo para recuperar."
 
-#: xadmin/templates/xadmin/views/recover_list.html:46
+#: xadmin/templates/xadmin/views/recover_list.html:48
 msgid "There are no deleted objects to recover."
 msgstr "Não há objetos excluídos para recuperar."
 
@@ -1649,3 +1655,10 @@ msgstr "Cancelar Classificação"
 #: xadmin/views/website.py:17
 msgid "Main Dashboard"
 msgstr "Painel Principal"
+
+#~ msgid ""
+#~ "Choose a date from the list below to recover a deleted version of an "
+#~ "object."
+#~ msgstr ""
+#~ "Escolha a data a partir da lista abaixo para recuperar a versão excluída "
+#~ "do objeto."
