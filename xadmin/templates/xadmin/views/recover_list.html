@@ -21,7 +21,9 @@
 
 {% block content %}
   <div class="alert alert-info mt-2">
-      {% blocktrans %}Choose a date from the list below to recover a deleted version of an object.{% endblocktrans %}
+    {% blocktrans trimmed with verbose_name=opts.verbose_name %}
+    According to the date and name information, select a deleted {{verbose_name}} from the list below to recover.
+    {% endblocktrans %}
   </div>
   <div class="module">
     {% if deleted %}
