@@ -55,10 +55,13 @@ class ReadOnlyField(Field):
 	def render(self, form, context, **kwargs):
 		html = ''
 		for field in self.fields:
-			result = self.detail.get_field_result(field)
-			field = {'auto_id': field}
-			html += loader.render_to_string(
-				self.template, {'field': field, 'result': result})
+			if isinstance(field, type(self)):
+				html += field.render(self, context, **kwargs)
+			else:
+				result = self.detail.get_field_result(field)
+				field = {'auto_id': field}
+				html += loader.render_to_string(
+					self.template, {'field': field, 'result': result})
 		return html
 
 
